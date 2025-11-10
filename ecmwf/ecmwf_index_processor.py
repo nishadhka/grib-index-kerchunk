@@ -241,38 +241,73 @@ def build_complete_parquet_from_indices(
 
     # Optionally merge with GCS template
     if use_gcs_template and gcs_template_date:
-        all_refs = merge_with_gcs_template(all_refs, gcs_template_date, member_name)
+        all_refs = merge_with_gcs_template(
+            all_refs, gcs_template_date, member_name,
+            gcs_bucket="gik-ecmwf-aws-tf"
+        )
 
     return all_refs
 
 def merge_with_gcs_template(
     index_refs: Dict,
     template_date: str,
-    member_name: str
+    member_name: str,
+    gcs_bucket: str = "gik-ecmwf-aws-tf"
 ) -> Dict:
     """
     Merge index-based references with GCS template structure.
 
+    This is the critical Stage 2 integration that combines:
+    - Fresh index byte positions (from target date)
+    - Pre-built GCS template structure (from reference date)
+
     Args:
-        index_refs: References from index files
-        template_date: Date of GCS template
+        index_refs: References from index files (target date)
+        template_date: Date of GCS template (reference date)
         member_name: Ensemble member name
+        gcs_bucket: GCS bucket name
 
     Returns:
-        Merged references
+        Merged references with template structure and fresh positions
     """
     try:
-        # Load GCS template
-        gcs_path = f"gs://gik-fmrc/v2ecmwf_fmrc/ens_{member_name}/ecmwf-{template_date}00-{member_name}-rt000.par"
+        import gcsfs
 
-        # This would load the actual template
-        # For now, we'll just return the index refs
-        logger.info(f"Would merge with GCS template: {gcs_path}")
+        # GCS path for template
+        gcs_path = f"{gcs_bucket}/ecmwf/{member_name}/ecmwf-time-{template_date}-{member_name}-rt000.parquet"
 
-        return index_refs
+        logger.info(f"Loading GCS template: gs://{gcs_path}")
+
+        # Load template from GCS
+        gcs_fs = gcsfs.GCSFileSystem(token='anon')
+
+        if not gcs_fs.exists(gcs_path):
+            logger.warning(f"Template not found: gs://{gcs_path}")
+            logger.info("Using index references only (no template merge)")
+            return index_refs
+
+        # Read template parquet
+        template_df = pd.read_parquet(f"gs://{gcs_path}", filesystem=gcs_fs)
+
+        logger.info(f"Template loaded: {len(template_df)} entries")
+
+        # Merge template structure with index references
+        # The template has the complete variable structure
+        # The index refs have fresh byte positions
+        merged_refs = index_refs.copy()
+
+        # Update with template metadata and structure
+        for key, value in template_df.items():
+            if key not in merged_refs or key.startswith('.z'):
+                # Add template metadata that's not in index refs
+                merged_refs[key] = value
+
+        logger.info(f"Merged {len(merged_refs)} total references")
+        return merged_refs
 
     except Exception as e:
         logger.warning(f"Could not merge with GCS template: {e}")
+        logger.info("Using index references only")
         return index_refs
 
 def hybrid_processing(

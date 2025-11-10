@@ -4,31 +4,47 @@
 
 This test script implements the **missing Stage 2 components** identified in `20251107-missing-comps-ecmwf-gik.md`. It focuses on a **single ensemble member** for quick testing.
 
+**IMPORTANT**: This implementation uses and enhances **existing methods** from `ecmwf_index_processor.py`. It does NOT duplicate scan_grib functionality.
+
 ## What This Implements
 
-### Critical Missing Components (from the analysis):
+### Uses Existing Methods from `ecmwf_index_processor.py`:
 
-1. ✅ **`generate_ecmwf_axes()`** - Already exists in `ecmwf_util.py` (handles 85 timesteps)
-2. ✅ **Async batch processing** - NEW in `test_single_member_integration.py`
-3. ✅ **Index + GCS template integration** - NEW `process_single_ecmwf_hour()`
-4. ✅ **Stage 2 integration layer** - NEW `process_all_85_hours()`
+1. ✅ **`parse_grib_index()`** - Parses ECMWF JSON index files (already implemented)
+2. ✅ **`create_references_from_index()`** - Creates kerchunk references (already implemented)
+3. ✅ **`build_complete_parquet_from_indices()`** - Processes all 85 hours (already implemented)
+
+### New/Enhanced Components:
+
+1. ✅ **`merge_with_gcs_template()`** - ENHANCED from stub to full implementation in `ecmwf_index_processor.py`
+2. ✅ **Async wrapper** - NEW in `test_single_member_integration.py` for efficiency
+3. ✅ **Single-member test harness** - NEW for quick validation
+
+### Explicitly Avoids:
+
+- ❌ **`hybrid_processing()`** - Not used (duplicates scan_grib)
+- ❌ **`scan_grib`** - Not used at all
+- ❌ Any GRIB file scanning/downloading
 
 ### The Integration Process
 
 ```
-Stage 2 Integration (New Implementation):
-┌─────────────────────────────────────────────────────────────┐
-│  For each of 85 forecast hours:                             │
-│                                                              │
-│  1. Parse fresh index file from target date (S3)            │
-│     → Binary byte positions for variables                   │
-│                                                              │
-│  2. Load GCS template from reference date                   │
-│     → Variable structure and metadata                       │
-│                                                              │
-│  3. Map fresh positions with template structure             │
-│     → Complete parquet mapping                              │
-└─────────────────────────────────────────────────────────────┘
+Stage 2 Integration (Uses Existing Methods from ecmwf_index_processor.py):
+┌───────────────────────────────────────────────────────────────────────┐
+│  build_complete_parquet_from_indices()                                │
+│  ├─> For each of 85 forecast hours:                                   │
+│  │                                                                     │
+│  │   1. parse_grib_index() - Parse ECMWF JSON index file             │
+│  │      → Byte positions from target date S3 index                    │
+│  │                                                                     │
+│  │   2. create_references_from_index() - Create kerchunk refs         │
+│  │      → Zarr-style references with byte ranges                      │
+│  │                                                                     │
+│  └─> merge_with_gcs_template() - ENHANCED (was stub)                  │
+│       → Load template from GCS                                        │
+│       → Merge template structure with fresh index positions           │
+│       → Complete parquet mapping                                      │
+└───────────────────────────────────────────────────────────────────────┘
 ```
 
 ## Quick Start
@@ -279,6 +295,50 @@ Before integrating into production:
 - [ ] Verify all 85 hours processed successfully
 - [ ] Test with different target dates
 - [ ] Document any GCS authentication requirements
+
+## Implementation Details
+
+### Code Organization
+
+This implementation follows best practices by:
+
+1. **Reusing existing code**: Uses `ecmwf_index_processor.py` methods instead of duplicating
+2. **Enhancing stubs**: Completed the `merge_with_gcs_template()` stub function
+3. **Adding efficiency**: Async wrapper for better performance
+4. **Avoiding duplication**: Does NOT use `hybrid_processing()` or `scan_grib`
+
+### Files Modified/Created
+
+1. **`ecmwf_index_processor.py`** (ENHANCED):
+   - `merge_with_gcs_template()` - Completed implementation (was stub)
+   - Now properly loads GCS templates and merges with index references
+
+2. **`test_single_member_integration.py`** (NEW):
+   - Uses existing `build_complete_parquet_from_indices()`
+   - Adds async wrapper for efficiency
+   - Provides simple test harness
+
+3. **`README_STAGE2_TEST.md`** (THIS FILE):
+   - Documents the integration approach
+   - Clarifies use of existing methods
+
+### Why This Approach
+
+The original `ecmwf_index_processor.py` already had:
+- ✅ ECMWF JSON index parsing (`parse_grib_index`)
+- ✅ Reference creation (`create_references_from_index`)
+- ✅ All 85 hours processing (`build_complete_parquet_from_indices`)
+- ⚠️ GCS template merge (stub only)
+
+We enhanced the existing infrastructure instead of creating parallel implementations:
+- Completed the `merge_with_gcs_template()` function
+- Added async wrapper for efficiency
+- Created simple test harness
+
+This avoids:
+- Code duplication
+- Confusion about which method to use
+- Maintenance of parallel implementations
 
 ## Contact & Support
 

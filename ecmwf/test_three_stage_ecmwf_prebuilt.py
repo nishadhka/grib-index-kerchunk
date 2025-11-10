@@ -572,16 +572,15 @@ def test_stage2_with_gcs_templates(test_date, test_run, test_members):
             try:
                 # Build with GCS template merge enabled
                 # This calls the real function from ecmwf_index_processor.py
+                # Note: gcs_bucket, gcs_base_path, service_account_json are hard-coded
+                # inside ecmwf_index_processor.py (not parameters)
                 refs = build_complete_parquet_from_indices(
                     date_str=test_date,
                     run=test_run,
                     member_name=member_normalized,
                     hours=ECMWF_FORECAST_HOURS,
                     use_gcs_template=True,  # ⭐ ENABLE GCS TEMPLATE MERGE ⭐
-                    gcs_template_date=REFERENCE_DATE,
-                    gcs_bucket=GCS_BUCKET,
-                    gcs_base_path=GCS_BASE_PATH,
-                    service_account_json=GCP_SERVICE_ACCOUNT
+                    gcs_template_date=REFERENCE_DATE
                 )
 
                 if refs:

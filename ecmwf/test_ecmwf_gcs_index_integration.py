@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 # Configuration
 GCS_BUCKET = "gik-fmrc"
 GCS_BASE_PATH = "v2ecmwf_fmrc"
-SERVICE_ACCOUNT_JSON = "/home/roller/Documents/08-2023/impact_weather_icpac/lab/icpac_gcp/e4drr/gcp-coiled-sa-20250310/coiled-data-e4drr_202505.json"
+SERVICE_ACCOUNT_JSON = "coiled-data-e4drr_202505.json"
 
 
 def verify_gcs_template_exists(reference_date: str, member: str) -> bool:
@@ -74,14 +74,16 @@ def verify_gcs_template_exists(reference_date: str, member: str) -> bool:
 
         # Build GCS path
         # Pattern: gs://gik-fmrc/v2ecmwf_fmrc/ens_control/ecmwf-2024052900-control-rt000.par
+        #          gs://gik-fmrc/v2ecmwf_fmrc/ens_1/ecmwf-2024052900-ens01-rt000.par
         if member == 'control':
             member_dir = 'ens_control'
             member_name = 'control'
         else:
-            # ens01 -> ens_01
-            member_num = member.replace('ens', '')
+            # ens01 -> ens_1 (directory has no zero-padding)
+            # ens09 -> ens_9, ens10 -> ens_10, etc.
+            member_num = member.replace('ens', '').lstrip('0') or '0'  # Remove leading zeros
             member_dir = f'ens_{member_num}'
-            member_name = member  # Keep as ens01
+            member_name = member  # Keep as ens01 (filename keeps zero-padding)
 
         # Check first hour template (rt000)
         gcs_path = f"{GCS_BUCKET}/{GCS_BASE_PATH}/{member_dir}/ecmwf-{reference_date}00-{member_name}-rt000.par"
@@ -127,13 +129,17 @@ def inspect_gcs_template(reference_date: str, member: str, hour: int = 0):
         )
 
         # Build GCS path
+        # Pattern: gs://gik-fmrc/v2ecmwf_fmrc/ens_control/ecmwf-2024052900-control-rt000.par
+        #          gs://gik-fmrc/v2ecmwf_fmrc/ens_1/ecmwf-2024052900-ens01-rt000.par
         if member == 'control':
             member_dir = 'ens_control'
             member_name = 'control'
         else:
-            member_num = member.replace('ens', '')
+            # ens01 -> ens_1 (directory has no zero-padding)
+            # ens09 -> ens_9, ens10 -> ens_10, etc.
+            member_num = member.replace('ens', '').lstrip('0') or '0'  # Remove leading zeros
             member_dir = f'ens_{member_num}'
-            member_name = member
+            member_name = member  # Keep as ens01 (filename keeps zero-padding)
 
         gcs_path = f"{GCS_BUCKET}/{GCS_BASE_PATH}/{member_dir}/ecmwf-{reference_date}00-{member_name}-rt{hour:03d}.par"
 

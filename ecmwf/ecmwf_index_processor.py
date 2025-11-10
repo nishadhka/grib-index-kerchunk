@@ -255,7 +255,7 @@ def merge_with_gcs_template(
     member_name: str,
     gcs_bucket: str = "gik-fmrc",
     gcs_base_path: str = "v2ecmwf_fmrc",
-    service_account_json: str = "/home/roller/Documents/08-2023/impact_weather_icpac/lab/icpac_gcp/e4drr/gcp-coiled-sa-20250310/coiled-data-e4drr_202505.json"
+    service_account_json: str = "coiled-data-e4drr_202505.json"
 ) -> Dict:
     """
     Merge index-based references with GCS template structure.
@@ -286,15 +286,17 @@ def merge_with_gcs_template(
         import json
 
         # Build GCS path using correct pattern
-        # Member directory: ens_control for control, ens_01 for ens01, etc.
+        # Pattern: gs://gik-fmrc/v2ecmwf_fmrc/ens_control/ecmwf-2024052900-control-rt000.par
+        #          gs://gik-fmrc/v2ecmwf_fmrc/ens_1/ecmwf-2024052900-ens01-rt000.par
         if member_name == 'control':
             member_dir = 'ens_control'
             filename_member = 'control'
         else:
-            # ens01 -> ens_01 for directory, keep ens01 for filename
-            member_num = member_name.replace('ens', '')
+            # ens01 -> ens_1 (directory has no zero-padding)
+            # ens09 -> ens_9, ens10 -> ens_10, etc.
+            member_num = member_name.replace('ens', '').lstrip('0') or '0'  # Remove leading zeros
             member_dir = f'ens_{member_num}'
-            filename_member = member_name  # Keep as ens01
+            filename_member = member_name  # Keep as ens01 (filename keeps zero-padding)
 
         # Template path (using rt000 as base template)
         gcs_path = f"{gcs_bucket}/{gcs_base_path}/{member_dir}/ecmwf-{template_date}00-{filename_member}-rt000.par"

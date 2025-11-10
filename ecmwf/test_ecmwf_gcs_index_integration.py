@@ -2,31 +2,37 @@
 """
 ECMWF GCS Template + Index Integration Test
 
-Tests the critical Stage 2 integration that merges:
-1. GCS templates (pre-built structure from reference date)
-2. Fresh index files (byte positions from target date)
+Tests the critical Stage 2 integration using existing methods from
+ecmwf_index_processor.py:
+- build_complete_parquet_from_indices()
+- process_single_member()
+- merge_with_gcs_template()
 
-This is NOT using standard kerchunk parsers because ECMWF uses
-a custom JSON .index format that requires custom parsing.
+Uses correct GCS paths where par files are located:
+gs://gik-fmrc/v2ecmwf_fmrc/ens_control/ecmwf-{date}00-control-rt{hour:03d}.par
+gs://gik-fmrc/v2ecmwf_fmrc/ens_01/ecmwf-{date}00-ens01-rt{hour:03d}.par
 
-Key challenge: Properly merging two DataFrames with different structures.
+These par files are created from ecmwf_par_to_ensemble_members.py,
+where all ensemble members from single par (run_ecmwf_preprocessing.py)
+are split into individual member par files.
 
 Usage:
     python test_ecmwf_gcs_index_integration.py --date 20250101 --member control
 """
 
-import asyncio
 import argparse
 import logging
-import time
-import json
-from pathlib import Path
-from typing import Dict, Any, List
 import sys
+import time
+from pathlib import Path
 
-import pandas as pd
-import gcsfs
-import fsspec
+# Import existing methods from ecmwf_index_processor
+from ecmwf_index_processor import (
+    process_single_member,
+    ALL_FORECAST_HOURS,
+    HOURS_3H,
+    HOURS_6H,
+)
 
 # Configure logging
 logging.basicConfig(
@@ -35,318 +41,236 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
-# ECMWF configuration
-HOURS_3H = list(range(0, 145, 3))
-HOURS_6H = list(range(150, 361, 6))
-ALL_FORECAST_HOURS = HOURS_3H + HOURS_6H  # 85 hours
-
-S3_BUCKET = "ecmwf-forecasts"
-GCS_BUCKET = "gik-ecmwf-aws-tf"
+# Configuration
+GCS_BUCKET = "gik-fmrc"
+GCS_BASE_PATH = "v2ecmwf_fmrc"
+SERVICE_ACCOUNT_JSON = "/home/roller/Documents/08-2023/impact_weather_icpac/lab/icpac_gcp/e4drr/gcp-coiled-sa-20250310/coiled-data-e4drr_202505.json"
 
 
-def parse_ecmwf_json_index(idx_url: str, member_filter: str = None) -> pd.DataFrame:
+def verify_gcs_template_exists(reference_date: str, member: str) -> bool:
     """
-    Parse ECMWF's custom JSON .index format.
-
-    ECMWF uses .index files with JSON format (one JSON object per line),
-    NOT the standard GRIB .idx format that kerchunk's parse_grib_idx expects.
+    Verify that GCS template exists for the reference date and member.
 
     Args:
-        idx_url: URL to ECMWF .index file (JSON format)
-        member_filter: Member name to filter (e.g., 'control', 'ens01')
+        reference_date: Reference date (YYYYMMDD)
+        member: Member name (control, ens01, etc.)
 
     Returns:
-        DataFrame with parsed index entries
+        True if template exists
     """
     try:
-        fs = fsspec.filesystem("s3", anon=True)
+        import gcsfs
+        import json
 
-        entries = []
-        with fs.open(idx_url, 'r') as f:
-            for line_num, line in enumerate(f):
-                if not line.strip():
-                    continue
+        # Load service account
+        with open(SERVICE_ACCOUNT_JSON, 'r') as f:
+            service_account_info = json.load(f)
 
-                # Parse JSON entry (ECMWF specific format)
-                entry_data = json.loads(line.strip())
+        # Create GCS filesystem
+        gcs_fs = gcsfs.GCSFileSystem(
+            token=service_account_info,
+            project=service_account_info.get('project_id')
+        )
 
-                # Extract member number
-                member_num = int(entry_data.get('number', 0))
-                if member_num == 0:
-                    member = 'control'
-                else:
-                    member = f'ens{member_num:02d}'
+        # Build GCS path
+        # Pattern: gs://gik-fmrc/v2ecmwf_fmrc/ens_control/ecmwf-2024052900-control-rt000.par
+        if member == 'control':
+            member_dir = 'ens_control'
+            member_name = 'control'
+        else:
+            # ens01 -> ens_01
+            member_num = member.replace('ens', '')
+            member_dir = f'ens_{member_num}'
+            member_name = member  # Keep as ens01
 
-                # Filter by member if specified
-                if member_filter and member != member_filter:
-                    continue
+        # Check first hour template (rt000)
+        gcs_path = f"{GCS_BUCKET}/{GCS_BASE_PATH}/{member_dir}/ecmwf-{reference_date}00-{member_name}-rt000.par"
 
-                # Build entry
-                entry = {
-                    'byte_offset': entry_data['_offset'],
-                    'byte_length': entry_data['_length'],
-                    'variable': entry_data.get('param', ''),
-                    'level': entry_data.get('levtype', ''),
-                    'step': entry_data.get('step', '0'),
-                    'member': member,
-                    'date': entry_data.get('date', ''),
-                    'time': entry_data.get('time', ''),
-                    'levelist': entry_data.get('levelist', ''),
-                    'raw_data': entry_data  # Keep raw for debugging
-                }
-
-                entries.append(entry)
-
-        df = pd.DataFrame(entries)
-        logger.info(f"Parsed {len(df)} entries from ECMWF JSON index")
-        return df
+        if gcs_fs.exists(gcs_path):
+            logger.info(f"✅ GCS template exists: gs://{gcs_path}")
+            return True
+        else:
+            logger.warning(f"❌ GCS template NOT found: gs://{gcs_path}")
+            return False
 
     except Exception as e:
-        logger.error(f"Error parsing ECMWF index {idx_url}: {e}")
-        return pd.DataFrame()
+        logger.error(f"Error checking GCS template: {e}")
+        return False
 
 
-def load_gcs_template(
-    reference_date: str,
-    member: str,
-    hour: int,
-    gcs_bucket: str = GCS_BUCKET
-) -> pd.DataFrame:
+def inspect_gcs_template(reference_date: str, member: str, hour: int = 0):
     """
-    Load GCS template DataFrame for a specific hour.
+    Inspect GCS template structure to understand what we're merging with.
 
     Args:
         reference_date: Reference date (YYYYMMDD)
         member: Member name
-        hour: Forecast hour
-        gcs_bucket: GCS bucket name
-
-    Returns:
-        Template DataFrame
+        hour: Forecast hour (default 0)
     """
     try:
-        gcs_path = f"{gcs_bucket}/ecmwf/{member}/ecmwf-time-{reference_date}-{member}-rt{hour:03d}.parquet"
+        import gcsfs
+        import json
+        import pandas as pd
 
-        gcs_fs = gcsfs.GCSFileSystem(token='anon')
+        logger.info(f"\n{'='*80}")
+        logger.info(f"INSPECTING GCS TEMPLATE STRUCTURE")
+        logger.info(f"{'='*80}")
 
-        if not gcs_fs.exists(gcs_path):
-            logger.warning(f"Template not found: gs://{gcs_path}")
-            return pd.DataFrame()
+        # Load service account
+        with open(SERVICE_ACCOUNT_JSON, 'r') as f:
+            service_account_info = json.load(f)
+
+        # Create GCS filesystem
+        gcs_fs = gcsfs.GCSFileSystem(
+            token=service_account_info,
+            project=service_account_info.get('project_id')
+        )
+
+        # Build GCS path
+        if member == 'control':
+            member_dir = 'ens_control'
+            member_name = 'control'
+        else:
+            member_num = member.replace('ens', '')
+            member_dir = f'ens_{member_num}'
+            member_name = member
+
+        gcs_path = f"{GCS_BUCKET}/{GCS_BASE_PATH}/{member_dir}/ecmwf-{reference_date}00-{member_name}-rt{hour:03d}.par"
+
+        logger.info(f"Loading: gs://{gcs_path}")
 
         # Read parquet
-        template_df = pd.read_parquet(f"gs://{gcs_path}", filesystem=gcs_fs)
+        template = pd.read_parquet(f"gs://{gcs_path}", filesystem=gcs_fs)
 
-        logger.info(f"Loaded GCS template: {len(template_df)} entries")
-        return template_df
+        logger.info(f"\nTemplate Structure:")
+        logger.info(f"  Columns: {list(template.columns)}")
+        logger.info(f"  Shape: {template.shape}")
+        logger.info(f"  Size: {len(template)} rows")
+
+        logger.info(f"\nColumn Types:")
+        for col, dtype in template.dtypes.items():
+            logger.info(f"  {col}: {dtype}")
+
+        logger.info(f"\nFirst 3 rows:")
+        print(template.head(3))
+
+        logger.info(f"\nSample values for key columns:")
+        key_cols = ['key', 'value', 'varname', 'level', 'typeOfLevel', 'uri', 'offset', 'length']
+        for col in key_cols:
+            if col in template.columns:
+                sample = template[col].iloc[0] if len(template) > 0 else None
+                logger.info(f"  {col}: {sample}")
+
+        logger.info(f"{'='*80}\n")
+
+        return template
 
     except Exception as e:
-        logger.error(f"Error loading GCS template: {e}")
-        return pd.DataFrame()
+        logger.error(f"Error inspecting template: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
 
 
-def merge_index_with_template(
-    index_df: pd.DataFrame,
-    template_df: pd.DataFrame,
-    grib_url: str
-) -> Dict[str, Any]:
-    """
-    Merge fresh index DataFrame with GCS template DataFrame.
-
-    This is the CRITICAL integration step. The challenge is that:
-    - Index has: byte positions, variable names, levels
-    - Template has: complete structure, metadata, variable mappings
-
-    Need to properly merge these to create complete references.
-
-    Args:
-        index_df: Fresh index from target date
-        template_df: Pre-built template from GCS
-        grib_url: URL to GRIB file (for references)
-
-    Returns:
-        Dictionary of merged references
-    """
-    logger.info("Starting DataFrame merge...")
-    logger.info(f"  Index columns: {list(index_df.columns)}")
-    logger.info(f"  Template columns: {list(template_df.columns)}")
-
-    # TODO: This is where the complex merge logic goes
-    # The merge strategy depends on:
-    # 1. What columns are in the GCS template?
-    # 2. What's the join key? (variable + level?)
-    # 3. How to handle missing entries?
-
-    # For now, create basic references from index
-    references = {}
-
-    for idx, row in index_df.iterrows():
-        # Build reference key
-        var_name = row['variable'].lower().replace(' ', '_')
-        level_name = row['level'].replace(' ', '_')
-
-        # Zarr-style key
-        key = f"{var_name}/{level_name}/0.0.0"
-
-        # Reference: [url, offset, length]
-        references[key] = [
-            grib_url,
-            int(row['byte_offset']),
-            int(row['byte_length'])
-        ]
-
-    # TODO: Merge with template structure
-    # This is where template_df should be used to enhance the structure
-
-    logger.info(f"Created {len(references)} merged references")
-    return references
-
-
-async def test_single_hour_integration(
+def test_integration(
     target_date: str,
     reference_date: str,
     member: str,
-    hour: int
-) -> Dict[str, Any]:
+    run: str = "00",
+    inspect_template: bool = False,
+    test_hours: int = None
+):
     """
-    Test GCS template + index integration for a single hour.
+    Test GCS template + index integration using existing methods.
 
     Args:
-        target_date: Target date for fresh index
-        reference_date: Reference date for GCS template
-        member: Member name
-        hour: Forecast hour
-
-    Returns:
-        Merged references
+        target_date: Target date for fresh index (YYYYMMDD)
+        reference_date: Reference date for GCS template (YYYYMMDD)
+        member: Member name (control, ens01, etc.)
+        run: Run hour (default "00")
+        inspect_template: Whether to inspect template structure first
+        test_hours: Number of hours to test (None = all 85)
     """
-    logger.info(f"\n{'='*60}")
-    logger.info(f"Testing hour {hour:3d}h")
-    logger.info(f"{'='*60}")
-
-    # 1. Parse fresh ECMWF JSON index
-    idx_url = f"s3://{S3_BUCKET}/{target_date}/00z/ifs/0p25/enfo/{target_date}000000-{hour}h-enfo-ef.index"
-    grib_url = f"s3://{S3_BUCKET}/{target_date}/00z/ifs/0p25/enfo/{target_date}000000-{hour}h-enfo-ef.grib2"
-
-    logger.info(f"1. Parsing ECMWF JSON index: {idx_url}")
-    index_df = await asyncio.get_event_loop().run_in_executor(
-        None,
-        parse_ecmwf_json_index,
-        idx_url,
-        member
-    )
-
-    if index_df.empty:
-        logger.warning(f"No index data for {member} at {hour}h")
-        return {}
-
-    logger.info(f"   ✅ Index: {len(index_df)} entries")
-
-    # 2. Load GCS template
-    logger.info(f"2. Loading GCS template for reference date {reference_date}")
-    template_df = await asyncio.get_event_loop().run_in_executor(
-        None,
-        load_gcs_template,
-        reference_date,
-        member,
-        hour
-    )
-
-    if template_df.empty:
-        logger.warning(f"No template found, using index only")
-    else:
-        logger.info(f"   ✅ Template: {len(template_df)} entries")
-
-    # 3. Merge DataFrames
-    logger.info(f"3. Merging index + template DataFrames")
-    merged_refs = await asyncio.get_event_loop().run_in_executor(
-        None,
-        merge_index_with_template,
-        index_df,
-        template_df,
-        grib_url
-    )
-
-    logger.info(f"   ✅ Merged: {len(merged_refs)} references")
-
-    return {
-        'hour': hour,
-        'index_entries': len(index_df),
-        'template_entries': len(template_df),
-        'merged_refs': len(merged_refs),
-        'references': merged_refs,
-        'index_df': index_df,
-        'template_df': template_df
-    }
-
-
-async def test_all_hours_integration(
-    target_date: str,
-    reference_date: str,
-    member: str,
-    max_hours: int = None
-) -> Dict[str, Any]:
-    """
-    Test GCS template + index integration for all (or subset) of hours.
-
-    Args:
-        target_date: Target date
-        reference_date: Reference date
-        member: Member name
-        max_hours: Limit number of hours to test
-
-    Returns:
-        Results for all hours
-    """
-    hours_to_test = ALL_FORECAST_HOURS
-    if max_hours:
-        hours_to_test = hours_to_test[:max_hours]
-
     logger.info(f"\n{'='*80}")
-    logger.info(f"TESTING GCS TEMPLATE + INDEX INTEGRATION")
+    logger.info(f"ECMWF GCS TEMPLATE + INDEX INTEGRATION TEST")
     logger.info(f"{'='*80}")
-    logger.info(f"Target Date:     {target_date}")
-    logger.info(f"Reference Date:  {reference_date}")
-    logger.info(f"Member:          {member}")
-    logger.info(f"Hours to test:   {len(hours_to_test)} / {len(ALL_FORECAST_HOURS)}")
+    logger.info(f"Target Date:      {target_date}")
+    logger.info(f"Reference Date:   {reference_date}")
+    logger.info(f"Member:           {member}")
+    logger.info(f"Run:              {run}Z")
+    logger.info(f"Service Account:  {SERVICE_ACCOUNT_JSON}")
+    logger.info(f"GCS Bucket:       gs://{GCS_BUCKET}/{GCS_BASE_PATH}")
     logger.info(f"{'='*80}\n")
 
-    results = []
+    # Step 1: Verify GCS template exists
+    logger.info("Step 1: Verifying GCS template exists...")
+    if not verify_gcs_template_exists(reference_date, member):
+        logger.error("GCS template not found. Cannot proceed.")
+        logger.error("Please run ecmwf_par_to_ensemble_members.py first to create templates.")
+        return None
 
-    for hour in hours_to_test:
-        try:
-            result = await test_single_hour_integration(
-                target_date, reference_date, member, hour
-            )
-            results.append(result)
-        except Exception as e:
-            logger.error(f"Error processing hour {hour}: {e}")
-            import traceback
-            traceback.print_exc()
+    # Step 2: Inspect template (optional)
+    if inspect_template:
+        logger.info("\nStep 2: Inspecting GCS template structure...")
+        template = inspect_gcs_template(reference_date, member, hour=0)
+        if template is None:
+            logger.error("Failed to inspect template")
+            return None
 
-    # Summary
+        logger.info("\nPress Enter to continue with integration test...")
+        input()
+
+    # Step 3: Run integration using existing process_single_member
+    logger.info("\nStep 3: Running integration test...")
+    logger.info("Using process_single_member() from ecmwf_index_processor.py")
+
+    output_dir = Path(f"output_gcs_integration_test_{target_date}")
+
+    # Determine hours to test
+    hours = None
+    if test_hours:
+        hours = ALL_FORECAST_HOURS[:test_hours]
+        logger.info(f"Testing first {test_hours} hours: {hours}")
+    else:
+        hours = ALL_FORECAST_HOURS
+        logger.info(f"Testing all {len(ALL_FORECAST_HOURS)} hours")
+
+    start_time = time.time()
+
+    # Call process_single_member which will:
+    # 1. Call build_complete_parquet_from_indices()
+    # 2. Which calls merge_with_gcs_template() if use_gcs_template=True
+    result = process_single_member(
+        date_str=target_date,
+        run=run,
+        member_name=member,
+        output_dir=output_dir,
+        method='index',  # Use index method (NOT hybrid)
+        hours=hours
+    )
+
+    elapsed = time.time() - start_time
+
+    # Step 4: Report results
     logger.info(f"\n{'='*80}")
-    logger.info(f"INTEGRATION TEST SUMMARY")
+    logger.info(f"INTEGRATION TEST RESULTS")
     logger.info(f"{'='*80}")
-    logger.info(f"Hours tested: {len(results)} / {len(hours_to_test)}")
+    logger.info(f"Member:           {result['member']}")
+    logger.info(f"Success:          {result['success']}")
+    logger.info(f"References:       {result['refs_count']}")
+    logger.info(f"Output File:      {result['output_file']}")
+    logger.info(f"Time:             {elapsed:.1f} seconds ({elapsed/60:.2f} minutes)")
 
-    successful = [r for r in results if r.get('merged_refs', 0) > 0]
-    logger.info(f"Successful:   {len(successful)}")
+    if result['error']:
+        logger.error(f"Error:            {result['error']}")
 
-    total_refs = sum(r.get('merged_refs', 0) for r in results)
-    logger.info(f"Total refs:   {total_refs}")
+    logger.info(f"{'='*80}\n")
 
-    return {
-        'results': results,
-        'summary': {
-            'hours_tested': len(results),
-            'successful': len(successful),
-            'total_refs': total_refs
-        }
-    }
+    return result
 
 
 def main():
+    """Main entry point."""
     parser = argparse.ArgumentParser(
         description="Test ECMWF GCS Template + Index Integration"
     )
@@ -355,7 +279,14 @@ def main():
         "--date",
         type=str,
         required=True,
-        help="Target date (YYYYMMDD)"
+        help="Target date (YYYYMMDD) for fresh index"
+    )
+
+    parser.add_argument(
+        "--reference-date",
+        type=str,
+        default="20240529",
+        help="Reference date (YYYYMMDD) for GCS templates (default: 20240529)"
     )
 
     parser.add_argument(
@@ -366,17 +297,24 @@ def main():
     )
 
     parser.add_argument(
-        "--reference-date",
+        "--run",
         type=str,
-        default="20240529",
-        help="Reference date for GCS templates (default: 20240529)"
+        default="00",
+        choices=["00", "12"],
+        help="Run hour (default: 00)"
     )
 
     parser.add_argument(
-        "--max-hours",
+        "--inspect-template",
+        action="store_true",
+        help="Inspect GCS template structure before running test"
+    )
+
+    parser.add_argument(
+        "--test-hours",
         type=int,
         default=None,
-        help="Limit number of hours to test (default: all 85)"
+        help="Number of hours to test (default: all 85)"
     )
 
     parser.add_argument(
@@ -391,29 +329,17 @@ def main():
         logging.getLogger().setLevel(logging.DEBUG)
 
     # Run test
-    start_time = time.time()
-
-    results = asyncio.run(test_all_hours_integration(
+    result = test_integration(
         target_date=args.date,
         reference_date=args.reference_date,
         member=args.member,
-        max_hours=args.max_hours
-    ))
-
-    elapsed = time.time() - start_time
-
-    # Final summary
-    print(f"\n{'='*80}")
-    print(f"TEST COMPLETE")
-    print(f"{'='*80}")
-    print(f"Time:          {elapsed:.1f} seconds ({elapsed/60:.2f} minutes)")
-    print(f"Hours tested:  {results['summary']['hours_tested']}")
-    print(f"Successful:    {results['summary']['successful']}")
-    print(f"Total refs:    {results['summary']['total_refs']}")
-    print(f"{'='*80}")
+        run=args.run,
+        inspect_template=args.inspect_template,
+        test_hours=args.test_hours
+    )
 
     # Exit code
-    if results['summary']['successful'] > 0:
+    if result and result['success']:
         print("\n✅ Integration test PASSED")
         sys.exit(0)
     else:

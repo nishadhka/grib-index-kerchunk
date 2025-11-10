@@ -252,7 +252,9 @@ def merge_with_gcs_template(
     index_refs: Dict,
     template_date: str,
     member_name: str,
-    gcs_bucket: str = "gik-ecmwf-aws-tf"
+    gcs_bucket: str = "gik-fmrc",
+    gcs_base_path: str = "v2ecmwf_fmrc",
+    service_account_json: str = "/home/roller/Documents/08-2023/impact_weather_icpac/lab/icpac_gcp/e4drr/gcp-coiled-sa-20250310/coiled-data-e4drr_202505.json"
 ) -> Dict:
     """
     Merge index-based references with GCS template structure.
@@ -261,25 +263,52 @@ def merge_with_gcs_template(
     - Fresh index byte positions (from target date)
     - Pre-built GCS template structure (from reference date)
 
+    GCS path pattern:
+    gs://gik-fmrc/v2ecmwf_fmrc/ens_control/ecmwf-2024052900-control-rt000.par
+    gs://gik-fmrc/v2ecmwf_fmrc/ens_01/ecmwf-2024052900-ens01-rt000.par
+
+    These templates are created from ecmwf_par_to_ensemble_members.py
+
     Args:
         index_refs: References from index files (target date)
-        template_date: Date of GCS template (reference date)
-        member_name: Ensemble member name
-        gcs_bucket: GCS bucket name
+        template_date: Date of GCS template (reference date, YYYYMMDD)
+        member_name: Ensemble member name (control, ens01, ens02, etc.)
+        gcs_bucket: GCS bucket name (default: gik-fmrc)
+        gcs_base_path: Base path in GCS (default: v2ecmwf_fmrc)
+        service_account_json: Path to service account JSON file
 
     Returns:
         Merged references with template structure and fresh positions
     """
     try:
         import gcsfs
+        import json
 
-        # GCS path for template
-        gcs_path = f"{gcs_bucket}/ecmwf/{member_name}/ecmwf-time-{template_date}-{member_name}-rt000.parquet"
+        # Build GCS path using correct pattern
+        # Member directory: ens_control for control, ens_01 for ens01, etc.
+        if member_name == 'control':
+            member_dir = 'ens_control'
+            filename_member = 'control'
+        else:
+            # ens01 -> ens_01 for directory, keep ens01 for filename
+            member_num = member_name.replace('ens', '')
+            member_dir = f'ens_{member_num}'
+            filename_member = member_name  # Keep as ens01
+
+        # Template path (using rt000 as base template)
+        gcs_path = f"{gcs_bucket}/{gcs_base_path}/{member_dir}/ecmwf-{template_date}00-{filename_member}-rt000.par"
 
         logger.info(f"Loading GCS template: gs://{gcs_path}")
 
-        # Load template from GCS
-        gcs_fs = gcsfs.GCSFileSystem(token='anon')
+        # Load service account credentials
+        with open(service_account_json, 'r') as f:
+            service_account_info = json.load(f)
+
+        # Create GCS filesystem with service account
+        gcs_fs = gcsfs.GCSFileSystem(
+            token=service_account_info,
+            project=service_account_info.get('project_id')
+        )
 
         if not gcs_fs.exists(gcs_path):
             logger.warning(f"Template not found: gs://{gcs_path}")
@@ -290,24 +319,26 @@ def merge_with_gcs_template(
         template_df = pd.read_parquet(f"gs://{gcs_path}", filesystem=gcs_fs)
 
         logger.info(f"Template loaded: {len(template_df)} entries")
+        logger.info(f"Template columns: {list(template_df.columns)}")
 
-        # Merge template structure with index references
-        # The template has the complete variable structure
-        # The index refs have fresh byte positions
+        # TODO: Implement proper DataFrame merge logic
+        # Current implementation is a placeholder
+        # Need to understand template structure first
+
+        # For now, just return index refs
+        # The merge logic needs to be implemented based on template structure
         merged_refs = index_refs.copy()
 
-        # Update with template metadata and structure
-        for key, value in template_df.items():
-            if key not in merged_refs or key.startswith('.z'):
-                # Add template metadata that's not in index refs
-                merged_refs[key] = value
+        logger.info(f"Merge logic not yet implemented - using index refs only")
+        logger.info(f"Total references: {len(merged_refs)}")
 
-        logger.info(f"Merged {len(merged_refs)} total references")
         return merged_refs
 
     except Exception as e:
         logger.warning(f"Could not merge with GCS template: {e}")
         logger.info("Using index references only")
+        import traceback
+        traceback.print_exc()
         return index_refs
 
 def hybrid_processing(

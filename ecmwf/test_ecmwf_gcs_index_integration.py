@@ -79,11 +79,18 @@ def verify_gcs_template_exists(reference_date: str, member: str) -> bool:
             member_dir = 'ens_control'
             member_name = 'control'
         else:
-            # ens01 -> ens_1 (directory has no zero-padding)
-            # ens09 -> ens_9, ens10 -> ens_10, etc.
-            member_num = member.replace('ens', '').lstrip('0') or '0'  # Remove leading zeros
+            # Normalize member: handle both "ens09" and "09" formats
+            if member.startswith('ens'):
+                member_num_str = member.replace('ens', '')
+            else:
+                member_num_str = member
+
+            # Directory: ens_9 (no zero-padding)
+            member_num = member_num_str.lstrip('0') or '0'
             member_dir = f'ens_{member_num}'
-            member_name = member  # Keep as ens01 (filename keeps zero-padding)
+
+            # Filename: ens09 (with zero-padding and ens prefix)
+            member_name = f'ens{int(member_num_str):02d}'
 
         # Check first hour template (rt000)
         gcs_path = f"{GCS_BUCKET}/{GCS_BASE_PATH}/{member_dir}/ecmwf-{reference_date}00-{member_name}-rt000.par"
@@ -135,11 +142,18 @@ def inspect_gcs_template(reference_date: str, member: str, hour: int = 0):
             member_dir = 'ens_control'
             member_name = 'control'
         else:
-            # ens01 -> ens_1 (directory has no zero-padding)
-            # ens09 -> ens_9, ens10 -> ens_10, etc.
-            member_num = member.replace('ens', '').lstrip('0') or '0'  # Remove leading zeros
+            # Normalize member: handle both "ens09" and "09" formats
+            if member.startswith('ens'):
+                member_num_str = member.replace('ens', '')
+            else:
+                member_num_str = member
+
+            # Directory: ens_9 (no zero-padding)
+            member_num = member_num_str.lstrip('0') or '0'
             member_dir = f'ens_{member_num}'
-            member_name = member  # Keep as ens01 (filename keeps zero-padding)
+
+            # Filename: ens09 (with zero-padding and ens prefix)
+            member_name = f'ens{int(member_num_str):02d}'
 
         gcs_path = f"{GCS_BUCKET}/{GCS_BASE_PATH}/{member_dir}/ecmwf-{reference_date}00-{member_name}-rt{hour:03d}.par"
 

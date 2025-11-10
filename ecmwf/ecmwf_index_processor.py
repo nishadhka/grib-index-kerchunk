@@ -292,11 +292,18 @@ def merge_with_gcs_template(
             member_dir = 'ens_control'
             filename_member = 'control'
         else:
-            # ens01 -> ens_1 (directory has no zero-padding)
-            # ens09 -> ens_9, ens10 -> ens_10, etc.
-            member_num = member_name.replace('ens', '').lstrip('0') or '0'  # Remove leading zeros
+            # Normalize member: handle both "ens09" and "09" formats
+            if member_name.startswith('ens'):
+                member_num_str = member_name.replace('ens', '')
+            else:
+                member_num_str = member_name
+
+            # Directory: ens_9 (no zero-padding)
+            member_num = member_num_str.lstrip('0') or '0'
             member_dir = f'ens_{member_num}'
-            filename_member = member_name  # Keep as ens01 (filename keeps zero-padding)
+
+            # Filename: ens09 (with zero-padding and ens prefix)
+            filename_member = f'ens{int(member_num_str):02d}'
 
         # Template path (using rt000 as base template)
         gcs_path = f"{gcs_bucket}/{gcs_base_path}/{member_dir}/ecmwf-{template_date}00-{filename_member}-rt000.par"

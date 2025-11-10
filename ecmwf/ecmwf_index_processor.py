@@ -298,9 +298,8 @@ def merge_with_gcs_template(
             else:
                 member_num_str = member_name
 
-            # Directory: ens_9 (no zero-padding)
-            member_num = member_num_str.lstrip('0') or '0'
-            member_dir = f'ens_{member_num}'
+            # Directory: ens_09 (with zero-padding)
+            member_dir = f'ens_{int(member_num_str):02d}'
 
             # Filename: ens09 (with zero-padding and ens prefix)
             filename_member = f'ens{int(member_num_str):02d}'

@@ -85,9 +85,8 @@ def verify_gcs_template_exists(reference_date: str, member: str) -> bool:
             else:
                 member_num_str = member
 
-            # Directory: ens_9 (no zero-padding)
-            member_num = member_num_str.lstrip('0') or '0'
-            member_dir = f'ens_{member_num}'
+            # Directory: ens_09 (with zero-padding)
+            member_dir = f'ens_{int(member_num_str):02d}'
 
             # Filename: ens09 (with zero-padding and ens prefix)
             member_name = f'ens{int(member_num_str):02d}'
@@ -148,9 +147,8 @@ def inspect_gcs_template(reference_date: str, member: str, hour: int = 0):
             else:
                 member_num_str = member
 
-            # Directory: ens_9 (no zero-padding)
-            member_num = member_num_str.lstrip('0') or '0'
-            member_dir = f'ens_{member_num}'
+            # Directory: ens_09 (with zero-padding)
+            member_dir = f'ens_{int(member_num_str):02d}'
 
             # Filename: ens09 (with zero-padding and ens prefix)
             member_name = f'ens{int(member_num_str):02d}'
@@ -211,6 +209,15 @@ def test_integration(
         inspect_template: Whether to inspect template structure first
         test_hours: Number of hours to test (None = all 85)
     """
+    # Normalize member format: convert "09" to "ens09", keep "control" as is
+    # This is critical for parse_grib_index filtering to work correctly
+    if member != 'control':
+        if member.startswith('ens'):
+            member_num_str = member.replace('ens', '')
+        else:
+            member_num_str = member
+        member = f'ens{int(member_num_str):02d}'  # Normalize to 'ensNN' format
+
     logger.info(f"\n{'='*80}")
     logger.info(f"ECMWF GCS TEMPLATE + INDEX INTEGRATION TEST")
     logger.info(f"{'='*80}")

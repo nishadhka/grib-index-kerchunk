@@ -1,14 +1,24 @@
 #!/usr/bin/env python3
 """
-Enhanced ECMWF Three-Stage Processing Test using Prebuilt Zip Files
-Tests each stage with prebuilt parquet files from efficient processing.
+ECMWF Three-Stage Processing with GCS Template Integration (GEFS Pattern)
+Tests the complete three-stage pipeline with GCS template + index merge.
 
 Key Features:
-- Uses prebuilt zip files (ecmwf_20251006_00_efficient.zip, etc.)
-- Extracts TEST_DATE and TEST_RUN from zip filename
-- Tests all ensemble members (from available parquet files)
-- Expands to all 85 ECMWF forecast hours for Stage 2 and Stage 3
-- Stage 1 only processes hours 0 and 3 for quick testing
+- Stage 0: Pre-built GCS templates (one-time preprocessing)
+- Stage 1: Uses prebuilt parquet OR scan_grib for structure
+- Stage 2: ⭐ GCS template + fresh index merge (GEFS pattern) ⭐
+- Stage 3: Final zarr store creation
+
+Stage 2 Integration:
+- Reads fresh .index files from S3 (target date)
+- Merges with GCS template parquet (reference date)
+- Follows the same pattern as GEFS for fast daily processing
+- Uses merge_with_gcs_template() from ecmwf_index_processor.py
+
+Configuration:
+- Reference Date: 20240529 (for GCS templates)
+- GCS Bucket: gs://gik-fmrc/v2ecmwf_fmrc
+- Service Account: coiled-data-e4drr_202505.json
 
 Usage:
     python test_three_stage_ecmwf_prebuilt.py
@@ -51,7 +61,7 @@ REFERENCE_DATE = '20240529'
 # GCS configuration (needed for Stage 2)
 GCS_BUCKET = 'gik-fmrc'
 GCS_BASE_PATH = 'v2ecmwf_fmrc'  # Base path within the bucket
-GCP_SERVICE_ACCOUNT = '/home/roller/Documents/08-2023/impact_weather_icpac/lab/icpac_gcp/e4drr/gcp-coiled-sa-20250310/coiled-data-e4drr_202505.json'
+GCP_SERVICE_ACCOUNT = 'coiled-data-e4drr_202505.json'  # Just filename, not full path
 
 # Variables to extract (subset of ECMWF variables)
 FORECAST_DICT = {
@@ -504,101 +514,40 @@ def create_references_from_index(grib_url, idx_entries, file_size=None):
 
 
 # ==============================================================================
-# STAGE 2: INDEX-BASED PROCESSING (All 85 hours)
+# STAGE 2: INDEX + GCS TEMPLATES → MERGED REFERENCES (GEFS Pattern)
 # ==============================================================================
 
-def build_complete_parquet_from_indices(test_date, test_run, member_name, hours=None):
+def test_stage2_with_gcs_templates(test_date, test_run, test_members):
     """
-    Build complete parquet with all time steps using index files.
-    Adapted from ecmwf_index_processor.py - does NOT use map_from_index.
+    Test Stage 2: INDEX + GCS Templates → Merged References (GEFS Pattern).
 
-    Args:
-        test_date: Date in YYYYMMDD format
-        test_run: Run hour (00 or 12)
-        member_name: Ensemble member name (e.g., 'control', 'ens_01')
-        hours: Specific hours to process (default: all 85)
+    This is the critical Stage 2 integration that was missing from ECMWF.
+    Now follows the same pattern as GEFS:
 
-    Returns:
-        Complete references dictionary
+    1. Read fresh .index files from S3 (target date) - byte positions
+    2. Read GCS template parquet files (reference date) - zarr structure
+    3. Merge them using merge_with_gcs_template()
+
+    This enables:
+    - Fast daily processing (only parse small index files)
+    - Reusable templates (one-time preprocessing)
+    - Consistent zarr structure
     """
-    if hours is None:
-        hours = ECMWF_FORECAST_HOURS
-
-    all_refs = {}
-    metadata = {
-        'date': test_date,
-        'run': test_run,
-        'member': member_name,
-        'hours_processed': [],
-        'total_refs': 0
-    }
-
-    log_checkpoint(f"Building parquet for {member_name} using index files")
-    log_checkpoint(f"Processing {len(hours)} forecast hours")
-
-    # Convert member name format for filtering (ens_01 -> ens01)
-    if member_name == 'control':
-        member_filter = 'control'
-    else:
-        member_filter = member_name.replace('_', '')  # ens_01 -> ens01
-
-    for hour in hours:
-        try:
-            # Build URLs
-            idx_url = f"s3://ecmwf-forecasts/{test_date}/{test_run}z/ifs/0p25/enfo/{test_date}{test_run}0000-{hour}h-enfo-ef.index"
-            grib_url = idx_url.replace('.index', '.grib2')
-
-            # Parse index for this member
-            idx_entries = parse_grib_index(idx_url, member_filter=member_filter)
-
-            if not idx_entries:
-                log_checkpoint(f"  ⚠️ No entries found for {member_name} at {hour}h")
-                continue
-
-            # Create references
-            hour_refs = create_references_from_index(grib_url, idx_entries)
-
-            # Add to combined references with timestep prefix
-            for key, ref in hour_refs.items():
-                if not key.startswith('.'):  # Skip metadata keys
-                    timestep_key = f"step_{hour:03d}/{key}"
-                else:
-                    timestep_key = key
-                all_refs[timestep_key] = ref
-
-            metadata['hours_processed'].append(hour)
-            metadata['total_refs'] += len(hour_refs)
-
-            if hour % 10 == 0:  # Log every 10 hours
-                log_checkpoint(f"  Processed hour {hour:3d}h: {len(metadata['hours_processed'])} hours complete")
-
-        except Exception as e:
-            log_checkpoint(f"  ⚠️ Error processing hour {hour}: {e}")
-
-    # Add metadata to references
-    all_refs['_kerchunk_metadata'] = json.dumps(metadata)
-
-    log_checkpoint(f"Created {len(all_refs)} total references for {member_name}")
-    log_checkpoint(f"Processed {len(metadata['hours_processed'])}/{len(hours)} hours successfully")
-
-    return all_refs
-
-
-def test_stage2_index_based(test_date, test_run, test_members):
-    """Test Stage 2: Use index-based processing for ALL 85 hours (no map_from_index)."""
-    log_stage(2, "INDEX-BASED PROCESSING (All 85 hours)")
+    log_stage(2, "INDEX + GCS TEMPLATES → MERGED REFERENCES (All 85 hours)")
 
     start_time = time.time()
 
     try:
-        log_checkpoint(f"Running index-based processing for ALL 85 forecast hours...")
-        log_checkpoint(f"   Target date: {test_date}")
-        log_checkpoint(f"   Processing {len(test_members)} members")
-        log_checkpoint(f"   Method: Direct index parsing (NO map_from_index)")
+        # Import from ecmwf_index_processor.py
+        from ecmwf_index_processor import build_complete_parquet_from_indices, save_parquet
 
-        # Get all ECMWF forecast hours (0, 3, 6, ..., 360)
-        all_forecast_hours = ECMWF_FORECAST_HOURS  # All 85 hours
-        log_checkpoint(f"   Forecast hours: {len(all_forecast_hours)} total")
+        log_checkpoint(f"Using GEFS-style integration with GCS templates")
+        log_checkpoint(f"   Target date: {test_date} (fresh index from S3)")
+        log_checkpoint(f"   Reference date: {REFERENCE_DATE} (templates from GCS)")
+        log_checkpoint(f"   GCS Bucket: gs://{GCS_BUCKET}/{GCS_BASE_PATH}")
+        log_checkpoint(f"   Service Account: {GCP_SERVICE_ACCOUNT}")
+        log_checkpoint(f"   Processing {len(test_members)} members")
+        log_checkpoint(f"   Forecast hours: {len(ECMWF_FORECAST_HOURS)} total (0-360h)")
 
         member_results = {}
 
@@ -607,21 +556,70 @@ def test_stage2_index_based(test_date, test_run, test_members):
             log_checkpoint(f"Processing member: {member}")
             log_checkpoint(f"{'='*60}")
 
-            # Build complete parquet from indices
-            all_refs = build_complete_parquet_from_indices(
-                test_date, test_run, member, hours=all_forecast_hours
-            )
-
-            if all_refs:
-                # Save as parquet
-                stage2_output = OUTPUT_DIR / f"stage2_{member}_complete.parquet"
-                create_parquet_simple(all_refs, stage2_output)
-
-                member_results[member] = all_refs
-
-                log_checkpoint(f"✅ {member}: {len(all_refs)} total references")
+            # Normalize member format: ens_01 -> ens01, control -> control
+            if member == 'control':
+                member_normalized = 'control'
             else:
-                log_checkpoint(f"⚠️ {member}: No references created")
+                # Handle both ens_01 and ens01 formats
+                member_normalized = member.replace('_', '')  # ens_01 -> ens01
+                # Ensure it's in ensNN format
+                if member_normalized.startswith('ens'):
+                    member_num_str = member_normalized.replace('ens', '')
+                    member_normalized = f'ens{int(member_num_str):02d}'
+
+            log_checkpoint(f"   Member format: {member} → {member_normalized}")
+
+            try:
+                # Build with GCS template merge enabled
+                # This calls the real function from ecmwf_index_processor.py
+                refs = build_complete_parquet_from_indices(
+                    date_str=test_date,
+                    run=test_run,
+                    member_name=member_normalized,
+                    hours=ECMWF_FORECAST_HOURS,
+                    use_gcs_template=True,  # ⭐ ENABLE GCS TEMPLATE MERGE ⭐
+                    gcs_template_date=REFERENCE_DATE,
+                    gcs_bucket=GCS_BUCKET,
+                    gcs_base_path=GCS_BASE_PATH,
+                    service_account_json=GCP_SERVICE_ACCOUNT
+                )
+
+                if refs:
+                    # Save merged references
+                    stage2_output = OUTPUT_DIR / f"stage2_{member}_merged.parquet"
+
+                    # Convert to DataFrame format for parquet
+                    df_data = []
+                    for key, value in refs.items():
+                        if isinstance(value, str):
+                            encoded_value = value.encode('utf-8')
+                        elif isinstance(value, (list, dict)):
+                            encoded_value = json.dumps(value).encode('utf-8')
+                        else:
+                            encoded_value = str(value).encode('utf-8')
+                        df_data.append((key, encoded_value))
+
+                    df = pd.DataFrame(df_data, columns=['key', 'value'])
+                    df.to_parquet(stage2_output)
+
+                    log_checkpoint(f"   Saved: {stage2_output}")
+
+                    member_results[member] = refs
+
+                    # Log merge statistics
+                    log_checkpoint(f"✅ {member}: {len(refs)} total references")
+                    if '_template_entries' in refs:
+                        log_checkpoint(f"   Template entries: {refs['_template_entries']}")
+                    if '_index_entries' in refs:
+                        log_checkpoint(f"   Index entries: {refs['_index_entries']}")
+                else:
+                    log_checkpoint(f"⚠️ {member}: No references created")
+
+            except Exception as e:
+                log_checkpoint(f"❌ Error processing {member}: {e}")
+                import traceback
+                traceback.print_exc()
+                continue
 
         elapsed = time.time() - start_time
 
@@ -630,7 +628,9 @@ def test_stage2_index_based(test_date, test_run, test_members):
         log_checkpoint(f"{'='*60}")
         log_checkpoint(f"   Time: {elapsed:.1f} seconds ({elapsed/60:.1f} minutes)")
         log_checkpoint(f"   Members processed: {len(member_results)}/{len(test_members)}")
-        log_checkpoint(f"   Average time per member: {elapsed/len(member_results):.1f}s")
+        if len(member_results) > 0:
+            log_checkpoint(f"   Average time per member: {elapsed/len(member_results):.1f}s")
+        log_checkpoint(f"   Method: GCS template + fresh index merge (GEFS pattern)")
 
         return member_results
 
@@ -875,7 +875,7 @@ def main():
         log_checkpoint(f"   This will process 85 forecast hours per member")
         log_checkpoint(f"   Estimated time: ~{len(test_members) * 2:.0f} minutes (assuming ~2 min per member)")
 
-        stage2_refs = test_stage2_index_based(test_date, test_run, test_members)
+        stage2_refs = test_stage2_with_gcs_templates(test_date, test_run, test_members)
 
     # Stage 3: Create final zarr store with all 85 timesteps
     stage3_results = None

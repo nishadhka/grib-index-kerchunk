@@ -237,17 +237,31 @@ def test_integration(
 
     start_time = time.time()
 
-    # Call process_single_member which will:
-    # 1. Call build_complete_parquet_from_indices()
-    # 2. Which calls merge_with_gcs_template() if use_gcs_template=True
-    result = process_single_member(
+    # Call build_complete_parquet_from_indices directly with GCS template
+    from ecmwf_index_processor import build_complete_parquet_from_indices, save_parquet
+
+    refs = build_complete_parquet_from_indices(
         date_str=target_date,
         run=run,
         member_name=member,
-        output_dir=output_dir,
-        method='index',  # Use index method (NOT hybrid)
-        hours=hours
+        hours=hours,
+        use_gcs_template=True,  # ENABLE GCS template merge
+        gcs_template_date=reference_date
     )
+
+    # Save parquet
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / f"{member}.parquet"
+    success = save_parquet(refs, output_file)
+
+    # Create result dict
+    result = {
+        'member': member,
+        'success': success,
+        'refs_count': len(refs),
+        'output_file': str(output_file) if success else None,
+        'error': None if success else 'Failed to save parquet'
+    }
 
     elapsed = time.time() - start_time
 

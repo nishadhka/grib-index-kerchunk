@@ -243,7 +243,8 @@ def build_complete_parquet_from_indices(
     if use_gcs_template and gcs_template_date:
         all_refs = merge_with_gcs_template(
             all_refs, gcs_template_date, member_name,
-            gcs_bucket="gik-ecmwf-aws-tf"
+            gcs_bucket="gik-fmrc",
+            gcs_base_path="v2ecmwf_fmrc"
         )
 
     return all_refs
@@ -315,22 +316,44 @@ def merge_with_gcs_template(
             logger.info("Using index references only (no template merge)")
             return index_refs
 
-        # Read template parquet
+        # Read template parquet (key-value format)
         template_df = pd.read_parquet(f"gs://{gcs_path}", filesystem=gcs_fs)
 
         logger.info(f"Template loaded: {len(template_df)} entries")
         logger.info(f"Template columns: {list(template_df.columns)}")
 
-        # TODO: Implement proper DataFrame merge logic
-        # Current implementation is a placeholder
-        # Need to understand template structure first
+        # Convert template DataFrame to dict
+        # Template format: key (zarr paths) -> value (bytes)
+        template_refs = {}
+        for _, row in template_df.iterrows():
+            key = row['key']
+            value = row['value']
 
-        # For now, just return index refs
-        # The merge logic needs to be implemented based on template structure
-        merged_refs = index_refs.copy()
+            # Decode bytes to string if needed
+            if isinstance(value, bytes):
+                value = value.decode('utf-8')
 
-        logger.info(f"Merge logic not yet implemented - using index refs only")
-        logger.info(f"Total references: {len(merged_refs)}")
+            template_refs[key] = value
+
+        logger.info(f"Template converted to dict: {len(template_refs)} entries")
+
+        # Merge strategy:
+        # 1. Start with template structure (has .zarray, .zattrs, metadata, etc.)
+        # 2. Update with fresh index references for data chunks
+        # 3. Index refs have fresh byte positions for target date
+
+        merged_refs = template_refs.copy()
+
+        # Update with index references (overwrites data chunk references)
+        # Index refs have fresh byte positions from target date
+        for key, value in index_refs.items():
+            if not key.startswith('_'):  # Skip metadata keys
+                merged_refs[key] = value
+
+        logger.info(f"Merged template + index:")
+        logger.info(f"  Template entries: {len(template_refs)}")
+        logger.info(f"  Index entries: {len(index_refs)}")
+        logger.info(f"  Merged total: {len(merged_refs)}")
 
         return merged_refs
 

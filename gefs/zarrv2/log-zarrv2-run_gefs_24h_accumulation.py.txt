@@ -1,0 +1,277 @@
+python run_gefs_24h_accumulation.py 
+================================================================================
+GEFS 24-Hour Rainfall Accumulation Processing V2
+================================================================================
+
+📅 Model Run Information:
+   Date: 2025-09-18
+   Run Hour: 00:00 UTC (03:00 EAT)
+   Forecast starts: 2025-09-18 00:00 UTC
+📁 Found 30 ensemble member files
+📝 Output will be saved in: 20250918_00
+
+🌧️ Loading ensemble precipitation data...
+
+📊 Processing gep01...
+✅ Loaded 872 entries from new format
+✅ gep01 data shape: (81, 141, 129) | Time: 5.2s
+
+📊 Processing gep02...
+✅ Loaded 872 entries from new format
+✅ gep02 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep03...
+✅ Loaded 872 entries from new format
+✅ gep03 data shape: (81, 141, 129) | Time: 2.7s
+
+📊 Processing gep04...
+✅ Loaded 872 entries from new format
+✅ gep04 data shape: (81, 141, 129) | Time: 2.7s
+
+📊 Processing gep05...
+✅ Loaded 872 entries from new format
+✅ gep05 data shape: (81, 141, 129) | Time: 2.9s
+
+📊 Processing gep06...
+✅ Loaded 872 entries from new format
+✅ gep06 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep07...
+✅ Loaded 872 entries from new format
+✅ gep07 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep08...
+✅ Loaded 872 entries from new format
+✅ gep08 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep09...
+✅ Loaded 872 entries from new format
+✅ gep09 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep10...
+✅ Loaded 872 entries from new format
+✅ gep10 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep11...
+✅ Loaded 872 entries from new format
+✅ gep11 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep12...
+✅ Loaded 872 entries from new format
+✅ gep12 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep13...
+✅ Loaded 872 entries from new format
+✅ gep13 data shape: (81, 141, 129) | Time: 3.0s
+
+📊 Processing gep14...
+✅ Loaded 872 entries from new format
+✅ gep14 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep15...
+✅ Loaded 872 entries from new format
+✅ gep15 data shape: (81, 141, 129) | Time: 2.7s
+
+📊 Processing gep16...
+✅ Loaded 872 entries from new format
+✅ gep16 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep17...
+✅ Loaded 872 entries from new format
+✅ gep17 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep18...
+✅ Loaded 872 entries from new format
+✅ gep18 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep19...
+✅ Loaded 872 entries from new format
+✅ gep19 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep20...
+✅ Loaded 872 entries from new format
+✅ gep20 data shape: (81, 141, 129) | Time: 2.8s
+
+📊 Processing gep21...
+✅ Loaded 872 entries from new format
+✅ gep21 data shape: (81, 141, 129) | Time: 2.7s
+
+📊 Processing gep22...
+✅ Loaded 872 entries from new format
+✅ gep22 data shape: (81, 141, 129) | Time: 2.7s
+
+📊 Processing gep23...
+✅ Loaded 872 entries from new format
+✅ gep23 data shape: (81, 141, 129) | Time: 2.3s
+
+📊 Processing gep24...
+✅ Loaded 872 entries from new format
+✅ gep24 data shape: (81, 141, 129) | Time: 2.3s
+
+📊 Processing gep25...
+✅ Loaded 872 entries from new format
+✅ gep25 data shape: (81, 141, 129) | Time: 2.3s
+
+📊 Processing gep26...
+✅ Loaded 872 entries from new format
+✅ gep26 data shape: (81, 141, 129) | Time: 2.4s
+
+📊 Processing gep27...
+✅ Loaded 872 entries from new format
+✅ gep27 data shape: (81, 141, 129) | Time: 2.3s
+
+📊 Processing gep28...
+✅ Loaded 872 entries from new format
+✅ gep28 data shape: (81, 141, 129) | Time: 2.3s
+
+📊 Processing gep29...
+✅ Loaded 872 entries from new format
+✅ gep29 data shape: (81, 141, 129) | Time: 2.3s
+
+📊 Processing gep30...
+✅ Loaded 872 entries from new format
+✅ gep30 data shape: (81, 141, 129) | Time: 2.3s
+
+✅ Successfully loaded 30 members
+⏱️  Loading time: 82.1 seconds
+
+📊 Processing 24-hour accumulations...
+  gep01: 10 days processed
+  gep02: 10 days processed
+  gep03: 10 days processed
+  gep04: 10 days processed
+  gep05: 10 days processed
+  gep06: 10 days processed
+  gep07: 10 days processed
+  gep08: 10 days processed
+  gep09: 10 days processed
+  gep10: 10 days processed
+  gep11: 10 days processed
+  gep12: 10 days processed
+  gep13: 10 days processed
+  gep14: 10 days processed
+  gep15: 10 days processed
+  gep16: 10 days processed
+  gep17: 10 days processed
+  gep18: 10 days processed
+  gep19: 10 days processed
+  gep20: 10 days processed
+  gep21: 10 days processed
+  gep22: 10 days processed
+  gep23: 10 days processed
+  gep24: 10 days processed
+  gep25: 10 days processed
+  gep26: 10 days processed
+  gep27: 10 days processed
+  gep28: 10 days processed
+  gep29: 10 days processed
+  gep30: 10 days processed
+⏱️  Accumulation processing time: 0.3 seconds
+
+📈 Calculating exceedance probabilities...
+  Days: 10
+  Thresholds: [5, 25, 50, 75, 100, 125] mm
+⏱️  Probability calculation time: 0.1 seconds
+
+🎨 Creating 24-hour accumulation plots...
+✅ 24-hour accumulation plot saved: 20250918_00/probability_24h_accumulation_20250918_00z_all_thresholds.png
+⏱️  Plotting time: 13.2 seconds
+
+📊 Summary Statistics:
+
+  Day 1 (Hours 0-24):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2607
+    > 25mm: Max probability =  93.3%, Grid points with P≥50% =   48
+    > 50mm: Max probability =  33.3%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  13.3%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   3.3%, Grid points with P≥50% =    0
+
+  Day 2 (Hours 24-48):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 3013
+    > 25mm: Max probability =  93.3%, Grid points with P≥50% =  274
+    > 50mm: Max probability =  60.0%, Grid points with P≥50% =    3
+    > 75mm: Max probability =  30.0%, Grid points with P≥50% =    0
+    >100mm: Max probability =  13.3%, Grid points with P≥50% =    0
+    >125mm: Max probability =  10.0%, Grid points with P≥50% =    0
+
+  Day 3 (Hours 48-72):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 4075
+    > 25mm: Max probability =  86.7%, Grid points with P≥50% =  255
+    > 50mm: Max probability =  43.3%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  16.7%, Grid points with P≥50% =    0
+    >100mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+  Day 4 (Hours 72-96):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 3190
+    > 25mm: Max probability =  53.3%, Grid points with P≥50% =   13
+    > 50mm: Max probability =  23.3%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  13.3%, Grid points with P≥50% =    0
+    >100mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+  Day 5 (Hours 96-120):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2293
+    > 25mm: Max probability =  43.3%, Grid points with P≥50% =    0
+    > 50mm: Max probability =  20.0%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  13.3%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+  Day 6 (Hours 120-144):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2804
+    > 25mm: Max probability =  60.0%, Grid points with P≥50% =    4
+    > 50mm: Max probability =  16.7%, Grid points with P≥50% =    0
+    > 75mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   3.3%, Grid points with P≥50% =    0
+
+  Day 7 (Hours 144-168):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2951
+    > 25mm: Max probability =  40.0%, Grid points with P≥50% =    0
+    > 50mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    > 75mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+  Day 8 (Hours 168-192):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2746
+    > 25mm: Max probability =  43.3%, Grid points with P≥50% =    0
+    > 50mm: Max probability =  16.7%, Grid points with P≥50% =    0
+    > 75mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+  Day 9 (Hours 192-216):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2911
+    > 25mm: Max probability =  46.7%, Grid points with P≥50% =    0
+    > 50mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    > 75mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+  Day 10 (Hours 216-240):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2250
+    > 25mm: Max probability =  33.3%, Grid points with P≥50% =    0
+    > 50mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    > 75mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+================================================================================
+✅ Processing completed successfully!
+================================================================================
+
+⏱️  TIMING BREAKDOWN:
+   📊 Data Loading:           82.1 seconds (85.8%)
+   🔄 24h Accumulation:       0.3 seconds (0.4%)
+   📈 Probability Calculation: 0.1 seconds (0.1%)
+   🎨 Plot Generation:        13.2 seconds (13.8%)
+   ⏱️  TOTAL TIME:             95.7 seconds (1.6 minutes)
+
+📁 Output directory: 20250918_00
+================================================================================
+
+📝 Additional plotting tests are DISABLED.
+     To enable, set enable_testing=True in main() function.

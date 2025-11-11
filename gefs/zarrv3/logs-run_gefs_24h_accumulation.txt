@@ -1,0 +1,467 @@
+python run_gefs_24h_accumulation.py 
+================================================================================
+GEFS 24-Hour Rainfall Accumulation Processing V2
+MEMORY OPTIMIZED: Regional extraction only
+================================================================================
+
+📅 Model Run Information:
+   Date: 2025-11-11
+   Run Hour: 00:00 UTC (03:00 EAT)
+   Forecast starts: 2025-11-11 00:00 UTC
+
+🌍 Spatial Domain: East Africa
+   Latitude: -12° to 23°N
+   Longitude: 21° to 53°E
+   (Only regional data loaded - optimized for memory efficiency)
+📁 Found 30 ensemble member files
+📝 Output will be saved in: 20251111_00
+
+🌧️ Loading ensemble precipitation data...
+
+📊 Processing gep01...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep01
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep01 data shape: (81, 141, 129) | Time: 60.7s
+
+📊 Processing gep02...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep02
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep02 data shape: (81, 141, 129) | Time: 57.0s
+
+📊 Processing gep03...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep03
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep03 data shape: (81, 141, 129) | Time: 57.2s
+
+📊 Processing gep04...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep04
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep04 data shape: (81, 141, 129) | Time: 57.4s
+
+📊 Processing gep05...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep05
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep05 data shape: (81, 141, 129) | Time: 57.1s
+
+📊 Processing gep06...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep06
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep06 data shape: (81, 141, 129) | Time: 58.4s
+
+📊 Processing gep07...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep07
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep07 data shape: (81, 141, 129) | Time: 58.5s
+
+📊 Processing gep08...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep08
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep08 data shape: (81, 141, 129) | Time: 58.2s
+
+📊 Processing gep09...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep09
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep09 data shape: (81, 141, 129) | Time: 57.4s
+
+📊 Processing gep10...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep10
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep10 data shape: (81, 141, 129) | Time: 57.4s
+
+📊 Processing gep11...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep11
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep11 data shape: (81, 141, 129) | Time: 57.5s
+
+📊 Processing gep12...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep12
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep12 data shape: (81, 141, 129) | Time: 57.1s
+
+📊 Processing gep13...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep13
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep13 data shape: (81, 141, 129) | Time: 57.4s
+
+📊 Processing gep14...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep14
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep14 data shape: (81, 141, 129) | Time: 57.3s
+
+📊 Processing gep15...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep15
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep15 data shape: (81, 141, 129) | Time: 58.1s
+
+📊 Processing gep16...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep16
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep16 data shape: (81, 141, 129) | Time: 59.4s
+
+📊 Processing gep17...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep17
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep17 data shape: (81, 141, 129) | Time: 56.9s
+
+📊 Processing gep18...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep18
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep18 data shape: (81, 141, 129) | Time: 56.7s
+
+📊 Processing gep19...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep19
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep19 data shape: (81, 141, 129) | Time: 56.4s
+
+📊 Processing gep20...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep20
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep20 data shape: (81, 141, 129) | Time: 56.0s
+
+📊 Processing gep21...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep21
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep21 data shape: (81, 141, 129) | Time: 56.5s
+
+📊 Processing gep22...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep22
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep22 data shape: (81, 141, 129) | Time: 57.1s
+
+📊 Processing gep23...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep23
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep23 data shape: (81, 141, 129) | Time: 57.2s
+
+📊 Processing gep24...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep24
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep24 data shape: (81, 141, 129) | Time: 56.6s
+
+📊 Processing gep25...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep25
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep25 data shape: (81, 141, 129) | Time: 57.4s
+
+📊 Processing gep26...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep26
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep26 data shape: (81, 141, 129) | Time: 56.7s
+
+📊 Processing gep27...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep27
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep27 data shape: (81, 141, 129) | Time: 57.7s
+
+📊 Processing gep28...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep28
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep28 data shape: (81, 141, 129) | Time: 57.0s
+
+📊 Processing gep29...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep29
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep29 data shape: (81, 141, 129) | Time: 56.3s
+
+📊 Processing gep30...
+✅ Loaded 873 entries from new format
+✅ Validated 64 zarr variables in gep30
+   📍 Extracting coordinates...
+   📊 Extracting tp/accum/surface/latitude: shape=(721,), dtype=float64
+   📊 Extracting tp/accum/surface/longitude: shape=(1440,), dtype=float64
+   📍 Region indices: lat[268:409], lon[84:213]
+   📊 Extracting tp/accum/surface/tp: full_shape=(81, 721, 1440), subset=[268:409, 84:213], dtype=float64
+✅ gep30 data shape: (81, 141, 129) | Time: 56.3s
+
+✅ Successfully loaded 30 members
+⏱️  Loading time: 1721.0 seconds
+
+📊 Processing 24-hour accumulations...
+  gep01: 10 days processed
+  gep02: 10 days processed
+  gep03: 10 days processed
+  gep04: 10 days processed
+  gep05: 10 days processed
+  gep06: 10 days processed
+  gep07: 10 days processed
+  gep08: 10 days processed
+  gep09: 10 days processed
+  gep10: 10 days processed
+  gep11: 10 days processed
+  gep12: 10 days processed
+  gep13: 10 days processed
+  gep14: 10 days processed
+  gep15: 10 days processed
+  gep16: 10 days processed
+  gep17: 10 days processed
+  gep18: 10 days processed
+  gep19: 10 days processed
+  gep20: 10 days processed
+  gep21: 10 days processed
+  gep22: 10 days processed
+  gep23: 10 days processed
+  gep24: 10 days processed
+  gep25: 10 days processed
+  gep26: 10 days processed
+  gep27: 10 days processed
+  gep28: 10 days processed
+  gep29: 10 days processed
+  gep30: 10 days processed
+⏱️  Accumulation processing time: 0.0 seconds
+
+📈 Calculating exceedance probabilities...
+  Days: 10
+  Thresholds: [5, 25, 50, 75, 100, 125] mm
+⏱️  Probability calculation time: 0.0 seconds
+
+🎨 Creating 24-hour accumulation plots...
+✅ 24-hour accumulation plot saved: 20251111_00/probability_24h_accumulation_20251111_00z_all_thresholds.png
+⏱️  Plotting time: 11.6 seconds
+
+📊 Summary Statistics:
+
+  Day 1 (Hours 0-24):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2921
+    > 25mm: Max probability =  86.7%, Grid points with P≥50% =  109
+    > 50mm: Max probability =  33.3%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  13.3%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   3.3%, Grid points with P≥50% =    0
+
+  Day 2 (Hours 24-48):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2820
+    > 25mm: Max probability =  73.3%, Grid points with P≥50% =  112
+    > 50mm: Max probability =  23.3%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  13.3%, Grid points with P≥50% =    0
+    >100mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+  Day 3 (Hours 48-72):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2968
+    > 25mm: Max probability =  73.3%, Grid points with P≥50% =   59
+    > 50mm: Max probability =  23.3%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  16.7%, Grid points with P≥50% =    0
+    >100mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    >125mm: Max probability =  10.0%, Grid points with P≥50% =    0
+
+  Day 4 (Hours 72-96):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2787
+    > 25mm: Max probability =  80.0%, Grid points with P≥50% =  265
+    > 50mm: Max probability =  33.3%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  16.7%, Grid points with P≥50% =    0
+    >100mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+  Day 5 (Hours 96-120):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 2811
+    > 25mm: Max probability =  56.7%, Grid points with P≥50% =   20
+    > 50mm: Max probability =  23.3%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    >100mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+  Day 6 (Hours 120-144):
+    >  5mm: Max probability =  93.3%, Grid points with P≥50% = 1664
+    > 25mm: Max probability =  36.7%, Grid points with P≥50% =    0
+    > 50mm: Max probability =  16.7%, Grid points with P≥50% =    0
+    > 75mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+  Day 7 (Hours 144-168):
+    >  5mm: Max probability =  86.7%, Grid points with P≥50% =  855
+    > 25mm: Max probability =  33.3%, Grid points with P≥50% =    0
+    > 50mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    > 75mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >100mm: Max probability =   3.3%, Grid points with P≥50% =    0
+    >125mm: Max probability =   3.3%, Grid points with P≥50% =    0
+
+  Day 8 (Hours 168-192):
+    >  5mm: Max probability =  96.7%, Grid points with P≥50% = 1290
+    > 25mm: Max probability =  53.3%, Grid points with P≥50% =    3
+    > 50mm: Max probability =  16.7%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   3.3%, Grid points with P≥50% =    0
+
+  Day 9 (Hours 192-216):
+    >  5mm: Max probability = 100.0%, Grid points with P≥50% = 1446
+    > 25mm: Max probability =  46.7%, Grid points with P≥50% =    0
+    > 50mm: Max probability =  16.7%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  10.0%, Grid points with P≥50% =    0
+    >100mm: Max probability =   3.3%, Grid points with P≥50% =    0
+    >125mm: Max probability =   3.3%, Grid points with P≥50% =    0
+
+  Day 10 (Hours 216-240):
+    >  5mm: Max probability =  96.7%, Grid points with P≥50% = 1659
+    > 25mm: Max probability =  46.7%, Grid points with P≥50% =    0
+    > 50mm: Max probability =  16.7%, Grid points with P≥50% =    0
+    > 75mm: Max probability =  13.3%, Grid points with P≥50% =    0
+    >100mm: Max probability =   6.7%, Grid points with P≥50% =    0
+    >125mm: Max probability =   6.7%, Grid points with P≥50% =    0
+
+================================================================================
+✅ Processing completed successfully!
+================================================================================
+
+⏱️  TIMING BREAKDOWN:
+   📊 Data Loading:           1721.0 seconds (99.3%)
+   🔄 24h Accumulation:       0.0 seconds (0.0%)
+   📈 Probability Calculation: 0.0 seconds (0.0%)
+   🎨 Plot Generation:        11.6 seconds (0.7%)
+   ⏱️  TOTAL TIME:             1732.7 seconds (28.9 minutes)
+
+📁 Output directory: 20251111_00
+================================================================================
+
+📝 Additional plotting tests are DISABLED.
+     To enable, set enable_testing=True in main() function.
+
+real    28m56.120s
+user    1m58.722s
+sys     0m22.866s

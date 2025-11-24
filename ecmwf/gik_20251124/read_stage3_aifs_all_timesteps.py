@@ -35,10 +35,44 @@ DEFAULT_INPUT_DIR = Path("/scratch/notebook/test_ecmwf_three_stage_prebuilt_outp
 # Set up anonymous S3 access
 os.environ['AWS_NO_SIGN_REQUEST'] = 'YES'
 
-# Regional subsetting (set to None for global)
+# Predefined regions
+PREDEFINED_REGIONS = {
+    'east-africa': {
+        'name': 'East Africa',
+        'lat_min': -12, 'lat_max': 23,
+        'lon_min': 21, 'lon_max': 53
+    },
+    'europe-africa': {
+        'name': 'Europe + Africa',
+        'lat_min': -12, 'lat_max': 55,
+        'lon_min': -25, 'lon_max': 65
+    },
+    'europe': {
+        'name': 'Europe',
+        'lat_min': 35, 'lat_max': 70,
+        'lon_min': -10, 'lon_max': 40
+    },
+    'north-america': {
+        'name': 'North America',
+        'lat_min': 15, 'lat_max': 72,
+        'lon_min': -170, 'lon_max': -50
+    },
+    'south-asia': {
+        'name': 'South Asia',
+        'lat_min': 5, 'lat_max': 40,
+        'lon_min': 60, 'lon_max': 100
+    },
+    'global': {
+        'name': 'Global',
+        'lat_min': -90, 'lat_max': 90,
+        'lon_min': -180, 'lon_max': 180
+    }
+}
+
+# Default regional subsetting (will be overridden by command-line args)
 USE_REGIONAL_SUBSET = True
-LAT_MIN, LAT_MAX = -12, 55  # Europe + Africa
-LON_MIN, LON_MAX = -25, 65
+LAT_MIN, LAT_MAX = -12, 23  # East Africa (default)
+LON_MIN, LON_MAX = 21, 53
 
 
 def read_parquet_to_refs(parquet_path):
@@ -503,7 +537,27 @@ def save_to_numpy(data, metadata, output_file):
 def main():
     """Main function."""
     parser = argparse.ArgumentParser(
-        description='Extract ALL 85 timesteps from ECMWF Stage 3 using AIFS-ETL method'
+        description='Extract ALL 85 timesteps from ECMWF Stage 3 using AIFS-ETL method',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog='''
+Available predefined regions:
+  east-africa      East Africa (-12 to 23°N, 21 to 53°E)
+  europe-africa    Europe + Africa (-12 to 55°N, -25 to 65°E)
+  europe           Europe (35 to 70°N, -10 to 40°E)
+  north-america    North America (15 to 72°N, -170 to -50°E)
+  south-asia       South Asia (5 to 40°N, 60 to 100°E)
+  global           Global coverage
+
+Examples:
+  # Extract East Africa region (default)
+  python read_stage3_aifs_all_timesteps.py --member ens_02 --variable tp --output e02_precip.npz
+
+  # Extract with custom region
+  python read_stage3_aifs_all_timesteps.py --member control --variable 2t --custom-region -12 23 21 53
+
+  # Extract global data (no regional subset)
+  python read_stage3_aifs_all_timesteps.py --member control --variable 2t --no-subset
+        '''
     )
     parser.add_argument('--member', type=str, default='control',
                        help='Ensemble member (default: control)')
@@ -515,14 +569,33 @@ def main():
                        help='Output file (.pkl or .npz)')
     parser.add_argument('--use-obstore', action='store_true',
                        help='Use obstore for faster S3 fetching')
+    parser.add_argument('--region', type=str, default='east-africa',
+                       choices=list(PREDEFINED_REGIONS.keys()),
+                       help='Predefined region for extraction (default: east-africa)')
+    parser.add_argument('--custom-region', nargs=4, type=float, metavar=('LAT_MIN', 'LAT_MAX', 'LON_MIN', 'LON_MAX'),
+                       help='Custom region bounds (overrides --region)')
     parser.add_argument('--no-subset', action='store_true',
-                       help='Extract full global data (no regional subset)')
+                       help='Extract full global data (no regional subset, overrides --region)')
     args = parser.parse_args()
 
-    # Override regional subset if requested
-    global USE_REGIONAL_SUBSET
+    # Override regional subset and bounds based on arguments
+    global USE_REGIONAL_SUBSET, LAT_MIN, LAT_MAX, LON_MIN, LON_MAX
+
     if args.no_subset:
+        # No regional subset - extract global
         USE_REGIONAL_SUBSET = False
+    elif args.custom_region:
+        # Custom region specified
+        USE_REGIONAL_SUBSET = True
+        LAT_MIN, LAT_MAX, LON_MIN, LON_MAX = args.custom_region
+    else:
+        # Use predefined region
+        USE_REGIONAL_SUBSET = True
+        region_config = PREDEFINED_REGIONS[args.region]
+        LAT_MIN = region_config['lat_min']
+        LAT_MAX = region_config['lat_max']
+        LON_MIN = region_config['lon_min']
+        LON_MAX = region_config['lon_max']
 
     print("="*80)
     print("ECMWF Stage 3 Extraction - ALL 85 TIMESTEPS")
@@ -532,7 +605,12 @@ def main():
     print(f"S3 method: {'obstore' if args.use_obstore else 'fsspec'}")
     print(f"Regional subset: {'Yes' if USE_REGIONAL_SUBSET else 'No (global)'}")
     if USE_REGIONAL_SUBSET:
-        print(f"  Region: lat[{LAT_MIN}:{LAT_MAX}], lon[{LON_MIN}:{LON_MAX}]")
+        if args.custom_region:
+            print(f"  Region: Custom")
+        else:
+            region_name = PREDEFINED_REGIONS[args.region]['name']
+            print(f"  Region: {region_name} (--region {args.region})")
+        print(f"  Bounds: lat[{LAT_MIN}:{LAT_MAX}], lon[{LON_MIN}:{LON_MAX}]")
     print("="*80)
 
     # Find parquet file

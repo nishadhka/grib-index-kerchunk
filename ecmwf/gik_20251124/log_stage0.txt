@@ -1,0 +1,412 @@
+python ecmwf_ensemble_par_creator_efficient.py 
+[2025-11-26 06:15:00] INFO: Successfully imported efficient functions from utils_ecmwf_step1_scangrib
+================================================================================
+ECMWF Efficient Ensemble Parquet Creator
+================================================================================
+[2025-11-26 06:15:00] INFO: Output directory: ecmwf_20251125_00_efficient
+[2025-11-26 06:15:02] INFO: Processing 2 available ECMWF files
+[2025-11-26 06:15:02] INFO: Target ensemble members: [-1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
+================================================================================
+ECMWF Efficient Ensemble Processing
+================================================================================
+[2025-11-26 06:15:02] INFO: Processing 2 ECMWF files for date 20251125
+[2025-11-26 06:15:02] Starting file processing
+[2025-11-26 06:15:02] Processing file 1/2: 20251125000000-0h-enfo-ef.grib2
+Completed scan_grib for s3://ecmwf-forecasts/20251125/00z/ifs/0p25/enfo/20251125000000-0h-enfo-ef.grib2, found 8160 messages
+Completed index files and found 8160 entries in it
+Found 8058 matching indices
+[2025-11-26 06:28:39] File 1 completed, found 8058 groups (Elapsed: 817.37s)
+[2025-11-26 06:28:39] Processing file 2/2: 20251125000000-3h-enfo-ef.grib2
+Completed scan_grib for s3://ecmwf-forecasts/20251125/00z/ifs/0p25/enfo/20251125000000-3h-enfo-ef.grib2, found 8160 messages
+Completed index files and found 8160 entries in it
+Found 8058 matching indices
+[2025-11-26 06:42:54] File 2 completed, found 8058 groups (Elapsed: 855.29s)
+[2025-11-26 06:42:54] File processing completed. Total groups: 16116 (Elapsed: 1672.66s)
+[2025-11-26 06:42:54] Starting fixed_ensemble_grib_tree processing
+Found 46 unique paths from 16116 messages
+  q/instant/isobaricInhPa: 1326 groups, 51 ensemble members, 13 levels
+  vo/instant/isobaricInhPa: 1326 groups, 51 ensemble members, 13 levels
+  gh/instant/isobaricInhPa: 1326 groups, 51 ensemble members, 13 levels
+  v/instant/isobaricInhPa: 1326 groups, 51 ensemble members, 13 levels
+  u/instant/isobaricInhPa: 1326 groups, 51 ensemble members, 13 levels
+  w/instant/isobaricInhPa: 1326 groups, 51 ensemble members, 13 levels
+  d/instant/isobaricInhPa: 1326 groups, 51 ensemble members, 13 levels
+  t/instant/isobaricInhPa: 1326 groups, 51 ensemble members, 13 levels
+  r/instant/isobaricInhPa: 1326 groups, 51 ensemble members, 13 levels
+  sot/instant/soilLayer: 306 groups, 51 ensemble members, 0 levels
+  vsw/instant/soilLayer: 306 groups, 51 ensemble members, 0 levels
+  t2m/max/heightAboveGround: 102 groups, 51 ensemble members, 1 levels
+  sd/instant/surface: 102 groups, 51 ensemble members, 1 levels
+  svn/instant/surface: 102 groups, 51 ensemble members, 1 levels
+  ssr/accum/surface: 102 groups, 51 ensemble members, 1 levels
+  nsss/accum/surface: 102 groups, 51 ensemble members, 1 levels
+  v100/instant/heightAboveGround: 102 groups, 51 ensemble members, 1 levels
+  tprate/instant/surface: 102 groups, 51 ensemble members, 1 levels
+  tcw/instant/entireAtmosphere: 102 groups, 51 ensemble members, 0 levels
+  v10/instant/heightAboveGround: 102 groups, 51 ensemble members, 1 levels
+  str/accum/surface: 102 groups, 51 ensemble members, 1 levels
+  t2m/min/heightAboveGround: 102 groups, 51 ensemble members, 1 levels
+  sf/accum/surface: 102 groups, 51 ensemble members, 1 levels
+  lsm/instant/surface: 102 groups, 51 ensemble members, 1 levels
+  ttr/accum/nominalTop: 102 groups, 51 ensemble members, 1 levels
+  asn/instant/surface: 102 groups, 51 ensemble members, 1 levels
+  zos/instant/surface: 102 groups, 51 ensemble members, 1 levels
+  skt/instant/surface: 102 groups, 51 ensemble members, 1 levels
+  tcwv/instant/entireAtmosphere: 102 groups, 51 ensemble members, 0 levels
+  msl/instant/meanSea: 102 groups, 51 ensemble members, 1 levels
+  max_i10fg/max/heightAboveGround: 102 groups, 51 ensemble members, 1 levels
+  t2m/instant/heightAboveGround: 102 groups, 51 ensemble members, 1 levels
+  ewss/accum/surface: 102 groups, 51 ensemble members, 1 levels
+  mucape/instant/mostUnstableParcel: 102 groups, 51 ensemble members, 1 levels
+  tcc/instant/entireAtmosphere: 102 groups, 51 ensemble members, 0 levels
+  ro/accum/surface: 102 groups, 51 ensemble members, 1 levels
+  sve/instant/surface: 102 groups, 51 ensemble members, 1 levels
+  sithick/instant/surface: 102 groups, 51 ensemble members, 1 levels
+  tp/accum/surface: 102 groups, 51 ensemble members, 1 levels
+  sp/instant/surface: 102 groups, 51 ensemble members, 1 levels
+  d2m/instant/heightAboveGround: 102 groups, 51 ensemble members, 1 levels
+  u100/instant/heightAboveGround: 102 groups, 51 ensemble members, 1 levels
+  strd/accum/surface: 102 groups, 51 ensemble members, 1 levels
+  u10/instant/heightAboveGround: 102 groups, 51 ensemble members, 1 levels
+  ssrd/accum/surface: 102 groups, 51 ensemble members, 1 levels
+  ptype/instant/surface: 102 groups, 51 ensemble members, 1 levels
+Processing t2m/max/heightAboveGround with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'heightAboveGround']
+Processing sd/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing svn/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing ssr/accum/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing nsss/accum/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing v100/instant/heightAboveGround with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'heightAboveGround']
+Processing tprate/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing q/instant/isobaricInhPa with concat_dims=['time', 'step', 'isobaricInhPa', 'number'], identical_dims=['longitude', 'latitude']
+Processing tcw/instant/entireAtmosphere with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude']
+Processing sot/instant/soilLayer with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude']
+Processing v10/instant/heightAboveGround with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'heightAboveGround']
+Processing str/accum/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing t2m/min/heightAboveGround with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'heightAboveGround']
+Processing sf/accum/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing vsw/instant/soilLayer with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude']
+Processing lsm/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing ttr/accum/nominalTop with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'nominalTop']
+Processing asn/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing zos/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing skt/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing tcwv/instant/entireAtmosphere with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude']
+Processing msl/instant/meanSea with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'meanSea']
+Processing max_i10fg/max/heightAboveGround with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'heightAboveGround']
+Processing t2m/instant/heightAboveGround with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'heightAboveGround']
+Processing vo/instant/isobaricInhPa with concat_dims=['time', 'step', 'isobaricInhPa', 'number'], identical_dims=['longitude', 'latitude']
+Processing ewss/accum/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing mucape/instant/mostUnstableParcel with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'mostUnstableParcel']
+Processing tcc/instant/entireAtmosphere with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude']
+Processing ro/accum/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing gh/instant/isobaricInhPa with concat_dims=['time', 'step', 'isobaricInhPa', 'number'], identical_dims=['longitude', 'latitude']
+Processing sve/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing sithick/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing v/instant/isobaricInhPa with concat_dims=['time', 'step', 'isobaricInhPa', 'number'], identical_dims=['longitude', 'latitude']
+Processing u/instant/isobaricInhPa with concat_dims=['time', 'step', 'isobaricInhPa', 'number'], identical_dims=['longitude', 'latitude']
+Processing tp/accum/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing sp/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing d2m/instant/heightAboveGround with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'heightAboveGround']
+Processing u100/instant/heightAboveGround with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'heightAboveGround']
+Processing w/instant/isobaricInhPa with concat_dims=['time', 'step', 'isobaricInhPa', 'number'], identical_dims=['longitude', 'latitude']
+Processing d/instant/isobaricInhPa with concat_dims=['time', 'step', 'isobaricInhPa', 'number'], identical_dims=['longitude', 'latitude']
+Processing strd/accum/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing u10/instant/heightAboveGround with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'heightAboveGround']
+Processing ssrd/accum/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing t/instant/isobaricInhPa with concat_dims=['time', 'step', 'isobaricInhPa', 'number'], identical_dims=['longitude', 'latitude']
+Processing ptype/instant/surface with concat_dims=['time', 'step', 'number'], identical_dims=['longitude', 'latitude', 'surface']
+Processing r/instant/isobaricInhPa with concat_dims=['time', 'step', 'isobaricInhPa', 'number'], identical_dims=['longitude', 'latitude']
+[2025-11-26 06:47:08] Ensemble tree built with 32482 references (Elapsed: 253.46s)
+[2025-11-26 06:47:08] Creating deflated store for parquet
+[2025-11-26 06:47:08] Deflated store created (Elapsed: 0.11s)
+[2025-11-26 06:47:08] Saving comprehensive ensemble parquet file
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/comprehensive/ecmwf_20251125_00z_ensemble_all.parquet (1091 rows)
+[2025-11-26 06:47:08] Comprehensive parquet saved: ecmwf_20251125_00_efficient/comprehensive/ecmwf_20251125_00z_ensemble_all.parquet (Elapsed: 0.05s)
+[2025-11-26 06:47:08] Validating zarr metadata
+[2025-11-26 06:47:08] Zarr metadata validation successful (Elapsed: 0.00s)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables
+[2025-11-26 06:47:08] INFO: Sample variables: ['asn/instant/surface/asn', 'asn/instant/surface/latitude', 'asn/instant/surface/longitude', 'asn/instant/surface/number', 'asn/instant/surface/step', 'asn/instant/surface/surface', 'asn/instant/surface/time', 'asn/instant/surface/valid_time', 'd/instant/isobaricInhPa/d', 'd/instant/isobaricInhPa/isobaricInhPa']...
+[2025-11-26 06:47:08] INFO: 
+==================================================
+[2025-11-26 06:47:08] INFO: Extracting Individual Member Parquet Files
+[2025-11-26 06:47:08] INFO: ==================================================
+[2025-11-26 06:47:08] INFO: Extracting individual parquet files for 51 members
+[2025-11-26 06:47:08] Extracting control
+[2025-11-26 06:47:08] INFO: Extracted 3250 references for member -1 (from 32482 total)
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/control/control.parquet (3250 rows)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables in control
+[2025-11-26 06:47:08] control extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:08] Extracting ens_01
+[2025-11-26 06:47:08] INFO: Extracted 3250 references for member 1 (from 32482 total)
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_01/ens_01.parquet (3250 rows)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables in ens_01
+[2025-11-26 06:47:08] ens_01 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:08] Extracting ens_02
+[2025-11-26 06:47:08] INFO: Extracted 3250 references for member 2 (from 32482 total)
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_02/ens_02.parquet (3250 rows)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables in ens_02
+[2025-11-26 06:47:08] ens_02 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:08] Extracting ens_03
+[2025-11-26 06:47:08] INFO: Extracted 3250 references for member 3 (from 32482 total)
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_03/ens_03.parquet (3250 rows)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables in ens_03
+[2025-11-26 06:47:08] ens_03 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:08] Extracting ens_04
+[2025-11-26 06:47:08] INFO: Extracted 3250 references for member 4 (from 32482 total)
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_04/ens_04.parquet (3250 rows)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables in ens_04
+[2025-11-26 06:47:08] ens_04 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:08] Extracting ens_05
+[2025-11-26 06:47:08] INFO: Extracted 3250 references for member 5 (from 32482 total)
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_05/ens_05.parquet (3250 rows)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables in ens_05
+[2025-11-26 06:47:08] ens_05 extraction completed successfully (Elapsed: 0.07s)
+[2025-11-26 06:47:08] Extracting ens_06
+[2025-11-26 06:47:08] INFO: Extracted 3250 references for member 6 (from 32482 total)
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_06/ens_06.parquet (3250 rows)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables in ens_06
+[2025-11-26 06:47:08] ens_06 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:08] Extracting ens_07
+[2025-11-26 06:47:08] INFO: Extracted 3250 references for member 7 (from 32482 total)
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_07/ens_07.parquet (3250 rows)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables in ens_07
+[2025-11-26 06:47:08] ens_07 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:08] Extracting ens_08
+[2025-11-26 06:47:08] INFO: Extracted 3250 references for member 8 (from 32482 total)
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_08/ens_08.parquet (3250 rows)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables in ens_08
+[2025-11-26 06:47:08] ens_08 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:08] Extracting ens_09
+[2025-11-26 06:47:08] INFO: Extracted 3250 references for member 9 (from 32482 total)
+[2025-11-26 06:47:08] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_09/ens_09.parquet (3250 rows)
+[2025-11-26 06:47:08] INFO: Validated 363 zarr variables in ens_09
+[2025-11-26 06:47:08] ens_09 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:08] Extracting ens_10
+[2025-11-26 06:47:09] INFO: Extracted 3250 references for member 10 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_10/ens_10.parquet (3250 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_10
+[2025-11-26 06:47:09] ens_10 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:09] Extracting ens_11
+[2025-11-26 06:47:09] INFO: Extracted 3250 references for member 11 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_11/ens_11.parquet (3250 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_11
+[2025-11-26 06:47:09] ens_11 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:09] Extracting ens_12
+[2025-11-26 06:47:09] INFO: Extracted 3250 references for member 12 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_12/ens_12.parquet (3250 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_12
+[2025-11-26 06:47:09] ens_12 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:09] Extracting ens_13
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 13 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_13/ens_13.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_13
+[2025-11-26 06:47:09] ens_13 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_14
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 14 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_14/ens_14.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_14
+[2025-11-26 06:47:09] ens_14 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_15
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 15 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_15/ens_15.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_15
+[2025-11-26 06:47:09] ens_15 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_16
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 16 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_16/ens_16.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_16
+[2025-11-26 06:47:09] ens_16 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_17
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 17 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_17/ens_17.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_17
+[2025-11-26 06:47:09] ens_17 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_18
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 18 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_18/ens_18.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_18
+[2025-11-26 06:47:09] ens_18 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_19
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 19 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_19/ens_19.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_19
+[2025-11-26 06:47:09] ens_19 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_20
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 20 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_20/ens_20.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_20
+[2025-11-26 06:47:09] ens_20 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_21
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 21 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_21/ens_21.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_21
+[2025-11-26 06:47:09] ens_21 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_22
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 22 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_22/ens_22.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_22
+[2025-11-26 06:47:09] ens_22 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_23
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 23 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_23/ens_23.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_23
+[2025-11-26 06:47:09] ens_23 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_24
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 24 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_24/ens_24.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_24
+[2025-11-26 06:47:09] ens_24 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_25
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 25 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_25/ens_25.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_25
+[2025-11-26 06:47:09] ens_25 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_26
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 26 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_26/ens_26.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_26
+[2025-11-26 06:47:09] ens_26 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_27
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 27 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_27/ens_27.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_27
+[2025-11-26 06:47:09] ens_27 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_28
+[2025-11-26 06:47:09] INFO: Extracted 1414 references for member 28 (from 32482 total)
+[2025-11-26 06:47:09] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_28/ens_28.parquet (1414 rows)
+[2025-11-26 06:47:09] INFO: Validated 363 zarr variables in ens_28
+[2025-11-26 06:47:09] ens_28 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:09] Extracting ens_29
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 29 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_29/ens_29.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_29
+[2025-11-26 06:47:10] ens_29 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_30
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 30 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_30/ens_30.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_30
+[2025-11-26 06:47:10] ens_30 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_31
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 31 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_31/ens_31.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_31
+[2025-11-26 06:47:10] ens_31 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_32
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 32 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_32/ens_32.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_32
+[2025-11-26 06:47:10] ens_32 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_33
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 33 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_33/ens_33.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_33
+[2025-11-26 06:47:10] ens_33 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_34
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 34 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_34/ens_34.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_34
+[2025-11-26 06:47:10] ens_34 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_35
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 35 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_35/ens_35.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_35
+[2025-11-26 06:47:10] ens_35 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_36
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 36 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_36/ens_36.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_36
+[2025-11-26 06:47:10] ens_36 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_37
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 37 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_37/ens_37.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_37
+[2025-11-26 06:47:10] ens_37 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_38
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 38 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_38/ens_38.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_38
+[2025-11-26 06:47:10] ens_38 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_39
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 39 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_39/ens_39.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_39
+[2025-11-26 06:47:10] ens_39 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_40
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 40 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_40/ens_40.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_40
+[2025-11-26 06:47:10] ens_40 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_41
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 41 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_41/ens_41.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_41
+[2025-11-26 06:47:10] ens_41 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_42
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 42 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_42/ens_42.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_42
+[2025-11-26 06:47:10] ens_42 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_43
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 43 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_43/ens_43.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_43
+[2025-11-26 06:47:10] ens_43 extraction completed successfully (Elapsed: 0.06s)
+[2025-11-26 06:47:10] Extracting ens_44
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 44 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_44/ens_44.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_44
+[2025-11-26 06:47:10] ens_44 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_45
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 45 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_45/ens_45.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_45
+[2025-11-26 06:47:10] ens_45 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_46
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 46 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_46/ens_46.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_46
+[2025-11-26 06:47:10] ens_46 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_47
+[2025-11-26 06:47:10] INFO: Extracted 1414 references for member 47 (from 32482 total)
+[2025-11-26 06:47:10] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_47/ens_47.parquet (1414 rows)
+[2025-11-26 06:47:10] INFO: Validated 363 zarr variables in ens_47
+[2025-11-26 06:47:10] ens_47 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:10] Extracting ens_48
+[2025-11-26 06:47:11] INFO: Extracted 1414 references for member 48 (from 32482 total)
+[2025-11-26 06:47:11] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_48/ens_48.parquet (1414 rows)
+[2025-11-26 06:47:11] INFO: Validated 363 zarr variables in ens_48
+[2025-11-26 06:47:11] ens_48 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:11] Extracting ens_49
+[2025-11-26 06:47:11] INFO: Extracted 1414 references for member 49 (from 32482 total)
+[2025-11-26 06:47:11] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_49/ens_49.parquet (1414 rows)
+[2025-11-26 06:47:11] INFO: Validated 363 zarr variables in ens_49
+[2025-11-26 06:47:11] ens_49 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:11] Extracting ens_50
+[2025-11-26 06:47:11] INFO: Extracted 1414 references for member 50 (from 32482 total)
+[2025-11-26 06:47:11] INFO: Saved parquet file: ecmwf_20251125_00_efficient/members/ens_50/ens_50.parquet (1414 rows)
+[2025-11-26 06:47:11] INFO: Validated 363 zarr variables in ens_50
+[2025-11-26 06:47:11] ens_50 extraction completed successfully (Elapsed: 0.05s)
+[2025-11-26 06:47:11] INFO: Processing metadata saved to ecmwf_20251125_00_efficient/processing_metadata.json
+
+================================================================================
+PROCESSING SUMMARY
+================================================================================
+
+📊 Efficiency Comparison:
+   Old approach: 51 × 2 = 102 file scans
+   New approach: 2 file scans (one per file)
+   Efficiency gain: 51.0x faster
+
+📈 Results:
+   Total processing time: 32.2 minutes
+   Files processed: 2
+   Total groups extracted: 16116
+   Comprehensive parquet: ecmwf_20251125_00_efficient/comprehensive/ecmwf_20251125_00z_ensemble_all.parquet
+   Individual member files: 51/51 successful
+
+📁 Output files:
+   Directory: ecmwf_20251125_00_efficient
+
+✅ All ensemble members processed successfully!
+
+🎉 Efficient ECMWF ensemble processing completed successfully!

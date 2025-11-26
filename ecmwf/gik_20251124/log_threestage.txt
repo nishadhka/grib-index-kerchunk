@@ -1,0 +1,486 @@
+python test_three_stage_ecmwf_prebuilt.py --zip ecmwf_20251125_00_efficient.zip 
+
+🚀 Starting ECMWF Three-Stage Test with Prebuilt Files
+
+Extracted TEST_DATE: 20251125
+Extracted TEST_RUN: 00
+================================================================================
+ECMWF THREE-STAGE PROCESSING TEST (PREBUILT)
+================================================================================
+Test Date: 20251125
+Test Run: 00
+Zip File: ecmwf_20251125_00_efficient.zip
+Output Dir: test_ecmwf_three_stage_prebuilt_output
+================================================================================
+[07:09:38] Extracting ecmwf_20251125_00_efficient.zip...
+[07:09:38] Found 51 member parquet files
+[07:09:38] Found comprehensive parquet: ecmwf_20251125_00z_ensemble_all.parquet
+
+Found 51 members in zip file:
+Members: control, ens_01, ens_02, ens_03, ens_04... and 46 more
+
+================================================================================
+STAGE 1: USE PREBUILT PARQUET FILES
+================================================================================
+[07:09:38] Using prebuilt parquet files for 51 members
+[07:09:38] Loading sample member: control
+[07:09:38] Loaded parquet: control.parquet (3250 entries)
+[07:09:38] ✅ Stage 1 Complete (using prebuilt)!
+[07:09:38]    Time: 0.2 seconds
+[07:09:38]    Members available: 51
+[07:09:38]    Sample store refs: 3250
+[07:09:38]    Note: These are from scan_grib of hours 0 and 3 only
+[07:09:38] Loaded parquet: control.parquet (3250 entries)
+[07:09:38] Loaded parquet: ens_01.parquet (3250 entries)
+[07:09:38] Loaded parquet: ens_02.parquet (3250 entries)
+[07:09:39] Loaded parquet: ens_03.parquet (3250 entries)
+[07:09:39] Loaded parquet: ens_04.parquet (3250 entries)
+[07:09:39] Loaded parquet: ens_05.parquet (3250 entries)
+[07:09:39] Loaded parquet: ens_06.parquet (3250 entries)
+[07:09:39] Loaded parquet: ens_07.parquet (3250 entries)
+[07:09:39] Loaded parquet: ens_08.parquet (3250 entries)
+[07:09:39] Loaded parquet: ens_09.parquet (3250 entries)
+[07:09:39] Loaded parquet: ens_10.parquet (3250 entries)
+[07:09:40] Loaded parquet: ens_11.parquet (3250 entries)
+[07:09:40] Loaded parquet: ens_12.parquet (3250 entries)
+[07:09:40] Loaded parquet: ens_13.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_14.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_15.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_16.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_17.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_18.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_19.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_20.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_21.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_22.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_23.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_24.parquet (1414 entries)
+[07:09:40] Loaded parquet: ens_25.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_26.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_27.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_28.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_29.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_30.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_31.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_32.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_33.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_34.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_35.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_36.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_37.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_38.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_39.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_40.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_41.parquet (1414 entries)
+[07:09:41] Loaded parquet: ens_42.parquet (1414 entries)
+[07:09:42] Loaded parquet: ens_43.parquet (1414 entries)
+[07:09:42] Loaded parquet: ens_44.parquet (1414 entries)
+[07:09:42] Loaded parquet: ens_45.parquet (1414 entries)
+[07:09:42] Loaded parquet: ens_46.parquet (1414 entries)
+[07:09:42] Loaded parquet: ens_47.parquet (1414 entries)
+[07:09:42] Loaded parquet: ens_48.parquet (1414 entries)
+[07:09:42] Loaded parquet: ens_49.parquet (1414 entries)
+[07:09:42] Loaded parquet: ens_50.parquet (1414 entries)
+[07:09:42] 
+📊 Processing all 51 ensemble members
+[07:09:42]    Members: control, ens_01, ens_02, ens_03, ens_04... and 46 more
+[07:09:42]    This will process 85 forecast hours per member
+[07:09:42]    Estimated time: ~102 minutes (assuming ~2 min per member)
+
+================================================================================
+STAGE 2: INDEX + GCS TEMPLATES → MERGED REFERENCES (All 85 hours)
+================================================================================
+[07:09:42] Using GEFS-style integration with GCS templates
+[07:09:42]    Target date: 20251125 (fresh index from S3)
+[07:09:42]    Reference date: 20240529 (templates from GCS)
+[07:09:42]    GCS Bucket: gs://gik-fmrc/v2ecmwf_fmrc
+[07:09:42]    Service Account: coiled-data-e4drr_202505.json
+[07:09:42]    Processing 51 members
+[07:09:42]    Forecast hours: 85 total (0-360h)
+[07:09:42] 
+============================================================
+[07:09:42] Processing member: control
+[07:09:42] ============================================================
+[07:09:42]    Member format: control → control
+2025-11-26 07:09:42,475 - INFO - Building parquet for control using index files
+2025-11-26 07:09:42,476 - INFO - Processing 85 forecast hours
+2025-11-26 07:10:13,640 - INFO - Created 3912 total references for control
+2025-11-26 07:10:13,640 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:10:13,640 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_control/ecmwf-2024052900-control-rt000.par
+2025-11-26 07:10:14,005 - INFO - Template loaded: 2774 entries
+2025-11-26 07:10:14,005 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:10:14,097 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:10:14,098 - INFO - Merged template + index:
+2025-11-26 07:10:14,098 - INFO -   Template entries: 2774
+2025-11-26 07:10:14,099 - INFO -   Index entries: 3912
+2025-11-26 07:10:14,099 - INFO -   Merged total: 6685
+[07:10:14]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_control_merged.parquet
+[07:10:14] ✅ control: 6685 total references
+[07:10:14] 
+============================================================
+[07:10:14] Processing member: ens_01
+[07:10:14] ============================================================
+[07:10:14]    Member format: ens_01 → ens01
+2025-11-26 07:10:14,119 - INFO - Building parquet for ens01 using index files
+2025-11-26 07:10:14,119 - INFO - Processing 85 forecast hours
+2025-11-26 07:10:40,173 - INFO - Created 3912 total references for ens01
+2025-11-26 07:10:40,173 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:10:40,173 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_01/ecmwf-2024052900-ens01-rt000.par
+2025-11-26 07:10:40,464 - INFO - Template loaded: 2774 entries
+2025-11-26 07:10:40,464 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:10:40,554 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:10:40,555 - INFO - Merged template + index:
+2025-11-26 07:10:40,555 - INFO -   Template entries: 2774
+2025-11-26 07:10:40,556 - INFO -   Index entries: 3912
+2025-11-26 07:10:40,556 - INFO -   Merged total: 6685
+[07:10:40]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_01_merged.parquet
+[07:10:40] ✅ ens_01: 6685 total references
+[07:10:40] 
+============================================================
+[07:10:40] Processing member: ens_02
+[07:10:40] ============================================================
+[07:10:40]    Member format: ens_02 → ens02
+2025-11-26 07:10:40,576 - INFO - Building parquet for ens02 using index files
+2025-11-26 07:10:40,576 - INFO - Processing 85 forecast hours
+2025-11-26 07:11:06,295 - INFO - Created 3912 total references for ens02
+2025-11-26 07:11:06,295 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:11:06,295 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_02/ecmwf-2024052900-ens02-rt000.par
+2025-11-26 07:11:06,652 - INFO - Template loaded: 2774 entries
+2025-11-26 07:11:06,652 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:11:06,741 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:11:06,742 - INFO - Merged template + index:
+2025-11-26 07:11:06,742 - INFO -   Template entries: 2774
+2025-11-26 07:11:06,742 - INFO -   Index entries: 3912
+2025-11-26 07:11:06,742 - INFO -   Merged total: 6685
+[07:11:06]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_02_merged.parquet
+[07:11:06] ✅ ens_02: 6685 total references
+[07:11:06] 
+============================================================
+[07:11:06] Processing member: ens_03
+[07:11:06] ============================================================
+[07:11:06]    Member format: ens_03 → ens03
+2025-11-26 07:11:06,762 - INFO - Building parquet for ens03 using index files
+2025-11-26 07:11:06,762 - INFO - Processing 85 forecast hours
+2025-11-26 07:11:31,068 - INFO - Created 3912 total references for ens03
+2025-11-26 07:11:31,068 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:11:31,068 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_03/ecmwf-2024052900-ens03-rt000.par
+2025-11-26 07:11:31,318 - INFO - Template loaded: 2774 entries
+2025-11-26 07:11:31,318 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:11:31,407 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:11:31,408 - INFO - Merged template + index:
+2025-11-26 07:11:31,408 - INFO -   Template entries: 2774
+2025-11-26 07:11:31,408 - INFO -   Index entries: 3912
+2025-11-26 07:11:31,409 - INFO -   Merged total: 6685
+[07:11:31]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_03_merged.parquet
+[07:11:31] ✅ ens_03: 6685 total references
+[07:11:31] 
+============================================================
+[07:11:31] Processing member: ens_04
+[07:11:31] ============================================================
+[07:11:31]    Member format: ens_04 → ens04
+2025-11-26 07:11:31,428 - INFO - Building parquet for ens04 using index files
+2025-11-26 07:11:31,428 - INFO - Processing 85 forecast hours
+2025-11-26 07:11:56,649 - INFO - Created 3912 total references for ens04
+2025-11-26 07:11:56,649 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:11:56,649 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_04/ecmwf-2024052900-ens04-rt000.par
+2025-11-26 07:11:56,911 - INFO - Template loaded: 2774 entries
+2025-11-26 07:11:56,911 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:11:57,001 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:11:57,002 - INFO - Merged template + index:
+2025-11-26 07:11:57,002 - INFO -   Template entries: 2774
+2025-11-26 07:11:57,003 - INFO -   Index entries: 3912
+2025-11-26 07:11:57,003 - INFO -   Merged total: 6685
+[07:11:57]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_04_merged.parquet
+[07:11:57] ✅ ens_04: 6685 total references
+[07:11:57] 
+============================================================
+[07:11:57] Processing member: ens_05
+[07:11:57] ============================================================
+[07:11:57]    Member format: ens_05 → ens05
+2025-11-26 07:11:57,022 - INFO - Building parquet for ens05 using index files
+2025-11-26 07:11:57,022 - INFO - Processing 85 forecast hours
+2025-11-26 07:12:22,386 - INFO - Created 3912 total references for ens05
+2025-11-26 07:12:22,386 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:12:22,386 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_05/ecmwf-2024052900-ens05-rt000.par
+2025-11-26 07:12:22,614 - INFO - Template loaded: 2774 entries
+2025-11-26 07:12:22,614 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:12:22,703 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:12:22,704 - INFO - Merged template + index:
+2025-11-26 07:12:22,705 - INFO -   Template entries: 2774
+2025-11-26 07:12:22,705 - INFO -   Index entries: 3912
+2025-11-26 07:12:22,705 - INFO -   Merged total: 6685
+[07:12:22]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_05_merged.parquet
+[07:12:22] ✅ ens_05: 6685 total references
+[07:12:22] 
+============================================================
+[07:12:22] Processing member: ens_06
+[07:12:22] ============================================================
+[07:12:22]    Member format: ens_06 → ens06
+2025-11-26 07:12:22,724 - INFO - Building parquet for ens06 using index files
+2025-11-26 07:12:22,724 - INFO - Processing 85 forecast hours
+2025-11-26 07:12:46,874 - INFO - Created 3912 total references for ens06
+2025-11-26 07:12:46,874 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:12:46,875 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_06/ecmwf-2024052900-ens06-rt000.par
+2025-11-26 07:12:47,173 - INFO - Template loaded: 2774 entries
+2025-11-26 07:12:47,173 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:12:47,262 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:12:47,263 - INFO - Merged template + index:
+2025-11-26 07:12:47,263 - INFO -   Template entries: 2774
+2025-11-26 07:12:47,263 - INFO -   Index entries: 3912
+2025-11-26 07:12:47,263 - INFO -   Merged total: 6685
+[07:12:47]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_06_merged.parquet
+[07:12:47] ✅ ens_06: 6685 total references
+[07:12:47] 
+============================================================
+[07:12:47] Processing member: ens_07
+[07:12:47] ============================================================
+[07:12:47]    Member format: ens_07 → ens07
+2025-11-26 07:12:47,412 - INFO - Building parquet for ens07 using index files
+2025-11-26 07:12:47,412 - INFO - Processing 85 forecast hours
+2025-11-26 07:13:12,556 - INFO - Created 3912 total references for ens07
+2025-11-26 07:13:12,556 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:13:12,556 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_07/ecmwf-2024052900-ens07-rt000.par
+2025-11-26 07:13:12,804 - INFO - Template loaded: 2774 entries
+2025-11-26 07:13:12,804 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:13:12,892 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:13:12,894 - INFO - Merged template + index:
+2025-11-26 07:13:12,894 - INFO -   Template entries: 2774
+2025-11-26 07:13:12,894 - INFO -   Index entries: 3912
+2025-11-26 07:13:12,894 - INFO -   Merged total: 6685
+[07:13:12]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_07_merged.parquet
+[07:13:12] ✅ ens_07: 6685 total references
+[07:13:12] 
+============================================================
+[07:13:12] Processing member: ens_08
+[07:13:12] ============================================================
+[07:13:12]    Member format: ens_08 → ens08
+2025-11-26 07:13:12,915 - INFO - Building parquet for ens08 using index files
+2025-11-26 07:13:12,915 - INFO - Processing 85 forecast hours
+2025-11-26 07:13:38,105 - INFO - Created 3912 total references for ens08
+2025-11-26 07:13:38,105 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:13:38,105 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_08/ecmwf-2024052900-ens08-rt000.par
+2025-11-26 07:13:38,429 - INFO - Template loaded: 2774 entries
+2025-11-26 07:13:38,429 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:13:38,520 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:13:38,522 - INFO - Merged template + index:
+2025-11-26 07:13:38,522 - INFO -   Template entries: 2774
+2025-11-26 07:13:38,522 - INFO -   Index entries: 3912
+2025-11-26 07:13:38,522 - INFO -   Merged total: 6685
+[07:13:38]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_08_merged.parquet
+[07:13:38] ✅ ens_08: 6685 total references
+[07:13:38] 
+============================================================
+[07:13:38] Processing member: ens_09
+[07:13:38] ============================================================
+[07:13:38]    Member format: ens_09 → ens09
+2025-11-26 07:13:38,541 - INFO - Building parquet for ens09 using index files
+2025-11-26 07:13:38,541 - INFO - Processing 85 forecast hours
+2025-11-26 07:14:02,811 - INFO - Created 3912 total references for ens09
+2025-11-26 07:14:02,811 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:14:02,811 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_09/ecmwf-2024052900-ens09-rt000.par
+2025-11-26 07:14:03,052 - INFO - Template loaded: 2774 entries
+2025-11-26 07:14:03,052 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:14:03,140 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:14:03,142 - INFO - Merged template + index:
+2025-11-26 07:14:03,142 - INFO -   Template entries: 2774
+2025-11-26 07:14:03,142 - INFO -   Index entries: 3912
+2025-11-26 07:14:03,142 - INFO -   Merged total: 6685
+[07:14:03]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_09_merged.parquet
+[07:14:03] ✅ ens_09: 6685 total references
+[07:14:03] 
+============================================================
+[07:14:03] Processing member: ens_10
+[07:14:03] ============================================================
+[07:14:03]    Member format: ens_10 → ens10
+2025-11-26 07:14:03,163 - INFO - Building parquet for ens10 using index files
+2025-11-26 07:14:03,163 - INFO - Processing 85 forecast hours
+2025-11-26 07:14:28,218 - INFO - Created 3912 total references for ens10
+2025-11-26 07:14:28,218 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:14:28,218 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_10/ecmwf-2024052900-ens10-rt000.par
+2025-11-26 07:14:28,494 - INFO - Template loaded: 2774 entries
+2025-11-26 07:14:28,494 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:14:28,616 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:14:28,618 - INFO - Merged template + index:
+2025-11-26 07:14:28,618 - INFO -   Template entries: 2774
+2025-11-26 07:14:28,618 - INFO -   Index entries: 3912
+2025-11-26 07:14:28,618 - INFO -   Merged total: 6685
+[07:14:28]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_10_merged.parquet
+[07:14:28] ✅ ens_10: 6685 total references
+[07:14:28] 
+============================================================
+[07:14:28] Processing member: ens_11
+[07:14:28] ============================================================
+[07:14:28]    Member format: ens_11 → ens11
+2025-11-26 07:14:28,639 - INFO - Building parquet for ens11 using index files
+2025-11-26 07:14:28,639 - INFO - Processing 85 forecast hours
+2025-11-26 07:14:53,829 - INFO - Created 3912 total references for ens11
+2025-11-26 07:14:53,829 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:14:53,829 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_11/ecmwf-2024052900-ens11-rt000.par
+2025-11-26 07:14:54,082 - INFO - Template loaded: 2774 entries
+2025-11-26 07:14:54,082 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:14:54,177 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:14:54,178 - INFO - Merged template + index:
+2025-11-26 07:14:54,178 - INFO -   Template entries: 2774
+2025-11-26 07:14:54,178 - INFO -   Index entries: 3912
+2025-11-26 07:14:54,178 - INFO -   Merged total: 6685
+[07:14:54]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_11_merged.parquet
+[07:14:54] ✅ ens_11: 6685 total references
+[07:14:54] 
+============================================================
+[07:14:54] Processing member: ens_12
+[07:14:54] ============================================================
+[07:14:54]    Member format: ens_12 → ens12
+2025-11-26 07:14:54,199 - INFO - Building parquet for ens12 using index files
+2025-11-26 07:14:54,199 - INFO - Processing 85 forecast hours
+2025-11-26 07:15:19,386 - INFO - Created 3912 total references for ens12
+2025-11-26 07:15:19,387 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:15:19,387 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_12/ecmwf-2024052900-ens12-rt000.par
+2025-11-26 07:15:19,687 - INFO - Template loaded: 2774 entries
+2025-11-26 07:15:19,687 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:15:19,777 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:15:19,778 - INFO - Merged template + index:
+2025-11-26 07:15:19,778 - INFO -   Template entries: 2774
+2025-11-26 07:15:19,778 - INFO -   Index entries: 3912
+2025-11-26 07:15:19,778 - INFO -   Merged total: 6685
+[07:15:19]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_12_merged.parquet
+[07:15:19] ✅ ens_12: 6685 total references
+[07:15:19] 
+============================================================
+[07:15:19] Processing member: ens_13
+[07:15:19] ============================================================
+[07:15:19]    Member format: ens_13 → ens13
+2025-11-26 07:15:19,798 - INFO - Building parquet for ens13 using index files
+2025-11-26 07:15:19,798 - INFO - Processing 85 forecast hours
+2025-11-26 07:15:43,957 - INFO - Created 3912 total references for ens13
+2025-11-26 07:15:43,957 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:15:43,957 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_13/ecmwf-2024052900-ens13-rt000.par
+2025-11-26 07:15:44,195 - INFO - Template loaded: 2774 entries
+2025-11-26 07:15:44,195 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:15:44,283 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:15:44,284 - INFO - Merged template + index:
+2025-11-26 07:15:44,284 - INFO -   Template entries: 2774
+2025-11-26 07:15:44,284 - INFO -   Index entries: 3912
+2025-11-26 07:15:44,284 - INFO -   Merged total: 6685
+[07:15:44]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_13_merged.parquet
+[07:15:44] ✅ ens_13: 6685 total references
+[07:15:44] 
+============================================================
+[07:15:44] Processing member: ens_14
+[07:15:44] ============================================================
+[07:15:44]    Member format: ens_14 → ens14
+2025-11-26 07:15:44,306 - INFO - Building parquet for ens14 using index files
+2025-11-26 07:15:44,306 - INFO - Processing 85 forecast hours
+2025-11-26 07:16:09,355 - INFO - Created 3912 total references for ens14
+2025-11-26 07:16:09,355 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:16:09,355 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_14/ecmwf-2024052900-ens14-rt000.par
+2025-11-26 07:16:09,590 - INFO - Template loaded: 2774 entries
+2025-11-26 07:16:09,590 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:16:09,679 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:16:09,680 - INFO - Merged template + index:
+2025-11-26 07:16:09,681 - INFO -   Template entries: 2774
+2025-11-26 07:16:09,681 - INFO -   Index entries: 3912
+2025-11-26 07:16:09,681 - INFO -   Merged total: 6685
+[07:16:09]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_14_merged.parquet
+[07:16:09] ✅ ens_14: 6685 total references
+[07:16:09] 
+============================================================
+[07:16:09] Processing member: ens_15
+[07:16:09] ============================================================
+[07:16:09]    Member format: ens_15 → ens15
+2025-11-26 07:16:09,701 - INFO - Building parquet for ens15 using index files
+2025-11-26 07:16:09,701 - INFO - Processing 85 forecast hours
+2025-11-26 07:16:34,917 - INFO - Created 3912 total references for ens15
+2025-11-26 07:16:34,917 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:16:34,917 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_15/ecmwf-2024052900-ens15-rt000.par
+2025-11-26 07:16:35,199 - INFO - Template loaded: 2774 entries
+2025-11-26 07:16:35,199 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:16:35,288 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:16:35,289 - INFO - Merged template + index:
+2025-11-26 07:16:35,289 - INFO -   Template entries: 2774
+2025-11-26 07:16:35,289 - INFO -   Index entries: 3912
+2025-11-26 07:16:35,289 - INFO -   Merged total: 6685
+[07:16:35]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_15_merged.parquet
+[07:16:35] ✅ ens_15: 6685 total references
+[07:16:35] 
+============================================================
+[07:16:35] Processing member: ens_16
+[07:16:35] ============================================================
+[07:16:35]    Member format: ens_16 → ens16
+2025-11-26 07:16:35,309 - INFO - Building parquet for ens16 using index files
+2025-11-26 07:16:35,309 - INFO - Processing 85 forecast hours
+2025-11-26 07:16:59,404 - INFO - Created 3912 total references for ens16
+2025-11-26 07:16:59,404 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:16:59,404 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_16/ecmwf-2024052900-ens16-rt000.par
+2025-11-26 07:16:59,673 - INFO - Template loaded: 2774 entries
+2025-11-26 07:16:59,673 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:16:59,762 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:16:59,764 - INFO - Merged template + index:
+2025-11-26 07:16:59,764 - INFO -   Template entries: 2774
+2025-11-26 07:16:59,764 - INFO -   Index entries: 3912
+2025-11-26 07:16:59,764 - INFO -   Merged total: 6685
+[07:16:59]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_16_merged.parquet
+[07:16:59] ✅ ens_16: 6685 total references
+[07:16:59] 
+============================================================
+[07:16:59] Processing member: ens_17
+[07:16:59] ============================================================
+[07:16:59]    Member format: ens_17 → ens17
+2025-11-26 07:16:59,783 - INFO - Building parquet for ens17 using index files
+2025-11-26 07:16:59,783 - INFO - Processing 85 forecast hours
+2025-11-26 07:17:25,009 - INFO - Created 3912 total references for ens17
+2025-11-26 07:17:25,009 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:17:25,009 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_17/ecmwf-2024052900-ens17-rt000.par
+2025-11-26 07:17:25,266 - INFO - Template loaded: 2774 entries
+2025-11-26 07:17:25,267 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:17:25,356 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:17:25,357 - INFO - Merged template + index:
+2025-11-26 07:17:25,357 - INFO -   Template entries: 2774
+2025-11-26 07:17:25,357 - INFO -   Index entries: 3912
+2025-11-26 07:17:25,357 - INFO -   Merged total: 6685
+[07:17:25]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_17_merged.parquet
+[07:17:25] ✅ ens_17: 6685 total references
+[07:17:25] 
+============================================================
+[07:17:25] Processing member: ens_18
+[07:17:25] ============================================================
+[07:17:25]    Member format: ens_18 → ens18
+2025-11-26 07:17:25,377 - INFO - Building parquet for ens18 using index files
+2025-11-26 07:17:25,377 - INFO - Processing 85 forecast hours
+2025-11-26 07:17:50,530 - INFO - Created 3912 total references for ens18
+2025-11-26 07:17:50,530 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:17:50,530 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_18/ecmwf-2024052900-ens18-rt000.par
+2025-11-26 07:17:50,775 - INFO - Template loaded: 2774 entries
+2025-11-26 07:17:50,775 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:17:50,863 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:17:50,865 - INFO - Merged template + index:
+2025-11-26 07:17:50,865 - INFO -   Template entries: 2774
+2025-11-26 07:17:50,865 - INFO -   Index entries: 3912
+2025-11-26 07:17:50,865 - INFO -   Merged total: 6685
+[07:17:50]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_18_merged.parquet
+[07:17:50] ✅ ens_18: 6685 total references
+[07:17:50] 
+============================================================
+[07:17:50] Processing member: ens_19
+[07:17:50] ============================================================
+[07:17:50]    Member format: ens_19 → ens19
+2025-11-26 07:17:50,884 - INFO - Building parquet for ens19 using index files
+2025-11-26 07:17:50,884 - INFO - Processing 85 forecast hours
+2025-11-26 07:18:15,113 - INFO - Created 3912 total references for ens19
+2025-11-26 07:18:15,113 - INFO - Processed 85/85 hours successfully
+2025-11-26 07:18:15,113 - INFO - Loading GCS template: gs://gik-fmrc/v2ecmwf_fmrc/ens_19/ecmwf-2024052900-ens19-rt000.par
+2025-11-26 07:18:15,350 - INFO - Template loaded: 2774 entries
+2025-11-26 07:18:15,350 - INFO - Template columns: ['key', 'value']
+2025-11-26 07:18:15,439 - INFO - Template converted to dict: 2774 entries
+2025-11-26 07:18:15,440 - INFO - Merged template + index:
+2025-11-26 07:18:15,440 - INFO -   Template entries: 2774
+2025-11-26 07:18:15,440 - INFO -   Index entries: 3912
+2025-11-26 07:18:15,440 - INFO -   Merged total: 6685
+[07:18:15]    Saved: test_ecmwf_three_stage_prebuilt_output/stage2_ens_19_merged.parquet
+[07:18:15] ✅ ens_19: 6685 total references
+[07:18:15] 
+============================================================
+[07:18:15] Processing member: ens_20
+[07:18:15] ============================================================
+[07:18:15]    Member format: ens_20 → ens20
+2025-11-26 07:18:15,460 - INFO - Building parquet for ens20 using index files
+2025-11-26 07:18:15,460 - INFO - Processing 85 forecast hours

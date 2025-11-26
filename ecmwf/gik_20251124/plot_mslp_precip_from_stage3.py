@@ -11,10 +11,55 @@ Features:
 - Creates MSLP contours overlaid with precipitation shading
 - Uses metview for professional meteorological visualization
 - Regional subsetting support
+- Output filename includes model run date and valid time
+
+ECMWF Step to UTC Time Conversion:
+==================================
+ECMWF forecast steps represent hours since model initialization.
+
+For a model run at 00Z (e.g., 2025-11-25 00:00 UTC):
+    Step  0  -> Valid time: 2025-11-25 00:00 UTC (analysis/initialization)
+    Step  3  -> Valid time: 2025-11-25 03:00 UTC (+3h forecast)
+    Step  6  -> Valid time: 2025-11-25 06:00 UTC (+6h forecast)
+    Step  9  -> Valid time: 2025-11-25 09:00 UTC (+9h forecast)
+    Step 12  -> Valid time: 2025-11-25 12:00 UTC (+12h forecast)
+    Step 24  -> Valid time: 2025-11-26 00:00 UTC (+24h forecast)
+    Step 48  -> Valid time: 2025-11-27 00:00 UTC (+48h forecast)
+    Step 72  -> Valid time: 2025-11-28 00:00 UTC (+72h forecast)
+    ...
+    Step 360 -> Valid time: 2025-12-10 00:00 UTC (+360h = 15 days forecast)
+
+Formula:
+    valid_time = model_run_time + timedelta(hours=step)
+
+To match ECMWF official charts:
+- If chart shows "Valid time: 06 UTC (+6h)", use --step 6
+- If chart shows "Valid time: 00 UTC (+24h)", use --step 24
+
+Example comparing to official ECMWF chart:
+    Official: Base time: 25 Nov 2025 00 UTC, Valid time: 25 Nov 2025 06 UTC (+6h)
+    Command:  python plot_mslp_precip_from_stage3.py --step 6 --region africa
+
+Output Filename Format:
+=======================
+The script generates output files in the format:
+    YYYYMMDD_HHZ_hrXXX_region.png
+
+Where:
+    YYYYMMDD = Model run date (e.g., 20251125)
+    HH       = Model run hour (e.g., 00 or 12)
+    XXX      = Forecast step in hours (e.g., 006, 024, 048)
+    region   = Region name (e.g., global, africa, europe)
+
+Examples:
+    20251125_00Z_hr006_global.png   - Step 6h forecast from 25 Nov 2025 00Z run
+    20251125_00Z_hr024_europe.png   - Step 24h forecast from 25 Nov 2025 00Z run
+    20251125_12Z_hr048_africa.png   - Step 48h forecast from 25 Nov 2025 12Z run
 
 Usage:
     python plot_mslp_precip_from_stage3.py --step 24 --region northern_africa
     python plot_mslp_precip_from_stage3.py --step 48 --region europe
+    python plot_mslp_precip_from_stage3.py --step 6 --region global
 """
 
 import numpy as np
@@ -36,7 +81,70 @@ from read_stage3_to_xarray import (
 )
 
 # Configuration
-DEFAULT_INPUT_DIR = Path("/scratch/notebook/test_ecmwf_three_stage_prebuilt_output")
+DEFAULT_INPUT_DIR = Path("/scratch/notebook/grib-index-kerchunk/ecmwf/test_ecmwf_three_stage_prebuilt_output")
+
+
+def generate_output_filename(model_run_time, step_hour, region, prefix='mslp_precip'):
+    """
+    Generate output filename in the format: YYYYMMDD_HHZ_hrXXX_region.png
+
+    Args:
+        model_run_time: datetime object for model initialization
+        step_hour: Forecast step in hours
+        region: Region name string
+        prefix: Optional prefix for filename
+
+    Returns:
+        Filename string (without .png extension)
+
+    Examples:
+        model_run_time = datetime(2025, 11, 25, 0, 0, 0)
+        step_hour = 6
+        region = 'global'
+        -> '20251125_00Z_hr006_global'
+
+        step_hour = 24
+        region = 'europe'
+        -> '20251125_00Z_hr024_europe'
+    """
+    import datetime
+
+    if model_run_time is None:
+        # Fallback if no model run time available
+        return f"{prefix}_step{step_hour:03d}_{region}"
+
+    # Format components
+    date_str = model_run_time.strftime('%Y%m%d')
+    hour_str = model_run_time.strftime('%H')
+
+    # Sanitize region name (replace spaces with underscores, lowercase)
+    region_clean = region.lower().replace(' ', '_').replace('-', '_')
+
+    return f"{date_str}_{hour_str}Z_hr{step_hour:03d}_{region_clean}"
+
+
+def step_to_valid_time(model_run_time, step_hour):
+    """
+    Convert forecast step to valid time.
+
+    Args:
+        model_run_time: datetime object for model initialization
+        step_hour: Forecast step in hours
+
+    Returns:
+        datetime object for valid time, or None if model_run_time is None
+
+    Example:
+        model_run_time = datetime(2025, 11, 25, 0, 0, 0)  # 00Z
+        step_hour = 6
+        -> datetime(2025, 11, 25, 6, 0, 0)  # 06Z
+    """
+    import datetime
+
+    if model_run_time is None:
+        return None
+
+    return model_run_time + datetime.timedelta(hours=step_hour)
 
 
 def extract_field_at_step(zstore, variable, step_hour, member='control'):
@@ -315,8 +423,8 @@ Examples:
                         help='Input directory with parquet files')
     parser.add_argument('--region', type=str, default='northern_africa',
                         help='Region name for metview (default: northern_africa)')
-    parser.add_argument('--output', type=str, default='mslp_precip_stage3',
-                        help='Output filename prefix (default: mslp_precip_stage3)')
+    parser.add_argument('--output', type=str, default=None,
+                        help='Output filename (optional). If not provided, auto-generates as YYYYMMDD_HHZ_hrXXX_region.png')
     parser.add_argument('--precip-window', type=int, default=12,
                         help='Precipitation accumulation window in hours (default: 12)')
 
@@ -329,7 +437,10 @@ Examples:
     print(f"Step: {args.step}h")
     print(f"Precip window: {args.precip_window}h")
     print(f"Region: {args.region}")
-    print(f"Output: {args.output}.png")
+    if args.output:
+        print(f"Output: {args.output}.png (user-specified)")
+    else:
+        print(f"Output: (auto-generated based on model run time)")
     print("="*80)
 
     # Find parquet file
@@ -347,6 +458,17 @@ Examples:
     model_run_time = get_model_run_time(zstore, 'tp')
     if model_run_time:
         print(f"Model run: {model_run_time.strftime('%Y-%m-%d %H:%M:%S UTC')}")
+        valid_time = step_to_valid_time(model_run_time, args.step)
+        print(f"Valid time: {valid_time.strftime('%Y-%m-%d %H:%M:%S UTC')} (+{args.step}h)")
+    else:
+        valid_time = None
+
+    # Generate output filename
+    if args.output:
+        output_name = args.output
+    else:
+        output_name = generate_output_filename(model_run_time, args.step, args.region)
+    print(f"Output filename: {output_name}.png")
 
     # Extract MSL at the target step
     msl_data = extract_field_at_step(zstore, 'msl', args.step, args.member)
@@ -369,7 +491,6 @@ Examples:
         return False
 
     # Create the plot
-    output_name = f"{args.output}_step{args.step:03d}"
     create_mslp_precip_plot(
         msl_data, tp_data,
         model_run_time, args.step,

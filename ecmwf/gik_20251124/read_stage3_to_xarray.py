@@ -80,6 +80,11 @@ PREDEFINED_REGIONS = {
         'name': 'Global',
         'lat_min': -90, 'lat_max': 90,
         'lon_min': -180, 'lon_max': 180
+    },
+    'eurasia': {
+        'name': 'eurasia',
+        'lat_min': -38, 'lat_max': 38,
+        'lon_min': -58, 'lon_max': 96
     }
 }
 

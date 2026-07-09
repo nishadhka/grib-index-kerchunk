@@ -86,10 +86,20 @@ Dimensions: (time, number, step, latitude, longitude)
   longitude 1440  0 .. 359.75
   ~34 data vars: t2m, tp, u10, v10, cape, sp, gh, r2, ...
 
-Virtual (unrealized) size: ~697 TB. Nothing is materialized on open -- that
-is the logical size the references expose; you only ever fetch the byte ranges
-you actually index.
 ```
+
+### Size: three numbers, don't conflate them
+
+| measure | size | meaning |
+|---|---|---|
+| store objects on source.coop | 5.4 GB | what is actually hosted |
+| **referenced GRIB** (packed) | ~92 TB | bytes pulled if you read the whole store once |
+| dense float32 (`ds.nbytes`) | 697 TB | xarray's "Size: 697TB" -- **misleading** |
+
+`ds.nbytes` assumes every `time x number x step x lat x lon` cell exists and is
+stored uncompressed. Real GRIB2 is packed, and many cells have no message at all
+(accumulated vars at `step=0`). Nothing is materialized on open -- you only fetch
+the byte ranges you actually index.
 
 ## Gotchas
 

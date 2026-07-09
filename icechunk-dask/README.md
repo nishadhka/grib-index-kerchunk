@@ -7,10 +7,22 @@ the actual GRIB bytes stay in the public AWS buckets (`noaa-gefs-pds`,
 
 Published stores (bucket `e4drr-project`, endpoint `https://data.source.coop`):
 
-| product | prefix | group(s) | virtual size |
+| product | prefix | group(s) | dates (00z) |
 |---|---|---|---|
-| GEFS  | `forecasts/noaa_gefs_aws_s3_icechunk_vd`     | `0p25/00z`                     | ~697 TB |
-| ECMWF | `forecasts/ecmwf_ifs_ens_aws_s3_icechunk_vd` | `0p4/00z`, `49r1/00z`, `50r1/00z` | 234 TB / 2.39 PB / 169 TB |
+| GEFS  | `forecasts/noaa_gefs_aws_s3_icechunk_vd`     | `0p25/00z`                     | 2031 |
+| ECMWF | `forecasts/ecmwf_ifs_ens_aws_s3_icechunk_vd` | `0p4/00z`, `49r1/00z`, `50r1/00z` | 401 / 794 / 51 |
+
+### How big are they? (three different numbers -- don't conflate them)
+
+| measure | GEFS | ECMWF | what it means |
+|---|---|---|---|
+| store objects on source.coop | 5.4 GB | 15 GB | what is actually hosted (manifests/snapshots) |
+| **referenced GRIB** (packed) | ~92 TB | **~620 TB** | bytes you'd pull reading the store once |
+| dense float32 if materialized | 697 TB | 2.79 PB | `ds.nbytes` -- **misleading**, assumes every cell exists, uncompressed |
+
+`ds.nbytes` overstates real data volume ~7x (GEFS) to ~4.5x (ECMWF): GRIB2 is packed,
+and the dense product counts cells that have no GRIB message. The ECMWF store
+references 97-100% of what ECMWF publishes in `enfo` for those dates (~627 TB).
 
 ## Open a store (anonymous smoke test)
 

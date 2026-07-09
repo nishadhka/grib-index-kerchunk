@@ -80,8 +80,11 @@ def main():
               f"{len(ds.data_vars)} vars, time={ds.sizes['time']}, "
               f"number={ds.sizes['number']}, step={ds.sizes['step']}, "
               f"levels={ds.sizes.get('isobaricInhPa')}, grid={ny}x{nx}")
-        print(f"         virtual (unrealized) size: {ds.nbytes/1e12:.1f} TB "
-              f"({ds.nbytes:,} bytes)")
+        # NB: ds.nbytes is the DENSE decoded-float32 size (every cell, uncompressed).
+        # It is NOT the data volume -- the packed GRIB referenced across all three
+        # eras totals ~620 TB, and the store's own objects are ~15 GB.
+        print(f"         dense logical size (float32, if materialized): "
+              f"{ds.nbytes/1e12:.1f} TB ({ds.nbytes:,} bytes)")
 
         var = next((v for v in T2M_CANDIDATES if v in ds), None)
         if var is None:
@@ -100,6 +103,12 @@ def main():
         check(f"{era} {var} @ {newest} decodes (virtual chunk)", ok,
               f"shape {field.shape}, mean {mean:.1f} K, "
               f"finite {finite:.3f}, {dt:.2f}s")
+
+    print("\n== size reality check (00z store, 1246 dates) ==")
+    print("  store objects on source.coop : ~15 GB   (what is actually hosted)")
+    print("  referenced GRIB (packed)     : ~620 TB  (97-100% of enfo published)")
+    print("  enfo published, same dates   : ~627 TB")
+    print("  dense float32 if materialized: ~2.79 PB (sum of ds.nbytes above)")
 
     print("\nRESULT:", "PASS -- anonymous open + virtual decode works for all eras"
           if not FAILURES else f"FAIL -- {FAILURES}")

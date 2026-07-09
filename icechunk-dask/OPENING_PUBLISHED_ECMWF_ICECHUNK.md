@@ -32,6 +32,23 @@ in its own group because grid, level count, and variable set differ:
 
 All three share `number=51` (control + 50 perturbed) and `step=85`.
 
+Coverage is **complete**: for every era the store references 100% of the pl params
+and levels ECMWF publishes in `enfo` (0p4 has only 8 pl params -- no `w` -- because
+0p4-beta never published it), plus all sfc/sol params. Referenced bytes are
+97-100% of published `enfo` bytes, date for date.
+
+### Size: three numbers, don't conflate them
+
+| measure | size | meaning |
+|---|---|---|
+| store objects on source.coop | 15 GB | what is actually hosted |
+| **referenced GRIB** (packed) | **~620 TB** | bytes pulled if you read the whole store once |
+| enfo published, same 1246 dates | ~627 TB | what ECMWF put on S3 |
+| dense float32 (`ds.nbytes`) | 2.79 PB | 234 TB + 2.39 PB + 169 TB -- **misleading** |
+
+`ds.nbytes` assumes every cell exists, uncompressed. Use the referenced number
+for "how much data is this".
+
 ## Dependencies
 
 ```
@@ -87,6 +104,22 @@ t2m = ds["t2m"].isel(time=-1, number=0, step=0).values   # (721, 1440), Kelvin
 - **`gribberish.zarr` must be imported** before reading any chunk (registers the
   Zarr v3 codec) -- otherwise even opening a group fails with
   `UnknownCodecError: 'gribberish'` while reading array metadata.
+- **Reading a 49r1 pressure-level variable needs >6 GB RAM.** Resolving *any* chunk
+  makes icechunk load that array's **entire manifest**. Cost is ~200 bytes per
+  chunk-ref, and refs = `dates x members x steps x levels`:
+
+  | array | chunk-refs | peak RSS |
+  |---|---|---|
+  | `50r1/t2m` | 221 K | 0.25 GB |
+  | `50r1/t` (14 levels, 51 dates) | 3.10 M | 0.81 GB |
+  | `49r1/t2m` (794 dates, 2D) | 3.44 M | 0.80 GB |
+  | `49r1/t` (794 dates x 13 levels) | **44.7 M** | **~9.1 GB -> OOM** |
+
+  This is *not* caused by turning preload off (preload only controls eager prefetch
+  at open, and actually lowers memory). It is purely array size -- `50r1` will hit
+  the same wall once it accumulates ~800 dates. The fix is
+  `icechunk.ManifestSplittingConfig` (split along `time`) **at write time**, so a
+  read loads one shard instead of the whole array manifest.
 - **`force_path_style=True`** is required for source.coop.
 - **`from_env=False`** so stray `AWS_*` env vars don't turn the anonymous read
   into a signed one.

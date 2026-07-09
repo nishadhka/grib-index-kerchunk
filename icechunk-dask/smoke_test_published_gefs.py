@@ -70,8 +70,13 @@ def main():
     print("  data vars :", list(ds.data_vars))
     print("  dims      :", dict(ds.sizes))
     print("  coords    :", list(ds.coords))
-    print(f"  virtual (unrealized) size: {ds.nbytes/1e12:.1f} TB "
-          f"({ds.nbytes:,} bytes)")
+    # NB: ds.nbytes is the DENSE decoded-float32 size, assuming every cell exists
+    # and is uncompressed. It is NOT the data volume. The GRIB actually referenced
+    # is ~92 TB (packed), and the store's own objects are ~5.4 GB.
+    print(f"  dense logical size (float32, if materialized): "
+          f"{ds.nbytes/1e12:.1f} TB ({ds.nbytes:,} bytes)")
+    print(f"  -- referenced GRIB (packed, on noaa-gefs-pds): ~92 TB")
+    print(f"  -- store objects on source.coop:               ~5.4 GB")
 
     # newest forecast date; decode an instant var (t2m has an f000 message)
     ti = int(np.argmax(ds["time"].values))

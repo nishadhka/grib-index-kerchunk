@@ -17,7 +17,7 @@ RSI starts (`../README.md` §8). This folder adds that knowledge to the pars
 | File | Role |
 |---|---|
 | `bandref.py` | `rsi_record(msg)`: decode one full message once and return its RSI bit offsets and Section 3/5 constants. `band_read(chunk, rec, lat_n, lat_s)`: fetch and decode only the band. `chunk_url()`: s3 → https, with `GIK_CHUNK_SOURCE=gcs` for `gs://ecmwf-open-data` |
-| `augment_par.py` | par → **`<par>.rsi.parquet` sidecar** for the chosen variables. This is the step the realization would run, since it already reads every message in full |
+| `augment_par.py` | par → **`<par>.rsi.parquet` sidecar** for the chosen variables, from one full read per message. It speeds up **re-reads**; for the realization's own read see below |
 | `read_par_band.py` | par + sidecar → xarray band (optionally cut to a box after decoding); `--validate` compares every value with eccodes on the full message |
 | `index_to_par.py` | stand-in par (chunk rows only, same key/value layout) built from ECMWF `.index`, for dates whose real pars are not readable from here |
 | `example/` | the test inputs and sidecars below |
@@ -106,67 +106,72 @@ readers, including stage ② building the virtual Icechunk store, see no change.
 
 Pick by how many different bands will be read.
 
-## Two ways to generate the band references
+## Cutting the realization's own read
 
-Both were tested on the real `v20260623` pars, and both write the same
-sidecar rows.
+The point of the latitude subset is to make the **realization** (stage ③,
+`../../ewc-realization/frisky_daily_dag.py`, `read_message`) fetch less GRIB
+from the bucket. Today it fetches every global message in full and cuts the
+`ea-sw-io40` box (40°N → 40°S, 15°E → 80°E) afterwards.
 
-| | A. From a full read | B. Without a full read (`../lat-offset-test/v5/`) |
+**Building the sidecar inside the realization does not do that.** It reuses
+the same full read, so the realization still fetches 100%, and only *later*
+reads get cheaper. The realization runs first on a new date, and no one
+before it has the RSI offsets:
+
+- ECMWF does not publish them;
+- stage ② reads only `.index`;
+- moving a full read upstream moves the cost, it does not remove it.
+
+So the realization's read has to find the offsets **itself, from a partial
+read**. That is route B (`../lat-offset-test/v5/`, tested on these pars):
+
+```
+template (once per field and step, from one member of an earlier run, same era):
+    full read → RSI offset profile + values
+
+realization, per message:
+    par ref ─▶ header GET (~1 KB) ─▶ window GET around the predicted band
+            ─▶ sync to an exact RSI start ─▶ name the RSI
+               (count to the end of the message, or value match against the template)
+            ─▶ decode the band ─▶ cut 15°E → 80°E ─▶ box
+            └▶ the decode also gives the exact RSI offsets → sidecar row, no extra bytes
+```
+
+What the realization fetches per message (band 40°N → 40°S, template from
+the previous day, every band checked against eccodes):
+
+| Policy | Correct | Fetched |
 |---|---|---|
-| Input | par ref, then the whole message | par ref + a template par from another date (one full read per step, once) |
-| Bytes per message | 100%, once | ~77%: band start to the end of the message (count-to-end) |
-| Offsets known | every RSI | every RSI from the band start to the end (valid for any band starting at or south of it) |
-| Tested | 425/425 band reads bit-exact (5 fields × 85 steps) | 148/148 exact (2 dates, members, control, 0–360 h) |
-| Fits | the realization, which reads every message in full anyway | a reader that has not seen the message yet |
+| today: full message | — | 100% |
+| **count to the end, always** | **148 / 148** | **~77%** |
+| `tp` always counted; others value match, count if the score > 0.45 | 148 / 148 | ~62% * |
+| v5 rule as tested | 147 / 148 (1 silent `tp` miss) | ~59% |
+| exact band, only if a sidecar already exists | 425 / 425 | ~45–54% |
 
-After either one, every later band read is the exact band (~45–54% for
-40°N → 40°S).
+\* chosen after seeing these results, so it needs a fresh test before use.
 
-**Add it as a sidecar, not inside the par.** A par is `key → [url, offset,
-length]`, which stage ② turns into Icechunk virtual chunks. A band read needs
-a bit offset and the Section 5 constants as well, which neither format has a
-place for. A separate `<par>.rsi.parquet` keyed by the same chunk key:
+- **Template cost:** one full read per (field, step), from one member, i.e.
+  1 in 51 messages if it is refreshed every run. It is free if it is reused
+  across runs, but a template older than one day has not been tested here.
+- **Narrower bands save more:** for 24°N → 12°S, count-to-end costs ~60–70%
+  (`../lat-offset-test/out/v4_tail_cost.txt`), against 100% today.
+- **Longitude is still the whole 360°.** A box narrower than the globe costs
+  the same as its latitude band.
+- **No sidecar is written by a value-match read:** it can be silently wrong.
+  A count-to-end read writes the exact offsets from the band start south, so
+  **re-reads** of that message (reprocessing, a new channel or box at the same
+  latitudes, validation, source.coop users) fetch only the exact band, ~50%.
 
-- leaves the par and stage ② unchanged;
-- can be written later, by whichever process reads the message first;
-- can be dropped or rebuilt without touching the pars.
+Where to write the sidecar: one `{date}{run}z-{member}.rsi.parquet` beside
+the par (`gs://…/v20260623_run_par_ecmwf/{Y}/{MM}/{date}/{run}z/`), keyed by
+the par chunk key. The par is not changed. A par is `key → [url, offset,
+length]`, which stage ② turns into Icechunk virtual chunks, and neither
+format has room for a bit offset or the Section 5 constants. So stage ② stays
+as it is, and the sidecar can be dropped or rebuilt independently.
 
-The v5 rule's cheaper path (value match, ~58%) can return a wrong band
-silently (1 in 148), so it should not write sidecar rows. Count-to-end should.
-
-## Using the realization to build it
-
-The realization (stage ③, `../../ewc-realization/frisky_daily_dag.py`,
-`read_message`) already reads **every global message in full**, once, to cut
-the `ea-sw-io40` box. The band sidecar is a by-product of that read, if the
-read is made from the bytes:
-
-```
-today:     virtual Icechunk chunk ──gribberish codec──▶ global field ──.sel(box)──▶ box
-proposed:  par ref (url, off, len) ──range GET──▶ msg ──rsi_record()──▶ global codes + RSI offsets
-                                                        │                    │
-                                                        ▼                    ▼
-                                                   box (as today)   sidecar row ─▶ {date}{run}z-{member}.rsi.parquet
-```
-
-- **No extra bytes**: the same one read per message.
-- **Less CPU**: libaec decode plus offset capture takes **9.4 ms** per 0.25°
-  message, against **19.0 ms** for the gribberish decode used now (measured
-  here on the same message).
-- Rows are gathered per (date, run, member) and written beside the par
-  (`gs://…/v20260623_run_par_ecmwf/{Y}/{MM}/{date}/{run}z/{date}{run}z-{member}.rsi.parquet`),
-  or into a parallel prefix.
-- **Every later read is ~50%** (40°N–40°S) or ~23% (24°N–12°S): reprocessing,
-  a new channel or box at the same latitudes, validation, and source.coop
-  users. That covers any longitude: West Africa, South Asia and the SW Indian
-  Ocean all sit inside the same band.
-- The realization's **own** first read cannot benefit, because it is the read
-  that builds the sidecar. For first reads without a full read, see
-  `../lat-offset-test/` (sync from a per-step template, ~56–60%).
-- **Icechunk:** a virtual chunk can only be `[url, offset, length]`, with no
-  room for a bit offset or unpacking constants. A band chunk therefore needs
-  the parquet reader path (`read_par_band.py`), or an extension to the chunk
-  manifest, not the current virtual store.
+**Icechunk:** for the same reason, the realization reads a band through the
+par reader path (`bandref.py`, as `read_par_band.py` does), not through the
+current virtual store. Otherwise the chunk manifest would need extending.
 
 ## Limits
 

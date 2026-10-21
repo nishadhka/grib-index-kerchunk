@@ -1,0 +1,4 @@
+0p25 40N..40S: 2t band 52% -> to end 72%  tp band 60% -> to end 79%  msl band 45% -> to end 73%  t band 52% -> to end 76%  u band 50% -> to end 75%
+0p25 24N..12S: 2t band 25% -> to end 60%  tp band 32% -> to end 69%  msl band 20% -> to end 63%  t band 23% -> to end 65%  u band 23% -> to end 65%
+0p1 40N..40S: 2t band 53% -> to end 72%  tp band 62% -> to end 80%  msl band 45% -> to end 73%  t band 53% -> to end 76%  u band 52% -> to end 76%
+0p1 24N..12S: 2t band 25% -> to end 60%  tp band 34% -> to end 70%  msl band 19% -> to end 62%  t band 24% -> to end 64%  u band 24% -> to end 65%

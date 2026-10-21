@@ -1,0 +1,81 @@
+0p1 band 40.0..-40.0: RSI 439..1143  reference 20261020:same:2 at each step
+  2t   m01 s 24 12z  OK      63.2% of   1400 KB    5.1s   cands=3 score=0.027 pred_err=0.5KB
+  2t   m08 s 24 12z  OK      63.2% of   1395 KB    3.9s   cands=2 score=0.025 pred_err=1.2KB
+  2t   m15 s 24 12z  OK      63.2% of   1399 KB    4.2s   cands=3 score=0.024 pred_err=0.7KB
+  2t   m22 s 24 12z  OK      63.2% of   1392 KB    4.8s   cands=2 score=0.024 pred_err=1.0KB
+  2t   m29 s 24 12z  OK      63.2% of   1391 KB    3.8s   cands=2 score=0.025 pred_err=0.6KB
+  2t   m36 s 24 12z  OK      63.2% of   1402 KB    4.7s   cands=3 score=0.028 pred_err=1.2KB
+  2t   m43 s 24 12z  OK      63.2% of   1391 KB    3.7s   cands=3 score=0.025 pred_err=1.1KB
+  2t   m50 s 24 12z  OK      63.2% of   1390 KB    4.0s   cands=3 score=0.024 pred_err=0.7KB
+  2t   m01 s  0 12z  OK      63.5% of   1420 KB    6.4s   cands=2 score=0.025 pred_err=1.3KB
+  2t   m01 s  6 12z  OK      63.4% of   1399 KB    6.5s   cands=2 score=0.021 pred_err=0.5KB
+  2t   m01 s 72 12z  OK      63.4% of   1393 KB    7.2s   cands=2 score=0.041 pred_err=1.3KB
+  2t   m01 s144 12z  OK      63.3% of   1387 KB    5.6s   cands=2 score=0.057 pred_err=1.4KB
+  2t   m01 s240 12z  OK      63.2% of   1405 KB    6.1s   cands=2 score=0.121 pred_err=0.6KB
+  2t   m01 s360 12z  OK      63.2% of   1397 KB    5.3s   cands=2 score=0.145 pred_err=0.9KB
+  2t   m01 s 24 06z  OK      62.8% of   1383 KB    6.4s   cands=3 score=0.029 pred_err=0.4KB
+  2t   m01 s 24 18z  OK      63.6% of   1397 KB    5.9s   cands=2 score=0.027 pred_err=5.4KB
+  tp   m01 s 24 12z  OK      72.5% of   1864 KB    6.9s   cands=3 score=0.110 pred_err=2.8KB
+  tp   m08 s 24 12z  OK      72.5% of   1882 KB    5.5s   cands=2 score=0.114 pred_err=3.3KB
+  tp   m15 s 24 12z  OK      72.5% of   1871 KB    4.5s   cands=2 score=0.120 pred_err=1.1KB
+  tp   m22 s 24 12z  OK      72.5% of   1869 KB    6.5s   cands=3 score=0.116 pred_err=0.7KB
+  tp   m29 s 24 12z  OK      72.5% of   1879 KB    5.6s   cands=4 score=0.102 pred_err=1.2KB
+  tp   m36 s 24 12z  OK      72.5% of   1863 KB    5.3s   cands=5 score=0.106 pred_err=5.2KB
+  tp   m43 s 24 12z  OK      72.5% of   1871 KB    4.4s   cands=4 score=0.122 pred_err=2.8KB
+  tp   m50 s 24 12z  OK      72.5% of   1885 KB    3.9s   cands=3 score=0.112 pred_err=0.0KB
+  tp   m01 s  6 12z  OK      73.5% of   1161 KB    3.6s   cands=16 score=0.065 pred_err=8.5KB
+  tp   m01 s 72 12z  OK      72.9% of   2117 KB    7.8s   cands=2 score=0.273 pred_err=15.4KB
+  tp   m01 s144 12z  WRONG   72.5% of   2658 KB   15.6s  k=380 true=358 d=+0b cands=3 score=0.584 pred_err=30.2KB
+  tp   m01 s240 12z  WRONG   72.6% of   3038 KB   13.1s  k=375 true=353 d=+0b cands=3 score=0.550 pred_err=39.9KB
+  tp   m01 s360 12z  WRONG   71.8% of   3397 KB   20.9s  k=368 true=361 d=+0b cands=4 score=0.482 pred_err=32.4KB
+  tp   m01 s 24 06z  OK      74.3% of   1411 KB    4.2s   cands=12 score=0.090 pred_err=2.7KB
+  tp   m01 s 24 18z  OK      72.3% of   1429 KB    5.1s   cands=6 score=0.160 pred_err=9.5KB
+  msl  m01 s 24 12z  OK      55.7% of   2352 KB   10.6s   cands=3 score=0.052 pred_err=2.6KB
+  msl  m08 s 24 12z  OK      55.7% of   2343 KB    9.3s   cands=2 score=0.061 pred_err=0.0KB
+  msl  m15 s 24 12z  OK      55.7% of   2343 KB    7.6s   cands=3 score=0.047 pred_err=2.9KB
+  msl  m22 s 24 12z  OK      55.7% of   2344 KB   11.1s   cands=3 score=0.053 pred_err=5.1KB
+  msl  m29 s 24 12z  OK      55.7% of   2340 KB    8.1s   cands=2 score=0.054 pred_err=2.0KB
+  msl  m36 s 24 12z  OK      55.7% of   2347 KB    9.0s   cands=5 score=0.054 pred_err=4.3KB
+  msl  m43 s 24 12z  OK      55.7% of   2343 KB    8.3s   cands=3 score=0.056 pred_err=1.8KB
+  msl  m50 s 24 12z  OK      55.7% of   2343 KB   10.5s   cands=2 score=0.053 pred_err=2.3KB
+  msl  m01 s  0 12z  OK      55.7% of   2359 KB    9.0s   cands=4 score=0.022 pred_err=0.1KB
+  msl  m01 s  6 12z  OK      55.7% of   2375 KB    8.8s   cands=3 score=0.029 pred_err=0.5KB
+  msl  m01 s 72 12z  OK      55.1% of   2360 KB    9.3s   cands=3 score=0.132 pred_err=10.3KB
+  msl  m01 s144 12z  OK      56.2% of   2288 KB    9.2s   cands=5 score=0.226 pred_err=5.2KB
+  msl  m01 s240 12z  WRONG   55.7% of   2306 KB    8.3s  k=371 true=393 d=+0b cands=3 score=0.475 pred_err=31.9KB
+  msl  m01 s360 12z  WRONG   56.2% of   2346 KB    9.0s  k=376 true=384 d=+0b cands=3 score=0.486 pred_err=7.9KB
+  msl  m01 s 24 06z  OK      55.0% of   2335 KB   10.1s   cands=4 score=0.060 pred_err=1.5KB
+  msl  m01 s 24 18z  OK      55.5% of   2345 KB   12.1s   cands=4 score=0.056 pred_err=8.2KB
+  t    m01 s 24 12z  OK      63.9% of   1210 KB    4.5s   cands=3 score=0.042 pred_err=2.0KB
+  t    m08 s 24 12z  OK      63.9% of   1212 KB    3.3s   cands=2 score=0.043 pred_err=0.4KB
+  t    m15 s 24 12z  OK      63.9% of   1206 KB    3.0s   cands=2 score=0.037 pred_err=0.8KB
+  t    m22 s 24 12z  OK      63.9% of   1204 KB    3.6s   cands=2 score=0.039 pred_err=1.9KB
+  t    m29 s 24 12z  OK      63.9% of   1208 KB    3.0s   cands=3 score=0.041 pred_err=0.3KB
+  t    m36 s 24 12z  OK      63.9% of   1206 KB    3.5s   cands=2 score=0.039 pred_err=1.7KB
+  t    m43 s 24 12z  OK      63.9% of   1204 KB    3.3s   cands=3 score=0.040 pred_err=0.8KB
+  t    m50 s 24 12z  OK      63.9% of   1203 KB    3.2s   cands=3 score=0.037 pred_err=0.6KB
+  t    m01 s  0 12z  OK      63.7% of   1223 KB    4.4s   cands=2 score=0.036 pred_err=0.0KB
+  t    m01 s  6 12z  OK      63.4% of   1224 KB    4.7s   cands=3 score=0.035 pred_err=0.5KB
+  t    m01 s 72 12z  OK      63.7% of   1196 KB    5.1s   cands=2 score=0.074 pred_err=4.6KB
+  t    m01 s144 12z  OK      63.8% of   1187 KB    5.6s   cands=2 score=0.154 pred_err=1.0KB
+  t    m01 s240 12z  OK      64.3% of   1193 KB    4.9s   cands=3 score=0.295 pred_err=2.3KB
+  t    m01 s360 12z  OK      64.2% of   1650 KB    7.4s   cands=3 score=0.356 pred_err=2.0KB
+  t    m01 s 24 06z  OK      63.2% of   1201 KB    5.6s   cands=3 score=0.044 pred_err=1.1KB
+  t    m01 s 24 18z  OK      63.6% of   1199 KB    5.2s   cands=3 score=0.046 pred_err=5.0KB
+  u    m01 s 24 12z  OK      62.2% of   2881 KB   14.7s   cands=2 score=0.172 pred_err=2.2KB
+  u    m08 s 24 12z  OK      62.2% of   2877 KB   11.5s   cands=2 score=0.179 pred_err=2.2KB
+  u    m15 s 24 12z  OK      62.2% of   2875 KB   14.3s   cands=3 score=0.163 pred_err=1.2KB
+  u    m22 s 24 12z  OK      62.2% of   2867 KB   11.2s   cands=2 score=0.183 pred_err=4.4KB
+  u    m29 s 24 12z  OK      62.2% of   2870 KB   14.3s   cands=3 score=0.181 pred_err=3.5KB
+  u    m36 s 24 12z  OK      62.2% of   2869 KB   11.5s   cands=3 score=0.169 pred_err=1.4KB
+  u    m43 s 24 12z  OK      62.2% of   2862 KB   10.3s   cands=3 score=0.165 pred_err=3.2KB
+  u    m50 s 24 12z  OK      62.2% of   2870 KB   11.0s   cands=3 score=0.166 pred_err=2.5KB
+  u    m01 s  0 12z  OK      62.4% of   2905 KB   13.0s   cands=3 score=0.107 pred_err=0.1KB
+  u    m01 s  6 12z  OK      62.7% of   2940 KB   12.9s   cands=3 score=0.120 pred_err=2.9KB
+  u    m01 s 72 12z  OK      62.2% of   2842 KB   11.2s   cands=2 score=0.343 pred_err=4.4KB
+  u    m01 s144 12z  OK      63.1% of   2797 KB   14.4s   cands=2 score=0.622 pred_err=5.0KB
+  u    m01 s240 12z  WRONG   62.4% of   2794 KB   11.6s  k=371 true=374 d=+0b cands=2 score=0.887 pred_err=0.2KB
+  u    m01 s360 12z  WRONG   62.2% of   2813 KB   13.7s  k=374 true=389 d=+0b cands=3 score=0.899 pred_err=27.8KB
+  u    m01 s 24 06z  OK      61.5% of   2854 KB   14.2s   cands=3 score=0.174 pred_err=1.0KB
+  u    m01 s 24 18z  OK      63.1% of   2869 KB   14.1s   cands=2 score=0.178 pred_err=19.5KB
+{'OK': 72, 'WRONG': 7} fetched mean 63.4%  time mean 7.9s max 20.9s

@@ -337,15 +337,23 @@ offsets from full reads:
    - Members and runs are exact in every case: 150 / 150.
    - All remaining failures are long leads (144–360 h) of `msl`, `t` and `u`,
      and 15 of those 16 still found the exact bit.
-   - With a per-step reference the prediction itself is within ~0.4–1.9 KB
-     (median), about one RSI. So v4 will weight the choice by distance from
-     the predicted RSI.
+   - **v4, weighting by distance from the predicted RSI, did not help.** The
+     rule fixed before the run scored 73/79 (0.25°) and 72/79 (0.1°). A
+     weaker prior tuned on this data reaches 78/79 and 74/79. The prediction
+     alone names the RSI only about half the time, or less.
+   - **Exact naming without reference values** is possible: count RSIs from
+     the synced start to the end of the message, which ends exactly on the
+     last RSI. That costs 72–80% of the message for 40°N → 40°S (60–70% for
+     24°N → 12°S). A score threshold flags every failure and only 5 of 145
+     right choices, so a hybrid (v5, not run) would be exact at roughly
+     56–60% on average.
 4. **Source:** `gs://ecmwf-open-data` mirrors `s3://ecmwf-forecasts` byte for
    byte, `ifs/0p1/` included (sizes and md5 checked). The tests switch to it
    with `GIK_CHUNK_SOURCE=gcs` when S3 throttles.
-5. **Cost:** ~55–74% of the message is fetched (band + margin, against 52–62%
-   for the exact band). The bit search takes ~8 s per message in
-   Python + ctypes, which is a PoC figure, not a floor.
+5. **Cost:** ~55–74% of the message is fetched with a 5% margin, against
+   45–62% for the exact band. A 1.5% margin still contains the band start in
+   100% of messages and brings the fetch to ~56%. The bit search takes ~5–16 s
+   per message in Python + ctypes, which is a PoC figure, not a floor.
 
 This replaces the full read with about 60% of it, which matters most for
 consumers that read a field only once. It is still latitude-only.

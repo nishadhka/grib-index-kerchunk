@@ -20,6 +20,7 @@ reference message per variable, read once when the template is built.
 | [`v1/`](v1/README.md) | predict → fetch window → bit-sync → pick by smoothness |
 | [`v2/`](v2/README.md) | offset bug fixed; joint (start, RSI number) choice using a 12-RSI strip |
 | [`v3/`](v3/README.md) | one reference per forecast step, from the same date (v3a) or the next date (v3b); resumable |
+| [`v4/`](v4/README.md) | weighting the choice by distance from the predicted RSI; offline rule sweep; margin and count-to-end costs |
 | `breakdown.py` | tally one or more sync outputs by what differs from the reference |
 
 Run from this folder:
@@ -51,14 +52,24 @@ uv run breakdown.py out/v3b_sync_0p25.txt
      template would.
    - Every member and run case is exact: 150 of 150.
    - The remaining failures are long leads (144–360 h) of `msl`, `t` and
-     `u`, where ensemble spread makes the reference look different. Weighting
-     the choice towards the predicted RSI is the next fix (v4).
+     `u`, where ensemble spread makes the reference look different.
+   - **Distance weighting (v4) did not fix this.** The rule fixed before the
+     run scored 73/79 (0.25°) and 72/79 (0.1°). The best weak prior from the
+     offline sweep reaches 78/79 and 74/79, but it was tuned on this data.
+     The prediction alone names the RSI only 40/79 and 19/79 times.
+   - **Exact naming is possible** by counting RSIs from the synced start to
+     the end of the message. That costs 72–80% of the message for 40°N–40°S.
+     A score threshold catches every failure and only 5 of 145 right choices,
+     so the next step (v5) is a hybrid: value match when the score is
+     confident, count-to-end otherwise.
 4. **The GCS mirror avoids S3 throttling.** `gs://ecmwf-open-data` is
    byte-identical (`ifs/0p1/` included). A v3 run throttled out on S3 was
    finished there with no retries (`v3/README.md`).
 5. **Cost per message:** the `.index` record, a ~250 B header GET, and one
    GET of ~56–73% of the message for a 40°N → 40°S band (the exact band is
-   52–62%; the rest is margin). The bit search takes ~8 s per message in
+   45–62%; the rest is margin). The margin can drop from 5% to **1.5%**
+   with the band start still inside the window in 100% of messages, which
+   brings the fetch to ~56% (v4). The bit search takes ~8 s per message in
    Python + ctypes. That is a PoC cost, not a floor: a C or Rust scan would
    be far faster.
 6. **Longitude is still the whole 360°**, at every stage (`../README.md` §8).

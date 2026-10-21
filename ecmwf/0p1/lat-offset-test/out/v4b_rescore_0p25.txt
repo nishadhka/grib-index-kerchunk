@@ -1,0 +1,25 @@
+v4_cands_0p25_20261021-00-1.pkl: 79 messages with candidates (79 have a true start among them)
+  73/79  member 40/40 run 10/10 step 23/29   value only (v3 rule)   fails: tp s6, msl s240, msl s360, t s360, u s240, u s360
+  40/79  member 23/40 run 7/10 step 10/29   nearest predicted
+  57/79  member 32/40 run 8/10 step 17/29   value within +-1 RSI of prediction
+  75/79  member 39/40 run 9/10 step 27/29   value within +-2 RSI of prediction   fails: tp s24, tp s6, tp s24, msl s240
+  77/79  member 40/40 run 10/10 step 27/29   value within +-3 RSI of prediction   fails: tp s6, t s360
+  76/79  member 40/40 run 10/10 step 26/29   value within +-5 RSI of prediction   fails: tp s6, t s360, u s360
+  69/79  member 39/40 run 9/10 step 21/29   combined sigma=0.25% lambda=0.25
+  50/79  member 29/40 run 7/10 step 14/29   combined sigma=0.25% lambda=1
+  46/79  member 26/40 run 7/10 step 13/29   combined sigma=0.25% lambda=4
+  73/79  member 39/40 run 9/10 step 25/29   combined sigma=0.5% lambda=0.25   fails: tp s24, tp s6, tp s24, msl s240, t s360, u s360
+  69/79  member 39/40 run 9/10 step 21/29   combined sigma=0.5% lambda=1
+  50/79  member 29/40 run 7/10 step 14/29   combined sigma=0.5% lambda=4
+  78/79  member 40/40 run 10/10 step 28/29   combined sigma=1% lambda=0.25   fails: tp s6
+  73/79  member 39/40 run 9/10 step 25/29   combined sigma=1% lambda=1 <- v4 default (fixed before the run)   fails: tp s24, tp s6, tp s24, msl s240, t s360, u s360
+  69/79  member 39/40 run 9/10 step 21/29   combined sigma=1% lambda=4
+  78/79  member 40/40 run 10/10 step 28/29   combined sigma=2% lambda=0.25   fails: tp s6
+  78/79  member 40/40 run 10/10 step 28/29   combined sigma=2% lambda=1   fails: tp s6
+  73/79  member 39/40 run 9/10 step 25/29   combined sigma=2% lambda=4   fails: tp s24, tp s6, tp s24, msl s240, t s360, u s360
+  prediction error at the band start: median 1.5 KB, max 4.6 KB = 1.70% of the message
+  margin  5.0% + 2 KiB: band start inside window for 100.0% of messages, fetched ~62.5% of the message (was 62.5%)
+  margin  3.0% + 2 KiB: band start inside window for 100.0% of messages, fetched ~58.5% of the message (was 62.5%)
+  margin  2.0% + 2 KiB: band start inside window for 100.0% of messages, fetched ~56.5% of the message (was 62.5%)
+  margin  1.5% + 2 KiB: band start inside window for 100.0% of messages, fetched ~55.5% of the message (was 62.5%)
+  margin  1.0% + 2 KiB: band start inside window for 100.0% of messages, fetched ~54.5% of the message (was 62.5%)

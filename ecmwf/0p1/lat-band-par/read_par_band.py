@@ -17,7 +17,7 @@ import pandas as pd
 import xarray as xr
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from augment_par import CHUNK, open_par  # noqa: E402
+from augment_par import CHUNK, open_par, wanted  # noqa: E402
 from bandref import band_read, chunk_url, get_range, parse_ref  # noqa: E402
 
 
@@ -28,7 +28,7 @@ def lon_axis(ni):
 
 def read_band(par, side, var, lat_n, lat_s, steps=None, validate=False):
     refs = {k: parse_ref(v) for k, v in zip(par["key"], par["value"]) if CHUNK.match(k)}
-    rows = side[side.key.map(lambda k: CHUNK.match(k)[2] == var)]
+    rows = side[side.key.map(lambda k: wanted(CHUNK.match(k), {var}))]
     if steps is not None:
         rows = rows[rows.key.map(lambda k: int(CHUNK.match(k)[1]) in steps)]
     out, hours, stats = [], [], []
@@ -51,7 +51,7 @@ def read_band(par, side, var, lat_n, lat_s, steps=None, validate=False):
     # float32, as the realized store holds it; validation above used float64
     da = xr.DataArray(np.stack(out).astype(np.float32), dims=("step", "latitude", "longitude"),
                       coords=dict(step=np.array(hours, "timedelta64[h]"), latitude=lats,
-                                  longitude=lon_axis(rows.iloc[0]["ni"])), name=var)
+                                  longitude=lon_axis(rows.iloc[0]["ni"])), name=var.replace("/", ""))
     return da, pd.DataFrame(stats)
 
 
@@ -59,7 +59,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("par")
     ap.add_argument("--side", default=None, help="default: <par>.rsi.parquet")
-    ap.add_argument("--var", default="2t")
+    ap.add_argument("--var", default="2t", help="one field, e.g. 2t or t/850")
     ap.add_argument("--lat", default="40,-40", help="north,south")
     ap.add_argument("--lon", default=None, help="optional west,east cut AFTER decoding, e.g. 15,80")
     ap.add_argument("--steps", default=None)

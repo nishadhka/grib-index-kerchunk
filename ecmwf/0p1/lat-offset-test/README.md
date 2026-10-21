@@ -21,6 +21,7 @@ reference message per variable, read once when the template is built.
 | [`v2/`](v2/README.md) | offset bug fixed; joint (start, RSI number) choice using a 12-RSI strip |
 | [`v3/`](v3/README.md) | one reference per forecast step, from the same date (v3a) or the next date (v3b); resumable |
 | [`v4/`](v4/README.md) | weighting the choice by distance from the predicted RSI; offline rule sweep; margin and count-to-end costs |
+| [`v5/`](v5/README.md) | **on the real GIK pars**: confidence gate, count-to-end fallback, head GET; every band checked against eccodes |
 | `breakdown.py` | tally one or more sync outputs by what differs from the reference |
 
 Run from this folder:
@@ -62,6 +63,13 @@ uv run breakdown.py out/v3b_sync_0p25.txt
      A score threshold catches every failure and only 5 of 145 right choices,
      so the next step (v5) is a hybrid: value match when the score is
      confident, count-to-end otherwise.
+   - **v5, on the real pars** (template from another date):
+     - The hybrid rule scored **94/94** and **53/54**, at ~58% of the bytes.
+     - The one miss is `tp` at 6 h. It is silent, because its score was just
+       under the gate.
+     - **Count-to-end alone is exact on 148/148**, at ~77%. Every band
+       decoded from the fetched bytes was checked against eccodes on the full
+       message.
 4. **The GCS mirror avoids S3 throttling.** `gs://ecmwf-open-data` is
    byte-identical (`ifs/0p1/` included). A v3 run throttled out on S3 was
    finished there with no retries (`v3/README.md`).

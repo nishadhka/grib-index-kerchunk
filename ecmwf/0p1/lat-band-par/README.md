@@ -28,31 +28,52 @@ uv run augment_par.py <par.parquet> --vars 2t            # once: writes <par>.rs
 uv run read_par_band.py <par.parquet> --var 2t --lat 40,-40 --lon 15,80 --validate
 ```
 
-## Test: 20261019 00z, 0.25°, `2t`, member 1, all 85 steps
+## Test on the real pars: 20261019 00z, 0.25°, ens_01, all 85 steps
 
-**The pars themselves were not readable.** The provided key,
-`coiled-data-e4drr@e4drr-crafd`, is denied list *and* read on
-`gs://gik-ecmwf-aws-tf/v20260623_run_par_ecmwf/` (as
-`daily-route-crma/.../make_run_date_lists.py` already notes). The public HF
-mirror stops at 2026-04-07.
+Read straight from `gs://gik-ecmwf-aws-tf/v20260623_run_par_ecmwf/2026/10/20261019/00z/2026101900z-ens_01.parquet`
+with the `coiled-data@sewaa-416306` key (`coiled-data.json`, git-ignored),
+bytes from the GCS mirror:
 
-So the test has two parts:
+```bash
+export GIK_CHUNK_SOURCE=gcs GOOGLE_APPLICATION_CREDENTIALS=../coiled-data.json
+P=gs://gik-ecmwf-aws-tf/v20260623_run_par_ecmwf/2026/10/20261019/00z/2026101900z-ens_01.parquet
+uv run augment_par.py $P --vars 2t,tp,msl,t/850,u/700 --threads 16
+uv run read_par_band.py $P --side 2026101900z-ens_01.rsi.parquet --var t/850 --lat 40,-40 --validate
+```
 
-1. **Real par format:** the HF par `2026040700z-ens_01.parquet`, `2t` at steps
-   0/24/120/240. Sidecar built, band read, validated: **bit-exact**, 49.7% of
-   the bytes. This checks the key/value parsing, the url without `.grib2`,
-   and the step keys against a genuine par.
-2. **The requested date:** `index_to_par.py` built the 20261019 00z `ens01`
-   chunk rows for `2t` from `.index`. These are the same triplets GIK Stage 2
-   writes from the same `.index`.
+**The par refs are the `.index` triplets.** 656 of 656 chunk refs checked
+(steps 0/24/240/360, every param and level) are exactly an `.index` record
+`(_offset, _length)` of the same param, member and level. So results on
+`.index` (`../lat-offset-test/`) carry over to the pars unchanged.
 
-| 20261019 00z `2t` ens01, 85 steps | Result |
+| | Result |
 |---|---|
-| Sidecar build (one full read of each message) | 56.1 MB read once, 9.2 s with 8 threads → **84 KB** sidecar (254 RSI offsets per message) |
-| Band **40°N → 40°S** (`ea-sw-io40` latitudes) | **27.95 of 56.14 MB (49.8%)**, every one of 85 steps **bit-exact** against eccodes on the full message |
-| Same band, cut to **lon 15 → 80** after decoding | 321 × 261: the realization's box, from 49.6% of the bytes |
-| Band **24°N → 12°S** | **13.09 of 56.14 MB (23.3%)**, 85 steps bit-exact |
-| Read time | 0.5–0.7 s per message (one range GET plus decode, from this machine) |
+| Sidecar build | 425 messages (5 fields × 85 steps), 299 MB read once in 21 s with 16 threads → **372 KB** sidecar |
+
+Band **40°N → 40°S**, every value checked against eccodes on the full message:
+
+| Field | Fetched | Check (85 steps each) |
+|---|---|---|
+| `2t` | 27.95 of 56.14 MB (**49.8%**) | bit-exact |
+| `tp` | 44.41 of 82.68 MB (**53.7%**) | bit-exact (0 h is a constant field: no bytes) |
+| `msl` | 20.22 of 45.00 MB (**44.9%**) | bit-exact |
+| `t/850` | 27.28 of 54.59 MB (**50.0%**) | bit-exact |
+| `u/700` | 30.07 of 60.61 MB (**49.6%**) | bit-exact |
+
+So **425 of 425** band reads are bit-exact on the real pars, at 0.6–0.74 s
+per message from this machine. Cutting `t/850` to lon 15 → 80 after decoding
+gives the realization's 321 × 261 box.
+
+### Earlier stand-in tests
+
+Before the key was available, the same code was tested on the public HF par
+`2026040700z-ens_01` (`2t` at 0/24/120/240 h: bit-exact, 49.7%) and on a
+stand-in par built from `.index` by `index_to_par.py` (`example/`):
+
+| 20261019 00z `2t` ens01, 85 steps (stand-in par) | Result |
+|---|---|
+| Band **40°N → 40°S** | 27.95 of 56.14 MB (49.8%), bit-exact. Identical to the real par above |
+| Band **24°N → 12°S** | **13.09 of 56.14 MB (23.3%)**, bit-exact |
 
 Output is a `DataArray (step, latitude, longitude)` in float32, latitudes 40 →
 −40, longitudes −180 → 179.75 in GRIB scan order (as in `ecmwf/grids.py`).
@@ -84,6 +105,34 @@ readers, including stage ② building the virtual Icechunk store, see no change.
   (~2.8% of a message) per read.
 
 Pick by how many different bands will be read.
+
+## Two ways to generate the band references
+
+Both were tested on the real `v20260623` pars, and both write the same
+sidecar rows.
+
+| | A. From a full read | B. Without a full read (`../lat-offset-test/v5/`) |
+|---|---|---|
+| Input | par ref, then the whole message | par ref + a template par from another date (one full read per step, once) |
+| Bytes per message | 100%, once | ~77%: band start to the end of the message (count-to-end) |
+| Offsets known | every RSI | every RSI from the band start to the end (valid for any band starting at or south of it) |
+| Tested | 425/425 band reads bit-exact (5 fields × 85 steps) | 148/148 exact (2 dates, members, control, 0–360 h) |
+| Fits | the realization, which reads every message in full anyway | a reader that has not seen the message yet |
+
+After either one, every later band read is the exact band (~45–54% for
+40°N → 40°S).
+
+**Add it as a sidecar, not inside the par.** A par is `key → [url, offset,
+length]`, which stage ② turns into Icechunk virtual chunks. A band read needs
+a bit offset and the Section 5 constants as well, which neither format has a
+place for. A separate `<par>.rsi.parquet` keyed by the same chunk key:
+
+- leaves the par and stage ② unchanged;
+- can be written later, by whichever process reads the message first;
+- can be dropped or rebuilt without touching the pars.
+
+The v5 rule's cheaper path (value match, ~58%) can return a wrong band
+silently (1 in 148), so it should not write sidecar rows. Count-to-end should.
 
 ## Using the realization to build it
 
@@ -123,18 +172,15 @@ proposed:  par ref (url, off, len) ──range GET──▶ msg ──rsi_record
 
 - **Latitude only.** Longitude is cut after decoding, because an RSI (4,096
   values) is longer than a row (1,440).
-- **Tested on one variable.** `2t` was tested; other single-level params
-  share the code path. Pressure-level keys must match
-  `step_SSS/{param}/pl/{member}/0.0.0`. The legacy HF par has only one `pl`
-  row per param (47 chunk rows per step, so one level of 13). Check how the
-  `v20260623` pars key their levels before running `--vars t,u,...`.
+- **Par keys.** The `v20260623` pars key pressure levels as
+  `step_SSS/{param}/pl/{level}/{member}/0.0.0` (164 chunk rows per step).
+  `--vars t/850` takes one level, `--vars t` all of them. `sol` params (`sot`,
+  `vsw`) have **one** row each, though the file holds 4 soil levels. Matched
+  against `.index`, `step_024/sot/sol/ens01` points at soil level **2** and
+  `vsw` at level **4**, and the key does not say which. This looks like one
+  level overwriting the others when the par was written: a par-building issue
+  to fix upstream, not a band-read one.
 - **0.25° only for now**, as requested. `bandref.py` reads the grid from
   Section 3, so 0.1° needs no code change.
-- **Real 20261019+ pars** need a key with read on `gik-ecmwf-aws-tf`
-  (`coiled-data@sewaa-416306` is the one the daily route documents). Then:
-
-  ```
-  GOOGLE_APPLICATION_CREDENTIALS=<key> uv run augment_par.py gs://gik-ecmwf-aws-tf/v20260623_run_par_ecmwf/2026/10/20261019/00z/2026101900z-ens_01.parquet --vars 2t
-  ```
-
-  The HF mirror names member files `ens_01`; check the bucket's naming.
+- **Pars exist for 00z only** (20261018, 20261019, 20261020 at the time of
+  writing).

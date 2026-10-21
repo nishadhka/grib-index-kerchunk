@@ -145,10 +145,12 @@ def band_plan(chunk, rec, lat_n, lat_s):
 
 def band_read(chunk, rec, lat_n: float, lat_s: float, source: str | None = None):
     """Fetch and decode ONLY the latitude band. Returns (values[rows, ni], lats, nbytes)."""
+    if rec["bps"] == 0:                                # constant field (tp at 0 h): no bytes needed
+        j0, j1 = band_rows(rec, lat_n, lat_s)
+        lats = 90 - np.arange(j0, j1) * 180.0 / (rec["nj"] - 1)
+        return np.full((j1 - j0, rec["ni"]), rec["ref_value"], np.float64), lats, 0
     start, length, k0, k1, j0, j1 = band_plan(chunk, rec, lat_n, lat_s)
     lats = 90 - np.arange(j0, j1) * 180.0 / (rec["nj"] - 1)
-    if rec["bps"] == 0:
-        return np.full((j1 - j0, rec["ni"]), rec["ref_value"], np.float64), lats, 0
     part = get_range(chunk_url(chunk[0], source), start, length)
     return decode_band(part, rec, k0, k1, j0, j1), lats, len(part)
 

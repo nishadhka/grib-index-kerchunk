@@ -23,7 +23,13 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from bandref import SIDE_COLS, chunk_url, get_range, parse_ref, rsi_record  # noqa: E402
 
-CHUNK = re.compile(r"^step_(\d{3})/([^/]+)/(sfc|pl|sol)/([^/]+)/0\.0\.0$")
+# step_024/2t/sfc/ens01/0.0.0, and step_024/t/pl/850/ens01/0.0.0 in the v20260623 pars
+CHUNK = re.compile(r"^step_(\d{3})/([^/]+)/(sfc|pl|sol)/(?:(\d+)/)?([^/]+)/0\.0\.0$")
+
+
+def wanted(m, want):
+    """--vars entry 't' takes every level of t; 't/850' takes one."""
+    return m[2] in want or (m[4] is not None and f"{m[2]}/{m[4]}" in want)
 
 
 def open_par(path):
@@ -36,7 +42,7 @@ def open_par(path):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("par")
-    ap.add_argument("--vars", default="2t", help="comma list of par param names, e.g. 2t,tp,t")
+    ap.add_argument("--vars", default="2t", help="comma list of par param names, e.g. 2t,tp,t/850 (t = all levels)")
     ap.add_argument("--steps", default=None, help="comma list of hours (default: all)")
     ap.add_argument("--out", default=None, help="default: <par basename>.rsi.parquet beside a local par, or ./")
     ap.add_argument("--threads", type=int, default=8)
@@ -48,7 +54,7 @@ def main():
     jobs = []
     for k, v in zip(df["key"], df["value"]):
         m = CHUNK.match(k)
-        if m and m[2] in want and (steps is None or int(m[1]) in steps):
+        if m and wanted(m, want) and (steps is None or int(m[1]) in steps):
             jobs.append((k, parse_ref(v)))
     if not jobs:
         sys.exit(f"no chunks for {sorted(want)} in {a.par}")

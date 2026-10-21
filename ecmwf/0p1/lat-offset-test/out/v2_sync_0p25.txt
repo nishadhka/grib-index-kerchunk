@@ -1,0 +1,76 @@
+0p25 band 40.0..-40.0: RSI 70..183
+  2t   m08 s 24 12z  OK      63.2% of    323 KB    2.3s   cands=2 score=0.026
+  2t   m15 s 24 12z  OK      63.2% of    324 KB    6.1s   cands=3 score=0.027
+  2t   m22 s 24 12z  OK      63.2% of    322 KB    6.4s   cands=3 score=0.028
+  2t   m29 s 24 12z  OK      63.2% of    323 KB    4.2s   cands=3 score=0.029
+  2t   m36 s 24 12z  OK      63.2% of    325 KB   12.8s   cands=3 score=0.026
+  2t   m43 s 24 12z  OK      63.2% of    322 KB    3.4s   cands=3 score=0.026
+  2t   m50 s 24 12z  OK      63.2% of    322 KB   18.7s   cands=3 score=0.028
+  2t   m01 s  0 12z  OK      63.2% of    327 KB    3.1s   cands=2 score=0.102
+  2t   m01 s  6 12z  OK      63.2% of    324 KB    6.0s   cands=3 score=0.191
+  2t   m01 s 72 12z  OK      63.2% of    324 KB    4.3s   cands=3 score=0.123
+  2t   m01 s144 12z  OK      63.2% of    322 KB    4.4s   cands=3 score=0.157
+  2t   m01 s240 12z  OK      63.2% of    326 KB    8.3s   cands=3 score=0.151
+  2t   m01 s360 12z  OK      63.2% of    324 KB   11.1s   cands=2 score=0.163
+  2t   m01 s 24 06z  OK      63.2% of    321 KB    7.1s   cands=3 score=0.107
+  2t   m01 s 24 18z  OK      63.2% of    323 KB    7.2s   cands=2 score=0.164
+  tp   m08 s 24 12z  OK      71.1% of    402 KB    3.2s   cands=6 score=0.168
+  tp   m15 s 24 12z  OK      71.1% of    400 KB    2.9s   cands=2 score=0.164
+  tp   m22 s 24 12z  OK      71.1% of    400 KB    3.0s   cands=2 score=0.154
+  tp   m29 s 24 12z  OK      71.1% of    401 KB    2.9s   cands=3 score=0.162
+  tp   m36 s 24 12z  OK      70.9% of    493 KB   19.5s   cands=2 score=0.152
+  tp   m43 s 24 12z  OK      71.1% of    399 KB    2.5s   cands=3 score=0.153
+  tp   m50 s 24 12z  OK      71.1% of    403 KB    3.0s   cands=3 score=0.161
+  tp   m01 s  6 12z  WRONG   71.6% of    264 KB    8.5s  k=49 true=59 d=+688b cands=5 score=0.362
+  tp   m01 s 72 12z  OK      71.0% of    444 KB    6.6s   cands=4 score=1.172
+  tp   m01 s144 12z  OK      70.9% of    543 KB    6.4s   cands=3 score=2.215
+  tp   m01 s240 12z  OK      70.8% of    610 KB    6.9s   cands=4 score=3.370
+  tp   m01 s360 12z  WRONG   70.7% of    671 KB    7.1s  k=61 true=54 d=+0b cands=3 score=5.397
+  tp   m01 s 24 06z  OK      71.4% of    310 KB    2.1s   cands=11 score=0.301
+  tp   m01 s 24 18z  OK      71.4% of    312 KB    5.7s   cands=5 score=0.287
+  msl  m08 s 24 12z  OK      56.3% of    531 KB    6.7s   cands=3 score=0.045
+  msl  m15 s 24 12z  OK      56.3% of    531 KB    5.9s   cands=2 score=0.043
+  msl  m22 s 24 12z  OK      56.3% of    532 KB   12.9s   cands=3 score=0.036
+  msl  m29 s 24 12z  OK      56.3% of    531 KB   10.3s   cands=3 score=0.038
+  msl  m36 s 24 12z  OK      56.3% of    532 KB    7.5s   cands=4 score=0.033
+  msl  m43 s 24 12z  OK      56.3% of    532 KB   97.3s   cands=3 score=0.036
+  msl  m50 s 24 12z  OK      56.3% of    531 KB    5.7s   cands=3 score=0.040
+  msl  m01 s  0 12z  OK      56.3% of    535 KB    5.5s   cands=3 score=0.366
+  msl  m01 s  6 12z  OK      56.3% of    537 KB    9.7s   cands=4 score=0.328
+  msl  m01 s 72 12z  WRONG   56.3% of    534 KB    7.3s  k=63 true=60 d=+0b cands=2 score=0.448
+  msl  m01 s144 12z  WRONG   56.3% of    523 KB   21.7s  k=68 true=60 d=+0b cands=2 score=0.451
+  msl  m01 s240 12z  WRONG   56.3% of    524 KB    5.7s  k=74 true=62 d=+0b cands=2 score=0.543
+  msl  m01 s360 12z  WRONG   56.3% of    531 KB    7.2s  k=69 true=61 d=+0b cands=3 score=0.533
+  msl  m01 s 24 06z  OK      56.3% of    530 KB    6.3s   cands=3 score=0.177
+  msl  m01 s 24 18z  OK      56.3% of    532 KB   16.7s   cands=2 score=0.149
+  t    m08 s 24 12z  OK      64.0% of    270 KB    3.3s   cands=3 score=0.038
+  t    m15 s 24 12z  OK      64.0% of    268 KB    3.4s   cands=2 score=0.037
+  t    m22 s 24 12z  OK      64.0% of    268 KB    9.6s   cands=3 score=0.037
+  t    m29 s 24 12z  OK      64.0% of    269 KB    9.7s   cands=3 score=0.035
+  t    m36 s 24 12z  OK      64.0% of    268 KB    2.4s   cands=3 score=0.035
+  t    m43 s 24 12z  OK      64.0% of    268 KB    2.1s   cands=2 score=0.034
+  t    m50 s 24 12z  OK      64.0% of    268 KB    2.3s   cands=3 score=0.036
+  t    m01 s  0 12z  OK      64.0% of    274 KB    2.3s   cands=3 score=0.211
+  t    m01 s  6 12z  OK      64.0% of    272 KB    1.8s   cands=2 score=0.192
+  t    m01 s 72 12z  OK      64.0% of    267 KB    2.3s   cands=3 score=0.336
+  t    m01 s144 12z  WRONG   64.0% of    265 KB    2.2s  k=55 true=62 d=+0b cands=3 score=0.317
+  t    m01 s240 12z  OK      64.0% of    265 KB    2.0s   cands=3 score=0.355
+  t    m01 s360 12z  WRONG   63.6% of    363 KB    3.9s  k=52 true=59 d=+0b cands=3 score=0.300
+  t    m01 s 24 06z  OK      64.0% of    268 KB    2.9s   cands=2 score=0.106
+  t    m01 s 24 18z  OK      64.0% of    267 KB    2.8s   cands=2 score=0.102
+  u    m08 s 24 12z  OK      61.0% of    596 KB    6.5s   cands=4 score=0.149
+  u    m15 s 24 12z  OK      61.0% of    596 KB   15.4s   cands=3 score=0.162
+  u    m22 s 24 12z  OK      61.0% of    595 KB    8.4s   cands=3 score=0.161
+  u    m29 s 24 12z  OK      61.0% of    595 KB    6.2s   cands=3 score=0.157
+  u    m36 s 24 12z  OK      61.0% of    595 KB    7.0s   cands=2 score=0.143
+  u    m43 s 24 12z  OK      61.0% of    594 KB    5.9s   cands=2 score=0.146
+  u    m50 s 24 12z  OK      61.0% of    595 KB   13.6s   cands=3 score=0.152
+  u    m01 s  0 12z  OK      61.0% of    602 KB    6.8s   cands=3 score=0.624
+  u    m01 s  6 12z  OK      61.0% of    607 KB   15.0s   cands=2 score=0.553
+  u    m01 s 72 12z  OK      61.0% of    590 KB    6.9s   cands=2 score=0.717
+  u    m01 s144 12z  WRONG   61.0% of    583 KB   12.4s  k=69 true=60 d=+0b cands=2 score=0.717
+  u    m01 s240 12z  WRONG   61.0% of    582 KB    7.9s  k=69 true=62 d=+0b cands=2 score=0.769
+  u    m01 s360 12z  WRONG   61.0% of    586 KB    6.4s  k=53 true=59 d=+0b cands=4 score=0.746
+  u    m01 s 24 06z  OK      61.0% of    594 KB    7.1s   cands=2 score=0.307
+  u    m01 s 24 18z  OK      61.0% of    596 KB   11.1s   cands=2 score=0.331
+{'OK': 63, 'WRONG': 11} fetched mean 63.0%  time mean 8.1s max 97.3s

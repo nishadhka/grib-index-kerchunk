@@ -1,0 +1,40 @@
+
+===== 0p25  (errors in KB; 'unif' = assume bytes spread evenly over RSIs)
+-- band 40N..40S: RSI 70 .. 184
+   2t   n=15  start err: median    0.4 max    2.2 KB (0.7% of msg) | end err max    1.6 KB | unif start err max    4.1 KB  | msg 323 KB
+   tp   n=14  start err: median    1.6 max   17.3 KB (2.6% of msg) | end err max    4.0 KB | unif start err max   28.2 KB  | msg 430 KB
+   msl  n=15  start err: median    0.7 max    5.0 KB (0.9% of msg) | end err max    4.7 KB | unif start err max    6.5 KB  | msg 531 KB
+   t    n=15  start err: median    0.5 max    1.8 KB (0.7% of msg) | end err max    1.2 KB | unif start err max   10.5 KB  | msg 274 KB
+   u    n=15  start err: median    0.7 max    2.7 KB (0.5% of msg) | end err max    4.1 KB | unif start err max   18.4 KB  | msg 594 KB
+-- band 24N..12S: RSI 92 .. 144
+   2t   n=15  start err: median    0.4 max    2.2 KB (0.7% of msg) | end err max    1.3 KB | unif start err max   13.0 KB  | msg 323 KB
+   tp   n=14  start err: median    1.9 max   24.8 KB (3.7% of msg) | end err max   10.5 KB | unif start err max   23.1 KB  | msg 430 KB
+   msl  n=15  start err: median    0.5 max    6.3 KB (1.2% of msg) | end err max    5.4 KB | unif start err max    8.6 KB  | msg 531 KB
+   t    n=15  start err: median    0.5 max    2.4 KB (0.9% of msg) | end err max    2.0 KB | unif start err max    3.4 KB  | msg 274 KB
+   u    n=15  start err: median    0.9 max    3.1 KB (0.5% of msg) | end err max    4.2 KB | unif start err max   10.2 KB  | msg 594 KB
+-- 40N start error by what varies (max KB):
+   2t   members    0.4 | steps    2.2 | runs    0.7
+   tp   members    4.7 | steps   17.3 | runs    2.7
+   msl  members    0.7 | steps    5.0 | runs    0.9
+   t    members    0.8 | steps    1.8 | runs    1.2
+   u    members    1.0 | steps    2.7 | runs    0.1
+
+===== 0p1  (errors in KB; 'unif' = assume bytes spread evenly over RSIs)
+-- band 40N..40S: RSI 439 .. 1144
+   2t   n=15  start err: median    0.7 max    9.9 KB (0.7% of msg) | end err max    5.8 KB | unif start err max   12.4 KB  | msg 1396 KB
+   tp   n=14  start err: median    6.0 max   94.8 KB (2.8% of msg) | end err max   21.8 KB | unif start err max  188.2 KB  | msg 2013 KB
+   msl  n=15  start err: median    3.0 max   29.5 KB (1.2% of msg) | end err max   22.7 KB | unif start err max   31.8 KB  | msg 2342 KB
+   t    n=15  start err: median    1.2 max    8.3 KB (0.7% of msg) | end err max    7.0 KB | unif start err max   60.0 KB  | msg 1233 KB
+   u    n=15  start err: median    4.3 max   12.9 KB (0.5% of msg) | end err max   25.5 KB | unif start err max  113.9 KB  | msg 2862 KB
+-- band 24N..12S: RSI 580 .. 898
+   2t   n=15  start err: median    1.2 max   10.1 KB (0.7% of msg) | end err max    6.0 KB | unif start err max   57.1 KB  | msg 1396 KB
+   tp   n=14  start err: median    7.6 max  141.9 KB (4.2% of msg) | end err max   62.5 KB | unif start err max  136.3 KB  | msg 2013 KB
+   msl  n=15  start err: median    3.1 max   35.1 KB (1.5% of msg) | end err max   30.4 KB | unif start err max   52.3 KB  | msg 2342 KB
+   t    n=15  start err: median    2.2 max   10.2 KB (0.9% of msg) | end err max    9.8 KB | unif start err max   18.4 KB  | msg 1233 KB
+   u    n=15  start err: median    3.6 max   19.0 KB (0.7% of msg) | end err max   21.4 KB | unif start err max   61.9 KB  | msg 2862 KB
+-- 40N start error by what varies (max KB):
+   2t   members    1.2 | steps    9.9 | runs    2.7
+   tp   members    8.0 | steps   94.8 | runs   13.2
+   msl  members    2.7 | steps   29.5 | runs    4.6
+   t    members    2.9 | steps    8.3 | runs    4.6
+   u    members    5.6 | steps   12.9 | runs    2.5

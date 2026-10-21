@@ -274,14 +274,16 @@ to add this.
   (3,600 values at 0.1°, 1,440 at 0.25°). Every row covers the full 360°, so
   a longitude cut still has to decode whole rows. The bytes fetched depend on
   the latitude band alone.
-- **Someone has to read the full message once** to find the offsets. A single
-  consumer reading each field once gains nothing, because the index costs a
-  full read. The gain comes when the offsets are built **once, close to the
-  data**, for example by an AWS `us-east-1` job, where reads are fastest. Reads
-  from this open-data bucket cost the reader nothing from anywhere, so the
-  real cost of the full read is time and throttling headroom, not money. They are then published GIK-style for every downstream read
-  (ICPAC on GCP, cGAN runs, reprocessing, other users). Each later read then
-  costs ~25–35% of the message.
+- **Exact offsets need a full read of the message.** If they are built that
+  way, a single consumer reading each field once gains nothing, because the
+  index costs a full read. The gain comes when the offsets are built **once,
+  close to the data**, for example by an AWS `us-east-1` job, where reads are
+  fastest. Reads from this open-data bucket cost the reader nothing from
+  anywhere, so the real cost of the full read is time and throttling
+  headroom, not money. The offsets are then published GIK-style for every
+  downstream read (ICPAC on GCP, cGAN runs, reprocessing, other users). Each
+  later read then costs ~25–35% of the message. *Finding them without a full
+  read is tested below.*
 - **Size of the index.** All RSI offsets take 1,583 × 4 B = 6.2 KiB per 0.1°
   message (1.0 KiB at 0.25°). For one fixed region you only need the band's
   start and end, so the GIK reference becomes
@@ -290,6 +292,48 @@ to add this.
 - **Decoder.** gribberish cannot decode a partial message. This needs a small
   libaec-based codec (≈ the PoC's step 3, `aec_decode_range` per RSI) that
   the zarr/kerchunk reader calls for a "band" reference.
+
+### Finding the band offsets without a full read ([`lat-offset-test/`](lat-offset-test/README.md))
+
+This tests the GIK-style alternative: read **one reference message per
+variable in full**, once, when the template is built. For every other
+message use only:
+
+- its `.index` record;
+- a ~250 B header GET for the unpacking constants;
+- one GET of the predicted band ± a margin.
+
+The exact RSI start is then recovered from that window. Results for 40°N →
+40°S, five variables (`2t tp msl t850 u700`) and 74 messages per grid
+(20261020; members, steps 0–360 h, and the 06z/18z runs), checked against true
+offsets from full reads:
+
+1. **Prediction works.** Take the reference's offset profile as a fraction of
+   its length and scale it by each message's `.index` length. That predicts
+   the band start to within ~0.5–1% of the message (3–4% for `tp`).
+2. **Exact sync works: 147 of 148 messages.** A true RSI start decodes
+   smoothly and forms a self-consistent RSI chain. A slightly wrong start
+   falls back into step within one RSI, so hopping to the next reported start
+   lands exactly on a true one.
+3. **Naming the RSI fails across forecast steps.** v2 picks the RSI number by
+   aligning a 12-RSI decoded strip with the reference field:
+
+   | Message differs from the reference in… | 0.25° | 0.1° |
+   |---|---|---|
+   | member (+24 h) | **35 / 35** | **35 / 35** |
+   | run (06z/18z, +24 h) | **10 / 10** | **10 / 10** |
+   | forecast step (0, 6, 72, 144, 240, 360 h vs +24 h) | 18 / 29 | 7 / 29 |
+   | **total** | **63 / 74** | **52 / 74** |
+
+   At its own step it is exact every time (90 / 90). The next test (v3) is one
+   reference per forecast step, which is what GIK templates already provide:
+   one per (member, step).
+4. **Cost:** ~56–73% of the message is fetched (band + margin, against 52–62%
+   for the exact band). The bit search takes ~8 s per message in
+   Python + ctypes, which is a PoC figure, not a floor.
+
+This replaces the full read with about 60% of it, which matters most for
+consumers that read a field only once. It is still latitude-only.
 
 Herbie (and wgrib2 `-small_grib`) have the same limit as GIK today. They
 download the full message by `.idx` byte range and subset after decoding.

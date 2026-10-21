@@ -1,0 +1,21 @@
+0p25 band 40.0..-40.0: RSI 70..183
+  2t   m08 s 24 12z  OK      63.2% of    323 KB    7.3s   cands=1 score=0.027
+  2t   m15 s 24 12z  OK      63.2% of    324 KB    6.0s   cands=3 score=0.028
+  2t   m22 s 24 12z  OK      63.2% of    322 KB    7.1s   cands=1 score=0.029
+  2t   m29 s 24 12z  nosync  63.2% of    323 KB   24.0s  
+  2t   m36 s 24 12z  OK      63.2% of    325 KB   19.7s   cands=3 score=0.027
+  2t   m43 s 24 12z  OK      63.2% of    322 KB    5.4s   cands=1 score=0.026
+  2t   m50 s 24 12z  OK      63.2% of    322 KB   10.4s   cands=1 score=0.028
+  2t   m01 s  0 12z  nosync  63.2% of    327 KB   30.3s  
+  2t   m01 s  6 12z  OK-late 63.2% of    324 KB   19.7s   cands=3 score=0.126
+  2t   m01 s 72 12z  OK      63.2% of    324 KB    8.9s   cands=1 score=0.119
+  2t   m01 s144 12z  OK      63.2% of    322 KB   11.7s   cands=2 score=0.148
+  2t   m01 s240 12z  OK      63.2% of    326 KB   35.8s   cands=1 score=0.155
+  2t   m01 s360 12z  OK      63.2% of    324 KB   10.5s   cands=1 score=0.184
+  2t   m01 s 24 06z  OK      63.2% of    321 KB   18.2s   cands=1 score=0.111
+  2t   m01 s 24 18z  OK      63.2% of    323 KB    9.7s   cands=1 score=0.158
+  tp   m08 s 24 12z  WRONG   71.1% of    402 KB    7.4s  k=60 true=60 d=-1479b cands=1 score=5.370
+  tp   m15 s 24 12z  OK      71.1% of    400 KB    8.7s   cands=7 score=0.236
+  tp   m22 s 24 12z  OK      71.1% of    400 KB    3.8s   cands=1 score=0.154
+  tp   m29 s 24 12z  OK      71.1% of    401 KB    5.1s   cands=1 score=0.200
+  tp   m36 s 24 12z  WRONG   70.9% of    493 KB   11.4s  k=59 true=59 d=-511b cands=1 score=0.592

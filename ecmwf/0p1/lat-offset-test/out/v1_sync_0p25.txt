@@ -1,0 +1,76 @@
+0p25 band 40.0..-40.0: RSI 70..183
+  2t   m08 s 24 12z  OK d=+0b found_rough=0.0045 true_rough=0.0045 offs3=[np.int64(0), np.int64(13767), np.int64(27113)] fetched   204.1 KB + hdr of   323.0 KB (63.2%)  sync  7.26s
+  2t   m15 s 24 12z  OK d=+0b found_rough=0.0045 true_rough=0.0045 offs3=[np.int64(4), np.int64(13824), np.int64(27428)] fetched   204.8 KB + hdr of   324.2 KB (63.2%)  sync  5.16s
+  2t   m22 s 24 12z  OK d=+0b found_rough=0.0047 true_rough=0.0047 offs3=[np.int64(4), np.int64(13687), np.int64(27448)] fetched   203.7 KB + hdr of   322.3 KB (63.2%)  sync 22.41s
+  2t   m29 s 24 12z  nosync   fetched   203.8 KB + hdr of   322.5 KB (63.2%)  sync 23.99s
+  2t   m36 s 24 12z  OK d=+0b found_rough=0.0041 true_rough=0.0041 offs3=[np.int64(4), np.int64(13404), np.int64(26536)] fetched   205.3 KB + hdr of   324.9 KB (63.2%)  sync  2.37s
+  2t   m43 s 24 12z  OK d=+0b found_rough=0.0038 true_rough=0.0038 offs3=[np.int64(4), np.int64(12522), np.int64(25563)] fetched   203.5 KB + hdr of   322.1 KB (63.2%)  sync  2.41s
+  2t   m50 s 24 12z  OK d=+0b found_rough=0.0045 true_rough=0.0045 offs3=[np.int64(0), np.int64(13734), np.int64(27103)] fetched   203.6 KB + hdr of   322.3 KB (63.2%)  sync  7.18s
+  2t   m01 s  0 12z  nosync   fetched   206.6 KB + hdr of   327.1 KB (63.2%)  sync 25.61s
+  2t   m01 s  6 12z  OK d=+0b found_rough=0.0047 true_rough=0.0047 offs3=[np.int64(4), np.int64(13132), np.int64(26540)] late fetched   204.4 KB + hdr of   323.6 KB (63.2%)  sync 21.28s
+  2t   m01 s 72 12z  OK d=+0b found_rough=0.0046 true_rough=0.0046 offs3=[np.int64(0), np.int64(13799), np.int64(27502)] fetched   204.5 KB + hdr of   323.7 KB (63.2%)  sync 12.97s
+  2t   m01 s144 12z  OK d=+0b found_rough=0.0045 true_rough=0.0045 offs3=[np.int64(0), np.int64(13812), np.int64(27741)] fetched   203.3 KB + hdr of   321.7 KB (63.2%)  sync  7.57s
+  2t   m01 s240 12z  OK d=+0b found_rough=0.0036 true_rough=0.0036 offs3=[np.int64(4), np.int64(12590), np.int64(25558)] fetched   205.7 KB + hdr of   325.6 KB (63.2%)  sync  3.36s
+  2t   m01 s360 12z  OK d=+0b found_rough=0.0043 true_rough=0.0043 offs3=[np.int64(4), np.int64(13523), np.int64(27136)] fetched   204.5 KB + hdr of   323.7 KB (63.2%)  sync 69.99s
+  2t   m01 s 24 06z  OK d=+0b found_rough=0.0040 true_rough=0.0040 offs3=[np.int64(0), np.int64(13082), np.int64(26305)] fetched   202.9 KB + hdr of   321.1 KB (63.2%)  sync  1.82s
+  2t   m01 s 24 18z  OK d=+0b found_rough=0.0044 true_rough=0.0044 offs3=[np.int64(4), np.int64(13305), np.int64(27015)] fetched   204.1 KB + hdr of   323.1 KB (63.2%)  sync 12.06s
+  tp   m08 s 24 12z  WRONG(k=60,true_at=60) d=-1479b found_rough=0.0035 true_rough=0.0010 offs3=[np.int64(0), np.int64(13391), np.int64(25695)] fetched   286.0 KB + hdr of   402.1 KB (71.1%)  sync  5.78s
+  tp   m15 s 24 12z  OK d=+0b found_rough=0.0013 true_rough=0.0013 offs3=[np.int64(0), np.int64(12345), np.int64(25557)] fetched   284.5 KB + hdr of   400.0 KB (71.1%)  sync  6.19s
+  tp   m22 s 24 12z  OK d=+0b found_rough=0.0007 true_rough=0.0007 offs3=[np.int64(0), np.int64(11166), np.int64(22793)] fetched   284.2 KB + hdr of   399.6 KB (71.1%)  sync  2.95s
+  tp   m29 s 24 12z  OK d=+0b found_rough=0.0008 true_rough=0.0008 offs3=[np.int64(4), np.int64(11807), np.int64(23881)] fetched   285.5 KB + hdr of   401.4 KB (71.1%)  sync  4.00s
+  tp   m36 s 24 12z  WRONG(k=59,true_at=59) d=-511b found_rough=0.0024 true_rough=0.0017 offs3=[np.int64(4), np.int64(15378), np.int64(30210)] fetched   349.7 KB + hdr of   493.0 KB (70.9%)  sync 40.01s
+  tp   m43 s 24 12z  OK d=+0b found_rough=0.0010 true_rough=0.0010 offs3=[np.int64(4), np.int64(12051), np.int64(24181)] fetched   283.8 KB + hdr of   399.1 KB (71.1%)  sync  4.48s
+  tp   m50 s 24 12z  OK d=+0b found_rough=0.0007 true_rough=0.0007 offs3=[np.int64(4), np.int64(10973), np.int64(22445)] fetched   286.3 KB + hdr of   402.6 KB (71.1%)  sync  2.11s
+  tp   m01 s  6 12z  WRONG(k=61,true_at=62) d=+1787b found_rough=0.0191 true_rough=0.0004 offs3=[np.int64(4), np.int64(8501), np.int64(13825)] fetched   188.8 KB + hdr of   263.6 KB (71.6%)  sync  9.46s
+  tp   m01 s 72 12z  OK d=+0b found_rough=0.0015 true_rough=0.0015 offs3=[np.int64(0), np.int64(16622), np.int64(33675)] fetched   315.1 KB + hdr of   443.6 KB (71.0%)  sync 12.98s
+  tp   m01 s144 12z  WRONG(k=69,true_at=58) d=+8366b found_rough=0.0729 true_rough=0.0018 offs3=[np.int64(0), np.int64(20880), np.int64(34786)] fetched   384.6 KB + hdr of   542.8 KB (70.9%)  sync 16.24s
+  tp   m01 s240 12z  WRONG(k=62,true_at=55) d=-2536b found_rough=0.0248 true_rough=0.0022 offs3=[np.int64(0), np.int64(23635), np.int64(41467)] fetched   431.7 KB + hdr of   610.0 KB (70.8%)  sync  9.62s
+  tp   m01 s360 12z  WRONG(k=61,true_at=54) d=+0b found_rough=0.0026 true_rough=0.0026 offs3=[np.int64(0), np.int64(22168), np.int64(45339)] fetched   474.7 KB + hdr of   671.2 KB (70.7%)  sync 38.76s
+  tp   m01 s 24 06z  OK d=+0b found_rough=0.0004 true_rough=0.0004 offs3=[np.int64(0), np.int64(8793), np.int64(17871)] fetched   221.3 KB + hdr of   310.0 KB (71.4%)  sync  2.60s
+  tp   m01 s 24 18z  OK d=+0b found_rough=0.0005 true_rough=0.0005 offs3=[np.int64(4), np.int64(10457), np.int64(20958)] fetched   223.0 KB + hdr of   312.4 KB (71.4%)  sync  6.79s
+  msl  m08 s 24 12z  OK d=+0b found_rough=0.0015 true_rough=0.0015 offs3=[np.int64(4), np.int64(19995), np.int64(40157)] fetched   299.2 KB + hdr of   531.3 KB (56.3%)  sync  7.82s
+  msl  m15 s 24 12z  OK d=+0b found_rough=0.0015 true_rough=0.0015 offs3=[np.int64(4), np.int64(19955), np.int64(39992)] fetched   299.2 KB + hdr of   531.3 KB (56.3%)  sync  3.81s
+  msl  m22 s 24 12z  OK d=+0b found_rough=0.0014 true_rough=0.0014 offs3=[np.int64(0), np.int64(19824), np.int64(39318)] fetched   299.3 KB + hdr of   531.6 KB (56.3%)  sync 22.38s
+  msl  m29 s 24 12z  OK d=+0b found_rough=0.0015 true_rough=0.0015 offs3=[np.int64(4), np.int64(20074), np.int64(39922)] fetched   299.2 KB + hdr of   531.4 KB (56.3%)  sync 16.30s
+  msl  m36 s 24 12z  OK d=+0b found_rough=0.0015 true_rough=0.0015 offs3=[np.int64(4), np.int64(20015), np.int64(40052)] fetched   299.7 KB + hdr of   532.1 KB (56.3%)  sync  4.32s
+  msl  m43 s 24 12z  OK d=+0b found_rough=0.0016 true_rough=0.0016 offs3=[np.int64(4), np.int64(19914), np.int64(40063)] fetched   299.5 KB + hdr of   531.7 KB (56.3%)  sync 19.60s
+  msl  m50 s 24 12z  OK d=+0b found_rough=0.0015 true_rough=0.0015 offs3=[np.int64(0), np.int64(20110), np.int64(40280)] fetched   299.2 KB + hdr of   531.3 KB (56.3%)  sync 11.01s
+  msl  m01 s  0 12z  WRONG(k=69,true_at=65) d=+0b found_rough=0.0014 true_rough=0.0014 offs3=[np.int64(4), np.int64(19366), np.int64(39042)] fetched   301.2 KB + hdr of   534.9 KB (56.3%)  sync 14.61s
+  msl  m01 s  6 12z  OK d=+0b found_rough=0.0015 true_rough=0.0015 offs3=[np.int64(4), np.int64(19610), np.int64(39391)] fetched   302.5 KB + hdr of   537.3 KB (56.3%)  sync  6.55s
+  msl  m01 s 72 12z  WRONG(k=63,true_at=60) d=+0b found_rough=0.0016 true_rough=0.0016 offs3=[np.int64(0), np.int64(20970), np.int64(41832)] fetched   300.7 KB + hdr of   534.0 KB (56.3%)  sync 13.34s
+  msl  m01 s144 12z  WRONG(k=71,true_at=66) d=+0b found_rough=0.0015 true_rough=0.0015 offs3=[np.int64(4), np.int64(19742), np.int64(38914)] late fetched   294.8 KB + hdr of   523.4 KB (56.3%)  sync 19.32s
+  msl  m01 s240 12z  WRONG(k=69,true_at=68) d=+0b found_rough=0.0015 true_rough=0.0015 offs3=[np.int64(4), np.int64(20213), np.int64(40331)] fetched   295.3 KB + hdr of   524.3 KB (56.3%)  sync 19.82s
+  msl  m01 s360 12z  WRONG(k=66,true_at=65) d=+0b found_rough=0.0019 true_rough=0.0019 offs3=[np.int64(4), np.int64(21469), np.int64(43253)] fetched   299.2 KB + hdr of   531.4 KB (56.3%)  sync 17.12s
+  msl  m01 s 24 06z  OK d=+0b found_rough=0.0014 true_rough=0.0014 offs3=[np.int64(4), np.int64(19854), np.int64(39381)] fetched   298.5 KB + hdr of   530.0 KB (56.3%)  sync 25.64s
+  msl  m01 s 24 18z  OK d=+0b found_rough=0.0016 true_rough=0.0016 offs3=[np.int64(0), np.int64(19999), np.int64(40085)] fetched   299.5 KB + hdr of   531.8 KB (56.3%)  sync 17.81s
+  t    m08 s 24 12z  OK d=+0b found_rough=0.0018 true_rough=0.0018 offs3=[np.int64(4), np.int64(9930), np.int64(20023)] fetched   172.6 KB + hdr of   269.8 KB (64.0%)  sync  4.60s
+  t    m15 s 24 12z  OK d=+0b found_rough=0.0019 true_rough=0.0019 offs3=[np.int64(4), np.int64(9984), np.int64(20156)] fetched   171.5 KB + hdr of   268.1 KB (64.0%)  sync  4.47s
+  t    m22 s 24 12z  OK d=+0b found_rough=0.0020 true_rough=0.0020 offs3=[np.int64(4), np.int64(10449), np.int64(21062)] fetched   171.5 KB + hdr of   268.0 KB (64.0%)  sync  5.82s
+  t    m29 s 24 12z  OK d=+0b found_rough=0.0020 true_rough=0.0020 offs3=[np.int64(0), np.int64(10429), np.int64(21101)] fetched   172.2 KB + hdr of   269.2 KB (64.0%)  sync  7.81s
+  t    m36 s 24 12z  OK d=+0b found_rough=0.0018 true_rough=0.0018 offs3=[np.int64(0), np.int64(10333), np.int64(20485)] fetched   171.8 KB + hdr of   268.5 KB (64.0%)  sync  6.04s
+  t    m43 s 24 12z  OK d=+0b found_rough=0.0020 true_rough=0.0020 offs3=[np.int64(0), np.int64(10790), np.int64(21133)] fetched   171.7 KB + hdr of   268.3 KB (64.0%)  sync  8.12s
+  t    m50 s 24 12z  OK d=+0b found_rough=0.0020 true_rough=0.0020 offs3=[np.int64(4), np.int64(10358), np.int64(21094)] fetched   171.5 KB + hdr of   268.1 KB (64.0%)  sync  9.96s
+  t    m01 s  0 12z  OK d=+0b found_rough=0.0019 true_rough=0.0019 offs3=[np.int64(0), np.int64(10108), np.int64(20496)] fetched   175.3 KB + hdr of   274.1 KB (64.0%)  sync 10.70s
+  t    m01 s  6 12z  OK d=+0b found_rough=0.0019 true_rough=0.0019 offs3=[np.int64(4), np.int64(10694), np.int64(21376)] late fetched   173.9 KB + hdr of   271.9 KB (64.0%)  sync 21.60s
+  t    m01 s 72 12z  OK d=+0b found_rough=0.0019 true_rough=0.0019 offs3=[np.int64(4), np.int64(10587), np.int64(20917)] fetched   170.6 KB + hdr of   266.6 KB (64.0%)  sync  3.96s
+  t    m01 s144 12z  OK d=+0b found_rough=0.0018 true_rough=0.0018 offs3=[np.int64(0), np.int64(9735), np.int64(19715)] fetched   169.3 KB + hdr of   264.6 KB (64.0%)  sync  8.89s
+  t    m01 s240 12z  WRONG(k=55,true_at=62) d=+0b found_rough=0.0019 true_rough=0.0019 offs3=[np.int64(4), np.int64(10042), np.int64(20224)] fetched   169.8 KB + hdr of   265.3 KB (64.0%)  sync  2.66s
+  t    m01 s360 12z  WRONG(k=68,true_at=63) d=-815b found_rough=0.0071 true_rough=0.0039 offs3=[np.int64(4), np.int64(14656), np.int64(28800)] fetched   231.0 KB + hdr of   363.3 KB (63.6%)  sync  6.01s
+  t    m01 s 24 06z  OK d=+0b found_rough=0.0017 true_rough=0.0017 offs3=[np.int64(0), np.int64(9519), np.int64(19265)] fetched   171.5 KB + hdr of   268.1 KB (64.0%)  sync  8.47s
+  t    m01 s 24 18z  OK d=+0b found_rough=0.0020 true_rough=0.0020 offs3=[np.int64(4), np.int64(10987), np.int64(21334)] fetched   170.7 KB + hdr of   266.8 KB (64.0%)  sync  7.96s
+  u    m08 s 24 12z  WRONG(k=60,true_at=60) d=-497b found_rough=0.0085 true_rough=0.0035 offs3=[np.int64(4), np.int64(21242), np.int64(42354)] fetched   363.7 KB + hdr of   596.4 KB (61.0%)  sync  4.10s
+  u    m15 s 24 12z  OK d=+0b found_rough=0.0035 true_rough=0.0035 offs3=[np.int64(0), np.int64(20843), np.int64(42129)] fetched   363.3 KB + hdr of   595.7 KB (61.0%)  sync  5.47s
+  u    m22 s 24 12z  OK d=+0b found_rough=0.0039 true_rough=0.0039 offs3=[np.int64(4), np.int64(21709), np.int64(43591)] fetched   362.9 KB + hdr of   595.1 KB (61.0%)  sync 13.58s
+  u    m29 s 24 12z  OK d=+0b found_rough=0.0031 true_rough=0.0031 offs3=[np.int64(0), np.int64(20890), np.int64(41697)] late fetched   362.7 KB + hdr of   594.8 KB (61.0%)  sync 42.95s
+  u    m36 s 24 12z  OK d=+0b found_rough=0.0039 true_rough=0.0039 offs3=[np.int64(0), np.int64(21354), np.int64(42942)] fetched   363.0 KB + hdr of   595.3 KB (61.0%)  sync 13.60s
+  u    m43 s 24 12z  OK d=+0b found_rough=0.0036 true_rough=0.0036 offs3=[np.int64(0), np.int64(20848), np.int64(42078)] fetched   362.3 KB + hdr of   594.1 KB (61.0%)  sync  6.99s
+  u    m50 s 24 12z  OK d=+0b found_rough=0.0035 true_rough=0.0035 offs3=[np.int64(0), np.int64(21355), np.int64(42714)] fetched   363.0 KB + hdr of   595.2 KB (61.0%)  sync  8.57s
+  u    m01 s  0 12z  OK d=+0b found_rough=0.0037 true_rough=0.0037 offs3=[np.int64(0), np.int64(21912), np.int64(44010)] late fetched   367.1 KB + hdr of   602.0 KB (61.0%)  sync 36.67s
+  u    m01 s  6 12z  OK d=+0b found_rough=0.0034 true_rough=0.0034 offs3=[np.int64(0), np.int64(21553), np.int64(43016)] fetched   370.3 KB + hdr of   607.3 KB (61.0%)  sync 19.89s
+  u    m01 s 72 12z  WRONG(k=76,true_at=69) d=+0b found_rough=0.0035 true_rough=0.0035 offs3=[np.int64(0), np.int64(21610), np.int64(43022)] late fetched   359.8 KB + hdr of   589.9 KB (61.0%)  sync 26.65s
+  u    m01 s144 12z  WRONG(k=72,true_at=66) d=+0b found_rough=0.0028 true_rough=0.0028 offs3=[np.int64(0), np.int64(20457), np.int64(40672)] late fetched   355.6 KB + hdr of   582.9 KB (61.0%)  sync 18.08s
+  u    m01 s240 12z  WRONG(k=70,true_at=69) d=+0b found_rough=0.0037 true_rough=0.0037 offs3=[np.int64(4), np.int64(21710), np.int64(43387)] fetched   355.0 KB + hdr of   582.0 KB (61.0%)  sync 26.22s
+  u    m01 s360 12z  WRONG(k=54,true_at=60) d=+0b found_rough=0.0035 true_rough=0.0035 offs3=[np.int64(4), np.int64(21397), np.int64(43033)] fetched   357.2 KB + hdr of   585.6 KB (61.0%)  sync  5.16s
+  u    m01 s 24 06z  OK d=+0b found_rough=0.0038 true_rough=0.0038 offs3=[np.int64(4), np.int64(22050), np.int64(44099)] fetched   362.5 KB + hdr of   594.5 KB (61.0%)  sync 18.43s
+  u    m01 s 24 18z  OK d=+0b found_rough=0.0035 true_rough=0.0035 offs3=[np.int64(4), np.int64(21611), np.int64(43371)] late fetched   363.3 KB + hdr of   595.8 KB (61.0%)  sync 46.10s
+{'OK': 54, 'nosync': 2, 'WRONG': 18}

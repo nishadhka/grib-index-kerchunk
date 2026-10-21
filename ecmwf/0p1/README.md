@@ -358,6 +358,24 @@ offsets from full reads:
 This replaces the full read with about 60% of it, which matters most for
 consumers that read a field only once. It is still latitude-only.
 
+### Band sidecars for GIK pars ([`lat-band-par/`](lat-band-par/README.md))
+
+This makes the band offsets **reusable**: `augment_par.py` writes a
+`<par>.rsi.parquet` sidecar (RSI bit offsets plus unpacking constants, ~1 KB
+per message), and `read_par_band.py` reads any latitude band from par +
+sidecar.
+
+Tested on 20261019 00z, 0.25°, `2t`, member 1, all 85 steps. All were
+**bit-exact** against eccodes:
+
+- 40°N–40°S from **49.8%** of the bytes;
+- the `ea-sw-io40` box (lat 40→−40, lon 15→80) from 49.6%;
+- 24°N–12°S from **23.3%**.
+
+The realization already reads every message in full, so it can write the
+sidecar as a by-product. libaec decode with offset capture takes 9.4 ms per
+message, against 19 ms for the gribberish decode used now.
+
 Herbie (and wgrib2 `-small_grib`) have the same limit as GIK today. They
 download the full message by `.idx` byte range and subset after decoding.
 Server-side area cropping exists only in ECMWF's own services (MARS /

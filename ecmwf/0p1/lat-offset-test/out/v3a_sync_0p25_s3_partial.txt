@@ -1,0 +1,71 @@
+0p25 band 40.0..-40.0: RSI 70..183  reference 20261020:same:2 at each step
+  2t   m01 s 24 12z  OK      63.1% of    325 KB    3.8s   cands=3 score=0.029 pred_err=0.1KB
+  2t   m08 s 24 12z  OK      63.1% of    323 KB    2.3s   cands=2 score=0.027 pred_err=0.5KB
+  2t   m15 s 24 12z  OK      63.1% of    324 KB    4.1s   cands=3 score=0.027 pred_err=0.0KB
+  2t   m22 s 24 12z  OK      63.1% of    322 KB    3.4s   cands=3 score=0.024 pred_err=0.4KB
+  2t   m29 s 24 12z  OK      63.1% of    323 KB    3.2s   cands=3 score=0.026 pred_err=0.1KB
+  2t   m36 s 24 12z  OK      63.1% of    325 KB    2.3s   cands=3 score=0.028 pred_err=0.4KB
+  2t   m43 s 24 12z  OK      63.1% of    322 KB    4.4s   cands=3 score=0.027 pred_err=0.3KB
+  2t   m50 s 24 12z  OK      63.1% of    322 KB    6.6s   cands=3 score=0.029 pred_err=0.2KB
+  2t   m01 s  0 12z  OK      63.1% of    327 KB    7.9s   cands=3 score=0.026 pred_err=0.3KB
+  2t   m01 s  6 12z  OK      63.2% of    324 KB   57.8s   cands=3 score=0.023 pred_err=0.2KB
+  2t   m01 s 72 12z  OK      63.2% of    324 KB    4.5s   cands=3 score=0.043 pred_err=0.2KB
+  2t   m01 s144 12z  OK      63.2% of    322 KB   36.3s   cands=3 score=0.062 pred_err=0.2KB
+  2t   m01 s240 12z  OK      63.2% of    326 KB   17.9s   cands=3 score=0.128 pred_err=0.1KB
+  2t   m01 s360 12z  OK      63.2% of    324 KB    5.0s   cands=3 score=0.144 pred_err=0.0KB
+  2t   m01 s 24 06z  OK      62.7% of    321 KB    4.5s   cands=3 score=0.028 pred_err=0.0KB
+  2t   m01 s 24 18z  OK      63.3% of    323 KB    6.1s   cands=2 score=0.028 pred_err=1.3KB
+  tp   m01 s 24 12z  OK      70.9% of    399 KB    6.3s   cands=12 score=0.175 pred_err=0.7KB
+  tp   m08 s 24 12z  OK      70.9% of    402 KB   34.5s   cands=4 score=0.195 pred_err=0.4KB
+  tp   m15 s 24 12z  OK      70.9% of    400 KB    6.6s   cands=3 score=0.208 pred_err=0.1KB
+  tp   m22 s 24 12z  OK      70.9% of    400 KB    4.9s   cands=3 score=0.172 pred_err=0.1KB
+  tp   m29 s 24 12z  OK      70.9% of    401 KB    2.9s   cands=3 score=0.171 pred_err=0.2KB
+  tp   m36 s 24 12z  OK      70.7% of    493 KB   11.9s   cands=3 score=0.165 pred_err=3.8KB
+  tp   m43 s 24 12z  OK      70.9% of    399 KB    3.8s   cands=2 score=0.190 pred_err=0.5KB
+  tp   m50 s 24 12z  OK      70.9% of    403 KB   12.9s   cands=3 score=0.172 pred_err=0.2KB
+  tp   m01 s  6 12z  OK      72.5% of    264 KB    4.2s   cands=9 score=0.121 pred_err=2.3KB
+  tp   m01 s 72 12z  OK      71.5% of    444 KB   20.3s   cands=4 score=0.257 pred_err=3.2KB
+  tp   m01 s144 12z  OK      70.6% of    543 KB   11.9s   cands=6 score=0.277 pred_err=5.5KB
+  tp   m01 s240 12z  OK      70.5% of    610 KB   68.4s   cands=2 score=0.324 pred_err=7.2KB
+  tp   m01 s360 12z  OK      69.7% of    671 KB    9.4s   cands=3 score=0.443 pred_err=5.3KB
+  tp   m01 s 24 06z  OK      71.4% of    310 KB    5.6s   cands=11 score=0.221 pred_err=2.5KB
+  tp   m01 s 24 18z  OK      71.0% of    312 KB    3.2s   cands=3 score=0.219 pred_err=1.9KB
+  msl  m01 s 24 12z  OK      56.4% of    533 KB    7.6s   cands=6 score=0.039 pred_err=0.4KB
+  msl  m08 s 24 12z  OK      56.4% of    531 KB    5.8s   cands=3 score=0.045 pred_err=0.2KB
+  msl  m15 s 24 12z  OK      56.4% of    531 KB    7.6s   cands=2 score=0.043 pred_err=0.6KB
+  msl  m22 s 24 12z  OK      56.4% of    532 KB   69.4s   cands=3 score=0.044 pred_err=1.2KB
+  msl  m29 s 24 12z  OK      56.4% of    531 KB    8.7s   cands=3 score=0.044 pred_err=0.6KB
+  msl  m36 s 24 12z  OK      56.4% of    532 KB    4.8s   cands=4 score=0.044 pred_err=1.0KB
+  msl  m43 s 24 12z  OK      56.4% of    532 KB    8.9s   cands=3 score=0.044 pred_err=0.2KB
+  msl  m50 s 24 12z  OK      56.4% of    531 KB    6.0s   cands=3 score=0.045 pred_err=0.5KB
+  msl  m01 s  0 12z  OK      56.4% of    535 KB   22.3s   cands=3 score=0.019 pred_err=0.0KB
+  msl  m01 s  6 12z  OK      56.5% of    537 KB    7.7s   cands=4 score=0.023 pred_err=0.0KB
+  msl  m01 s 72 12z  OK      56.0% of    534 KB   15.5s   cands=3 score=0.107 pred_err=1.9KB
+  msl  m01 s144 12z  OK      56.8% of    523 KB    8.6s   cands=2 score=0.180 pred_err=1.5KB
+  msl  m01 s240 12z  WRONG   56.4% of    524 KB    8.4s  k=66 true=63 d=+0b cands=2 score=0.481 pred_err=5.5KB
+  msl  m01 s360 12z  WRONG   56.8% of    531 KB    7.7s  k=77 true=62 d=+0b cands=2 score=0.386 pred_err=2.0KB
+  msl  m01 s 24 06z  OK      55.9% of    530 KB    7.3s   cands=3 score=0.048 pred_err=0.3KB
+  msl  m01 s 24 18z  OK      56.3% of    532 KB    6.5s   cands=2 score=0.043 pred_err=1.6KB
+  t    m01 s 24 12z  OK      64.2% of    269 KB   37.2s   cands=2 score=0.039 pred_err=0.7KB
+  t    m08 s 24 12z  OK      64.2% of    270 KB    9.2s   cands=3 score=0.037 pred_err=0.1KB
+  t    m15 s 24 12z  OK      64.2% of    268 KB    2.1s   cands=2 score=0.036 pred_err=0.3KB
+  t    m22 s 24 12z  OK      64.2% of    268 KB    6.4s   cands=2 score=0.039 pred_err=0.5KB
+  t    m29 s 24 12z  OK      64.2% of    269 KB   17.4s   cands=3 score=0.035 pred_err=0.1KB
+  t    m36 s 24 12z  OK      64.2% of    268 KB   63.5s   cands=2 score=0.039 pred_err=0.4KB
+  t    m43 s 24 12z  OK      64.2% of    268 KB    3.9s   cands=2 score=0.039 pred_err=0.1KB
+  t    m50 s 24 12z  OK      64.2% of    268 KB    4.0s   cands=3 score=0.038 pred_err=0.3KB
+  t    m01 s  0 12z  OK      64.1% of    274 KB   13.3s   cands=3 score=0.036 pred_err=0.1KB
+  t    m01 s  6 12z  OK      63.8% of    272 KB    4.3s   cands=2 score=0.035 pred_err=0.3KB
+  t    m01 s 72 12z  OK      63.7% of    267 KB   64.9s   cands=3 score=0.083 pred_err=1.3KB
+  t    m01 s144 12z  OK      63.9% of    265 KB    5.7s   cands=3 score=0.130 pred_err=0.1KB
+  t    m01 s240 12z  OK      64.6% of    265 KB    2.2s   cands=3 score=0.307 pred_err=0.7KB
+  t    m01 s360 12z  OK      64.2% of    363 KB    7.7s   cands=3 score=0.323 pred_err=1.9KB
+  t    m01 s 24 06z  OK      63.7% of    268 KB    9.3s   cands=2 score=0.040 pred_err=0.2KB
+  t    m01 s 24 18z  OK      63.9% of    267 KB   18.4s   cands=2 score=0.042 pred_err=1.3KB
+Traceback (most recent call last):
+  File "/tmp/claude-1000/-home-ubuntu-grib-index-kerchunk-ecmwf-0p1/8c902d9b-e3a5-4889-82bf-aa19c936e0e1/scratchpad/sync_band3.py", line 167, in <module>
+    buf = get(key + ".grib2", o + K["d0"] + w0, o + K["d0"] + w1 - 1)   # band GET
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-1000/-home-ubuntu-grib-index-kerchunk-ecmwf-0p1/8c902d9b-e3a5-4889-82bf-aa19c936e0e1/scratchpad/lib/aecx.py", line 38, in get
+    raise RuntimeError("S3 kept throttling")
+RuntimeError: S3 kept throttling

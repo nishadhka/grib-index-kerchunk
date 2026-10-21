@@ -1,0 +1,18 @@
+0p25 band 40.0..-40.0: RSI 70..183  reference 20261020:same:2 at each step
+  u    m01 s 24 12z  OK      61.2% of    597 KB    9.4s   cands=4 score=0.164 pred_err=0.3KB
+  u    m08 s 24 12z  OK      61.2% of    596 KB    7.2s   cands=4 score=0.153 pred_err=0.5KB
+  u    m15 s 24 12z  OK      61.2% of    596 KB    7.8s   cands=3 score=0.156 pred_err=0.2KB
+  u    m22 s 24 12z  OK      61.2% of    595 KB    7.7s   cands=3 score=0.149 pred_err=0.5KB
+  u    m29 s 24 12z  OK      61.2% of    595 KB    6.8s   cands=3 score=0.152 pred_err=0.7KB
+  u    m36 s 24 12z  OK      61.2% of    595 KB    7.8s   cands=2 score=0.154 pred_err=0.3KB
+  u    m43 s 24 12z  OK      61.2% of    594 KB    6.5s   cands=2 score=0.160 pred_err=0.7KB
+  u    m50 s 24 12z  OK      61.2% of    595 KB    7.2s   cands=3 score=0.157 pred_err=0.4KB
+  u    m01 s  0 12z  OK      61.4% of    602 KB    7.6s   cands=3 score=0.099 pred_err=0.1KB
+  u    m01 s  6 12z  OK      61.6% of    607 KB    7.9s   cands=2 score=0.110 pred_err=0.2KB
+  u    m01 s 72 12z  OK      61.1% of    590 KB    9.4s   cands=3 score=0.255 pred_err=1.3KB
+  u    m01 s144 12z  OK      62.1% of    583 KB    9.3s   cands=2 score=0.488 pred_err=1.8KB
+  u    m01 s240 12z  WRONG   61.5% of    582 KB    8.4s  k=63 true=62 d=+0b cands=3 score=0.681 pred_err=0.5KB
+  u    m01 s360 12z  WRONG   61.2% of    586 KB    9.2s  k=58 true=64 d=+0b cands=3 score=0.794 pred_err=4.8KB
+  u    m01 s 24 06z  OK      60.8% of    594 KB    9.6s   cands=2 score=0.152 pred_err=0.2KB
+  u    m01 s 24 18z  OK      61.3% of    596 KB    7.6s   cands=2 score=0.179 pred_err=1.6KB
+{'OK': 14, 'WRONG': 2} fetched mean 61.3%  time mean 8.1s max 9.6s

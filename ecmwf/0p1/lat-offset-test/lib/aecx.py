@@ -2,7 +2,13 @@
 import ctypes, glob, json, os, time, urllib.error, urllib.request
 import numpy as np, eccodes, imagecodecs
 
-H = "https://ecmwf-forecasts.s3.amazonaws.com/"
+# Byte source. gs://ecmwf-open-data mirrors s3://ecmwf-forecasts key for key and
+# byte for byte (md5 checked on a 0p1 message, 2026-10-21; on 0p25 2026-10-17
+# in daily-route-crma GCS_AS_CHUNK_SOURCE.md), so offsets from .index carry over.
+# GCS starts 2023-07-12. Default stays S3, as with --chunk-source in stage 2.
+H = {"s3": "https://ecmwf-forecasts.s3.amazonaws.com/",
+     "gcs": "https://storage.googleapis.com/ecmwf-open-data/"}[
+    os.environ.get("GIK_CHUNK_SOURCE", "s3")]
 lib = ctypes.CDLL(glob.glob(os.path.join(os.path.dirname(imagecodecs.__file__),
                                          "..", "imagecodecs.libs", "libaec*"))[0])
 
@@ -33,7 +39,7 @@ def get(key, a=None, b=None):
             return urllib.request.urlopen(urllib.request.Request(H + key, headers=hdr),
                                           timeout=60).read()
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
-            if getattr(e, "code", 503) not in (503, 500): raise
+            if getattr(e, "code", 503) not in (503, 500, 429): raise
             time.sleep(min(2 ** i, 30))
     raise RuntimeError("S3 kept throttling")
 

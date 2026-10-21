@@ -325,10 +325,25 @@ offsets from full reads:
    | forecast step (0, 6, 72, 144, 240, 360 h vs +24 h) | 18 / 29 | 7 / 29 |
    | **total** | **63 / 74** | **52 / 74** |
 
-   At its own step it is exact every time (90 / 90). The next test (v3) is one
-   reference per forecast step, which is what GIK templates already provide:
-   one per (member, step).
-4. **Cost:** ~56–73% of the message is fetched (band + margin, against 52–62%
+   At its own step it is exact every time (90 / 90). **v3 uses one reference
+   per forecast step**, which is how GIK templates are already built (one per
+   member and step):
+
+   | v3 reference at the message's own step | 0.25° | 0.1° |
+   |---|---|---|
+   | same date, other member (v3a) | **75 / 79** | **73 / 79** |
+   | next date, other run (v3b, the template case) | **73 / 79** | not yet published |
+
+   - Members and runs are exact in every case: 150 / 150.
+   - All remaining failures are long leads (144–360 h) of `msl`, `t` and `u`,
+     and 15 of those 16 still found the exact bit.
+   - With a per-step reference the prediction itself is within ~0.4–1.9 KB
+     (median), about one RSI. So v4 will weight the choice by distance from
+     the predicted RSI.
+4. **Source:** `gs://ecmwf-open-data` mirrors `s3://ecmwf-forecasts` byte for
+   byte, `ifs/0p1/` included (sizes and md5 checked). The tests switch to it
+   with `GIK_CHUNK_SOURCE=gcs` when S3 throttles.
+5. **Cost:** ~55–74% of the message is fetched (band + margin, against 52–62%
    for the exact band). The bit search takes ~8 s per message in
    Python + ctypes, which is a PoC figure, not a floor.
 

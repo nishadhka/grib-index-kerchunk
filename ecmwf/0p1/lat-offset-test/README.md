@@ -70,6 +70,13 @@ uv run breakdown.py out/v3b_sync_0p25.txt
      - **Count-to-end alone is exact on 148/148**, at ~77%. Every band
        decoded from the fetched bytes was checked against eccodes on the full
        message.
+   - **Template age (v5c/v5d):**
+     - value match is safe only with a template from the previous run
+       (15–28% silent errors at 7 days to 5 months);
+     - count-to-end is not affected by template age.
+     - After two sync fixes: "`tp` counted, rest value match" with a 1-day
+       template is **188/188** at ~62%, and count-only with a **5-month**
+       template is **188/188** at ~77%, on two fresh dates.
 4. **The GCS mirror avoids S3 throttling.** `gs://ecmwf-open-data` is
    byte-identical (`ifs/0p1/` included). A v3 run throttled out on S3 was
    finished there with no retries (`v3/README.md`).

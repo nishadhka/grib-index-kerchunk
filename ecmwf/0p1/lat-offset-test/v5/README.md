@@ -104,3 +104,65 @@ decode as extra blocks and can add one RSI.
   `../../lat-band-par/` sidecar row for that message (valid for any band
   starting at or south of 40°N) with no extra bytes. Every later read is then
   the exact band, ~50%.
+
+## Template age and the `tp` policy (v5c, v5d)
+
+**Question:** how old can the template be, and does "count `tp` always,
+value-match the rest" hold on a fresh date? Policy fixed before the run:
+`--count tp` (other fields: v5 rule, count when the score is above 0.45).
+
+**v5c**, test **20261017** 00z (not used before): ens_01 at 11 steps,
+ens_04…ens_46 and control at 24 h, 5 fields, 94 messages.
+
+| Template (`ens_01`, 00z) | Age | `tp` policy: OK / **silent wrong** / no sync | Fetched |
+|---|---|---|---|
+| 20261016 | 1 day | **93 / 0 / 1** | 61% |
+| 20261010 | 7 days | 74 / **19** / 1 | 65% |
+| 20260917 | 30 days | 68 / **26** / 0 | 63% |
+| 20260617 | 4 months | 79 / **15** / 0 | 73% |
+| 20260513 | 5 months | 77 / **17** / 0 | 69% |
+| 20260513, count-only | 5 months | 93 / 1 / 0 | 77% |
+
+- **Value match needs a fresh template.** At 7 days or more it picks a
+  wrong RSI (typically 1–5 RSIs off) in 15–28% of messages. Those scores
+  (0.27–0.44) sit under the gate, so nothing flags them. Failures are spread
+  over `2t`, `msl` and `t/850` at every lead.
+- **Count-to-end does not depend on template age.** It uses the template
+  only to place the window, and it names the RSI from the message itself.
+- **Two sync faults showed up**, both in `tp`, and neither depends on age:
+  - 2 counts named the right RSI from a start a few bits off. This is the
+    false-start effect already fixed for the head GET.
+  - 1 message had no sync in its window.
+
+**Fixes** (mechanism, not rule):
+
+- the count path now starts the band from the chain's offsets 2+ RSIs past
+  the sync point (at RSI k0, or via the head GET);
+- a window with no sync falls back to a full read, which is exact and flagged
+  as path `full`.
+
+**v5d** reran both settings, on 20261017 (where the faults were seen) and on
+a second fresh date, **20261013** (test members ens_01, ens_05…ens_47,
+control):
+
+| Run | Template | Result | Fetched |
+|---|---|---|---|
+| `tp` policy, test 20261017 | 1 day | **94 / 94** (1 via full read) | 62.6% |
+| `tp` policy, test 20261013 | 1 day | **94 / 94** | 62.8% |
+| count-only, test 20261017 | 5 months | **94 / 94** | 77.5% |
+| count-only, test 20261013 | 5 months | **94 / 94** | 77.8% |
+
+**376 of 376 are exact**, every band checked against eccodes on the full
+message. The no-sync message (`tp` 24 h, ens_32, 20261017) is the only full
+read. Its window was searched and then fetched again in full, so it cost 158%
+of that message. Why it would not sync is not yet known.
+
+### What the realization can use
+
+| Template | Policy | Fetched per message |
+|---|---|---|
+| **previous run** (1 member, ~1 in 51 messages if refreshed each run) | `tp` counted, others value match + gate | **~62%** |
+| any age in the era (a fixed per-era template, no refresh) | count to the end | **~77%** |
+
+Both were exact on every test date here. Value match with an old template is
+**not** safe.

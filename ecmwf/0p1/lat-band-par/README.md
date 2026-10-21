@@ -140,19 +140,22 @@ realization, per message:
 What the realization fetches per message (band 40°N → 40°S, template from
 the previous day, every band checked against eccodes):
 
-| Policy | Correct | Fetched |
-|---|---|---|
-| today: full message | — | 100% |
-| **count to the end, always** | **148 / 148** | **~77%** |
-| `tp` always counted; others value match, count if the score > 0.45 | 148 / 148 | ~62% * |
-| v5 rule as tested | 147 / 148 (1 silent `tp` miss) | ~59% |
-| exact band, only if a sidecar already exists | 425 / 425 | ~45–54% |
+| Policy | Template | Correct | Fetched |
+|---|---|---|---|
+| today: full message | — | — | 100% |
+| **count to the end, always** | any age in the era (5 months tested) | **336 / 336** | **~77%** |
+| **`tp` counted; others value match, count if the score > 0.45** | previous run (1 day) | **188 / 188** on 2 fresh dates | **~62%** |
+| same, older template | 7 days – 5 months | 15–28% silently wrong | — |
+| exact band, only if a sidecar already exists | — | 425 / 425 | ~45–54% |
 
-\* chosen after seeing these results, so it needs a fresh test before use.
+Counts are from `../lat-offset-test/v5/` (v5, v5c, v5d). The `tp` policy was
+fixed before its v5c/v5d test. A window that does not sync (1 in 376) falls
+back to a full read.
 
-- **Template cost:** one full read per (field, step), from one member, i.e.
-  1 in 51 messages if it is refreshed every run. It is free if it is reused
-  across runs, but a template older than one day has not been tested here.
+- **Template cost:**
+  - the ~62% policy needs a template refreshed every run: one full read per
+    (field, step), from one member, i.e. 1 in 51 messages;
+  - the ~77% policy can use one fixed template per era, read once.
 - **Narrower bands save more:** for 24°N → 12°S, count-to-end costs ~60–70%
   (`../lat-offset-test/out/v4_tail_cost.txt`), against 100% today.
 - **Longitude is still the whole 360°.** A box narrower than the globe costs

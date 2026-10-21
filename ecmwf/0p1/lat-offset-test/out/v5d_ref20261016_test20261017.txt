@@ -1,0 +1,101 @@
+v5 reference 2026101600z-ens_01.parquet  band 40.0..-40.0  margin 1.5%+2KiB  sigma 1% lambda 0.25  gate 0.45  always count [tp]  95 messages
+  2026101700z-ens_01     2t    s  0  OK       52.9% of   664 KB    6.7s  match k=69 true=69 score=0.101
+  2026101700z-ens_01     2t    s  6  OK       53.3% of   658 KB    7.0s  match k=68 true=68 score=0.105
+  2026101700z-ens_01     2t    s 24  OK       53.3% of   657 KB    7.5s  match k=69 true=69 score=0.097
+  2026101700z-ens_01     2t    s 48  OK       53.5% of   658 KB    7.6s  match k=69 true=69 score=0.086
+  2026101700z-ens_01     2t    s 72  OK       53.4% of   658 KB    8.4s  match k=70 true=70 score=0.072
+  2026101700z-ens_01     2t    s120  OK       53.3% of   660 KB    8.6s  match k=70 true=70 score=0.080
+  2026101700z-ens_01     2t    s144  OK       53.3% of   662 KB    8.6s  match k=69 true=69 score=0.082
+  2026101700z-ens_01     2t    s168  OK       53.1% of   662 KB    9.3s  match k=70 true=70 score=0.078
+  2026101700z-ens_01     2t    s240  OK       53.1% of   656 KB    9.5s  match k=69 true=69 score=0.097
+  2026101700z-ens_01     2t    s300  OK       53.6% of   661 KB    9.5s  match k=69 true=69 score=0.142
+  2026101700z-ens_01     2t    s360  OK       53.4% of   658 KB    9.4s  match k=70 true=70 score=0.113
+  2026101700z-ens_01     tp    s  0  skip    reference is a constant field
+  2026101700z-ens_01     tp    s  6  OK       76.8% of   721 KB    3.8s  count k=70 true=70 score=0.554
+  2026101700z-ens_01     tp    s 24  OK       76.4% of   827 KB    6.1s  count k=70 true=70 score=0.584
+  2026101700z-ens_01     tp    s 48  OK       78.8% of   946 KB   10.2s  count+head k=70 true=70 score=0.503
+  2026101700z-ens_01     tp    s 72  OK       79.1% of  1019 KB   12.6s  count+head k=70 true=70 score=0.425
+  2026101700z-ens_01     tp    s120  OK       79.0% of   981 KB   10.6s  count+head k=70 true=70 score=0.438
+  2026101700z-ens_01     tp    s144  OK       76.3% of  1009 KB    8.0s  count k=70 true=70 score=0.455
+  2026101700z-ens_01     tp    s168  OK       76.6% of  1035 KB   13.7s  count k=70 true=70 score=0.459
+  2026101700z-ens_01     tp    s240  OK       76.7% of  1095 KB   11.9s  count k=70 true=70 score=0.478
+  2026101700z-ens_01     tp    s300  OK       76.7% of  1130 KB   13.9s  count k=70 true=70 score=0.508
+  2026101700z-ens_01     tp    s360  OK       76.7% of  1161 KB   17.8s  count k=70 true=70 score=0.524
+  2026101700z-ens_01     msl   s  0  OK       47.8% of   530 KB    4.9s  match k=68 true=68 score=0.347
+  2026101700z-ens_01     msl   s  6  OK       48.1% of   524 KB    6.5s  match k=69 true=69 score=0.317
+  2026101700z-ens_01     msl   s 24  OK       48.5% of   525 KB    6.7s  match k=70 true=70 score=0.266
+  2026101700z-ens_01     msl   s 48  OK       49.2% of   526 KB    6.3s  match k=70 true=70 score=0.216
+  2026101700z-ens_01     msl   s 72  OK       48.9% of   530 KB    6.5s  match k=70 true=70 score=0.202
+  2026101700z-ens_01     msl   s120  OK       48.5% of   525 KB    5.9s  match k=68 true=68 score=0.273
+  2026101700z-ens_01     msl   s144  OK       48.9% of   532 KB    7.2s  match k=68 true=68 score=0.292
+  2026101700z-ens_01     msl   s168  OK       49.3% of   530 KB    5.9s  match k=67 true=67 score=0.347
+  2026101700z-ens_01     msl   s240  OK       48.9% of   528 KB    6.5s  match k=70 true=70 score=0.331
+  2026101700z-ens_01     msl   s300  OK       48.4% of   522 KB    5.7s  match k=68 true=68 score=0.449
+  2026101700z-ens_01     msl   s360  OK       74.4% of   524 KB    7.0s  count k=70 true=70 score=0.515
+  2026101700z-ens_01     t/850 s  0  OK       53.0% of   610 KB    7.6s  match k=69 true=69 score=0.195
+  2026101700z-ens_01     t/850 s  6  OK       53.4% of   607 KB    6.7s  match k=69 true=69 score=0.195
+  2026101700z-ens_01     t/850 s 24  OK       53.4% of   595 KB    7.0s  match k=70 true=70 score=0.187
+  2026101700z-ens_01     t/850 s 48  OK       54.3% of   592 KB    8.7s  match k=70 true=70 score=0.182
+  2026101700z-ens_01     t/850 s 72  OK       54.0% of   594 KB    6.4s  match k=69 true=69 score=0.157
+  2026101700z-ens_01     t/850 s120  OK       53.6% of   593 KB    5.9s  match k=69 true=69 score=0.172
+  2026101700z-ens_01     t/850 s144  OK       54.0% of   597 KB    6.0s  match k=68 true=68 score=0.181
+  2026101700z-ens_01     t/850 s168  OK       53.9% of   599 KB    6.2s  match k=68 true=68 score=0.203
+  2026101700z-ens_01     t/850 s240  OK       53.4% of   718 KB    8.2s  match k=68 true=68 score=0.214
+  2026101700z-ens_01     t/850 s300  OK       54.1% of   724 KB    8.6s  match k=67 true=67 score=0.303
+  2026101700z-ens_01     t/850 s360  OK       53.0% of   720 KB    9.7s  match k=69 true=69 score=0.249
+  2026101700z-ens_01     u/700 s  0  OK       79.5% of   728 KB   12.6s  count+head k=70 true=70 score=0.532
+  2026101700z-ens_01     u/700 s  6  OK       76.5% of   728 KB    7.9s  count k=70 true=70 score=0.556
+  2026101700z-ens_01     u/700 s 24  OK       79.3% of   717 KB   11.3s  count+head k=70 true=70 score=0.574
+  2026101700z-ens_01     u/700 s 48  OK       53.4% of   711 KB    9.8s  match k=70 true=70 score=0.448
+  2026101700z-ens_01     u/700 s 72  OK       53.1% of   712 KB    8.9s  match k=70 true=70 score=0.424
+  2026101700z-ens_01     u/700 s120  OK       80.1% of   707 KB   12.6s  count+head k=70 true=70 score=0.457
+  2026101700z-ens_01     u/700 s144  OK       79.7% of   707 KB   10.5s  count+head k=70 true=70 score=0.615
+  2026101700z-ens_01     u/700 s168  OK       80.0% of   705 KB   11.1s  count+head k=70 true=70 score=0.730
+  2026101700z-ens_01     u/700 s240  OK       77.0% of   710 KB    7.6s  count k=70 true=70 score=0.661
+  2026101700z-ens_01     u/700 s300  OK       79.8% of   707 KB   11.8s  count+head k=70 true=70 score=0.643
+  2026101700z-ens_01     u/700 s360  OK       79.2% of   710 KB   12.8s  count+head k=70 true=70 score=0.707
+  2026101700z-ens_04     2t    s 24  OK       53.3% of   658 KB    7.6s  match k=70 true=70 score=0.091
+  2026101700z-ens_04     tp    s 24  OK       76.4% of   824 KB    5.9s  count k=70 true=70 score=0.598
+  2026101700z-ens_04     msl   s 24  OK       48.5% of   525 KB    6.0s  match k=69 true=69 score=0.284
+  2026101700z-ens_04     t/850 s 24  OK       53.4% of   598 KB    6.9s  match k=69 true=69 score=0.200
+  2026101700z-ens_04     u/700 s 24  OK       76.4% of   717 KB    8.2s  count k=70 true=70 score=0.597
+  2026101700z-ens_11     2t    s 24  OK       53.3% of   658 KB    7.9s  match k=69 true=69 score=0.098
+  2026101700z-ens_11     tp    s 24  OK       76.4% of   828 KB    5.2s  count k=70 true=70 score=0.600
+  2026101700z-ens_11     msl   s 24  OK       48.5% of   526 KB    7.0s  match k=70 true=70 score=0.264
+  2026101700z-ens_11     t/850 s 24  OK       53.4% of   595 KB    6.4s  match k=70 true=70 score=0.187
+  2026101700z-ens_11     u/700 s 24  OK       76.4% of   719 KB    9.0s  count k=70 true=70 score=0.604
+  2026101700z-ens_18     2t    s 24  OK       53.3% of   656 KB    8.9s  match k=69 true=69 score=0.097
+  2026101700z-ens_18     tp    s 24  OK       76.4% of   825 KB    5.9s  count k=70 true=70 score=0.585
+  2026101700z-ens_18     msl   s 24  OK       48.5% of   525 KB    6.8s  match k=69 true=69 score=0.283
+  2026101700z-ens_18     t/850 s 24  OK       53.4% of   596 KB    6.9s  match k=69 true=69 score=0.205
+  2026101700z-ens_18     u/700 s 24  OK       76.4% of   718 KB    8.0s  count k=70 true=70 score=0.591
+  2026101700z-ens_25     2t    s 24  OK       53.3% of   657 KB    7.8s  match k=70 true=70 score=0.096
+  2026101700z-ens_25     tp    s 24  OK       76.4% of   828 KB    6.5s  count k=70 true=70 score=0.593
+  2026101700z-ens_25     msl   s 24  OK       48.5% of   524 KB    7.4s  match k=70 true=70 score=0.269
+  2026101700z-ens_25     t/850 s 24  OK       53.4% of   595 KB    7.3s  match k=69 true=69 score=0.207
+  2026101700z-ens_25     u/700 s 24  OK       79.3% of   719 KB   12.0s  count+head k=70 true=70 score=0.577
+  2026101700z-ens_32     2t    s 24  OK       53.3% of   658 KB    7.9s  match k=70 true=70 score=0.092
+  2026101700z-ens_32     tp    s 24  OK      157.6% of   824 KB    1.7s  full  no sync in the window
+  2026101700z-ens_32     msl   s 24  OK       48.5% of   528 KB    6.8s  match k=70 true=70 score=0.265
+  2026101700z-ens_32     t/850 s 24  OK       53.4% of   598 KB    7.2s  match k=70 true=70 score=0.185
+  2026101700z-ens_32     u/700 s 24  OK       79.3% of   720 KB    9.7s  count+head k=70 true=70 score=0.581
+  2026101700z-ens_39     2t    s 24  OK       53.3% of   657 KB    9.0s  match k=69 true=69 score=0.098
+  2026101700z-ens_39     tp    s 24  OK       76.4% of   828 KB    5.1s  count k=70 true=70 score=0.644
+  2026101700z-ens_39     msl   s 24  OK       48.5% of   526 KB    7.0s  match k=70 true=70 score=0.262
+  2026101700z-ens_39     t/850 s 24  OK       53.4% of   599 KB    7.8s  match k=70 true=70 score=0.183
+  2026101700z-ens_39     u/700 s 24  OK       76.4% of   720 KB    8.3s  count k=70 true=70 score=0.574
+  2026101700z-ens_46     2t    s 24  OK       53.3% of   655 KB    8.7s  match k=69 true=69 score=0.099
+  2026101700z-ens_46     tp    s 24  OK       79.2% of   825 KB    8.7s  count+head k=70 true=70 score=0.554
+  2026101700z-ens_46     msl   s 24  OK       48.5% of   524 KB    7.1s  match k=70 true=70 score=0.266
+  2026101700z-ens_46     t/850 s 24  OK       53.4% of   597 KB    7.0s  match k=69 true=69 score=0.206
+  2026101700z-ens_46     u/700 s 24  OK       76.4% of   718 KB    8.8s  count k=70 true=70 score=0.582
+  2026101700z-control    2t    s 24  OK       53.3% of   655 KB    8.0s  match k=70 true=70 score=0.091
+  2026101700z-control    tp    s 24  OK       76.4% of   817 KB    5.1s  count k=70 true=70 score=0.631
+  2026101700z-control    msl   s 24  OK       48.5% of   521 KB    7.0s  match k=69 true=69 score=0.281
+  2026101700z-control    t/850 s 24  OK       53.4% of   588 KB    7.5s  match k=69 true=69 score=0.200
+  2026101700z-control    u/700 s 24  OK       76.4% of   704 KB    9.1s  count k=70 true=70 score=0.581
+{'OK': 94} fetched mean 62.6%
+  path count: 22 messages, 22 OK, fetched mean 76.4%
+  path count+head: 13 messages, 13 OK, fetched mean 79.4%
+  path full: 1 messages, 1 OK, fetched mean 157.6%
+  path match: 58 messages, 58 OK, fetched mean 51.9%

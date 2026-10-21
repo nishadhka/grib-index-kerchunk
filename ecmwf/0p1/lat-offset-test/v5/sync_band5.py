@@ -197,6 +197,7 @@ def main():
                     help="steps for the first test par; the others are tested at --member-step")
     ap.add_argument("--member-step", type=int, default=24)
     ap.add_argument("--gate", type=float, default=GATE, help="-1 forces count-to-end on every message")
+    ap.add_argument("--count", default="", help="fields always counted to the end, e.g. tp (v5c policy)")
     a = ap.parse_args()
     ln, ls = map(float, a.lat.split(","))
     ref = par_refs(a.ref)
@@ -206,7 +207,7 @@ def main():
         refs = par_refs(t)
         jobs += [(os.path.basename(t), f, s, refs[(f, s)]) for f in VARS for s in steps]
     print(f"v5 reference {os.path.basename(a.ref)}  band {ln}..{ls}  margin {MARGIN:.1%}+2KiB  "
-          f"sigma {SIGMA:.0%} lambda {LAMBDA}  gate {a.gate}  {len(jobs)} messages", flush=True)
+          f"sigma {SIGMA:.0%} lambda {LAMBDA}  gate {a.gate}  always count [{a.count}]  {len(jobs)} messages", flush=True)
     tmpl = {}
     tot = collections.Counter(); rows = []
     for name, f, step, (key, o, L) in jobs:
@@ -246,7 +247,7 @@ def main():
             if cands:
                 st, k, sc = pick(cands, fr, bits, w0, L)
                 path = "match"
-                if sc > a.gate:                                       # not confident: count to the end
+                if sc > a.gate or f in a.count.split(","):                                       # not confident: count to the end
                     path = "count"
                     if w1 < databytes:
                         buf += get(key, o + K["d0"] + w1, o + L - 1)   # tail GET
@@ -255,6 +256,13 @@ def main():
                     # ("7777"), which would otherwise decode as more blocks
                     r = try_decode(buf[:databytes - 4 - w0], st, nrsi * RS, K, want_offsets=True, to_end=True)
                     k = nrsi - len(r[1]) if r else -1
+                    if r is not None and len(r[1]) > 2:
+                        # st may be a few bits off a true start (tp zero runs) and still
+                        # count right; offsets 2+ RSIs into the chain are exact, so start
+                        # the band from there: at RSI k0 if it is that far in, else at
+                        # chain[2] and let the head GET reach back to k0
+                        chain = r[1].tolist()
+                        st, k = (chain[k0 - k], k0) if k0 - k >= 2 else (chain[2], k + 2)
                 if 0 < k0 < k:                                      # window opened after the band start
                     h = head(key, o, K, fr, bits, buf, w0, st, k, k0)
                     if h:
@@ -272,6 +280,12 @@ def main():
                 status = ("OK" if band_ok else "OK-late" if k > k0 else "OK-band?") if right else "WRONG"
                 ti = int(np.argmin(np.abs(truth["offs"] - absbit)))
                 info = f"{path:5} k={k} true={ti} score={sc:.3f}"
+        if status == "nosync" or (status != "WRONG" and path.startswith("count") and k < 0):
+            # no sync in the window: read the whole message (exact, and flagged)
+            msg = get(key, o, o + L - 1); fetched += L; path = "full"
+            h = eccodes.codes_new_from_message(msg); v = eccodes.codes_get_values(h); eccodes.codes_release(h)
+            status = "OK" if np.array_equal(v[j0 * ni:j1 * ni], truth["vals"][j0 * ni:j1 * ni]) else "WRONG"
+            info = "full  no sync in the window"
         dt = time.time() - t
         tot[status] += 1; rows.append(dict(path=path, status=status, frac=fetched / L))
         print(f"  {tag}  {status:7} {100 * fetched / L:5.1f}% of {L / 1e3:5.0f} KB  {dt:5.1f}s  {info}", flush=True)

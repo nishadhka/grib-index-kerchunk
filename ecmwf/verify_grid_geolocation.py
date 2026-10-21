@@ -100,10 +100,13 @@ def _s3():
     return s3fs.S3FileSystem(anon=True)
 
 
-def grib_path(era: str, date: str, run: str, step: int = 0) -> str:
-    seg = "0p4-beta" if era == "0p4" else "ifs/0p25"
+def grib_path(era: str, date: str, run: str, step: int = 0,
+              level: int | None = None) -> str:
+    seg = {"0p4": "0p4-beta", "0p1": "ifs/0p1"}.get(era, "ifs/0p25")
+    # 0p1 splits each step by levtype: pl levels in -pl, sfc + sol in -sfc.
+    suffix = ("-pl" if level is not None else "-sfc") if era == "0p1" else ""
     return (f"ecmwf-forecasts/{date}/{run}z/{seg}/enfo/"
-            f"{date}{run}0000-{step}h-enfo-ef.grib2")
+            f"{date}{run}0000-{step}h-enfo-ef{suffix}.grib2")
 
 
 def fetch_message(era: str, date: str, run: str, var: str | None = None,
@@ -114,7 +117,7 @@ def fetch_message(era: str, date: str, run: str, var: str | None = None,
     `split_channel` first). `level` selects a pressure level; None means a
     surface/soil field.
     """
-    fs, p = _s3(), grib_path(era, date, run, step)
+    fs, p = _s3(), grib_path(era, date, run, step, level)
     idx = p.replace(".grib2", ".index")
     if not fs.exists(idx):
         raise SystemExit(f"no .index at s3://{idx} -- wrong era for this date?")

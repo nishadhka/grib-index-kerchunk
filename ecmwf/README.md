@@ -16,6 +16,31 @@ for GEFS (`../gefs/`), adapted for the 51-member IFS ensemble.
 
 ---
 
+## New: 0.1° stream (`ifs/0p1/`) from 2026-10-20 06z
+
+From **20261020 06z**, ECMWF also publishes a 0.1° IFS stream under
+`{date}/{HH}z/ifs/0p1/{enfo,oper,waef,wave}/`. The pipeline below does
+**not** read it yet. Here is how it differs from the current 0.25° stream:
+
+| | 0.25° (current pipeline) | 0.1° (`ifs/0p1/`) |
+|---|---|---|
+| Grid | 721 × 1440 | 1801 × 3600 |
+| Files per step (`enfo`) | 1 (`…-enfo-ef.grib2`) | 2: `…-enfo-ef-pl.grib2` + `…-enfo-ef-sfc.grib2` |
+| Size per step (`enfo`) | ~4.3 GB | pl ~15.3 GB + sfc ~3–4.8 GB |
+| One 00z/12z `enfo` run | ~375 GB | ~1.7 TB |
+| Typical GRIB message (`tp`, `2t`) | ~0.3–0.4 MB | ~1.4–1.9 MB |
+| gribberish decode per field | ~16 ms | ~95 ms |
+| Members / steps / pl levels | 50 pf + control in `oper/`, 85/49 steps, 14 levels | same |
+| Surface params | 43 | same 43 |
+
+The same cycle also changed the **0.25°** stream. It added 7 surface params
+(`cp hcc lcc mcc tciw tclw tcrw`) and cut the packing precision, so files are
+~35% smaller. Templates built before 20261020 06z do not include those 7
+params. The full survey, with variables, sizes, latency and the code changes
+needed, is in [`0p1/README.md`](0p1/README.md).
+
+---
+
 ## The 4-step pipeline applied to ECMWF
 
 | Step | Script(s) | Output |
@@ -97,6 +122,7 @@ For the lazy-Dask ensemble pattern over all 51 members — see
 | `hf_README.md` | docs | Dataset card on `E4DRR/gik-ecmwf-par` |
 
 Plus folders:
+- `0p1/` — survey of the 0.1° stream (from 2026-10-20 06z) and `rsi_band_subset_poc.py`, a proof of concept for fetching only a latitude band of a CCSDS message
 - `lithops-cr-gik-ecmwf/` — Cloud Run + Lithops setup (Dockerfile, lithops_config, backfill scripts)
 - `docs/` — method documentation including `gik_vs_herbie_comparison.md`
 - `gik_vs_herbie/` — validation artefacts (PNGs, JSON metrics)

@@ -50,16 +50,19 @@ __all__ = ["GRIDS", "ERAS", "LON_ORIGIN", "LAT_ORIGIN",
 LON_ORIGIN = -180.0   # longitudeOfFirstGridPointInDegrees, +/-180 convention
 LAT_ORIGIN = 90.0     # latitudeOfFirstGridPointInDegrees (grid scans N -> S)
 
-# Physical grids. Two distinct grids across the whole archive; three eras map
-# onto them.
+# Physical grids. Three distinct grids across the whole archive; four eras map
+# onto them. 0p1 (`ifs/0p1/`, from 20261020 06z) is published alongside 0p25,
+# with the same -180 origin -- verified 2026-10-21 on 12z +24h `2t`/`t850`/`tp`
+# (eccodes: Ni=3600 Nj=1801, lon 180.0 -> 179.9, lat 90 -> -90).
 GRIDS = {
-    "0p25": dict(ny=721, nx=1440, dlat=0.25, dlon=0.25),
-    "0p4":  dict(ny=451, nx=900,  dlat=0.4,  dlon=0.4),
+    "0p25": dict(ny=721,  nx=1440, dlat=0.25, dlon=0.25),
+    "0p4":  dict(ny=451,  nx=900,  dlat=0.4,  dlon=0.4),
+    "0p1":  dict(ny=1801, nx=3600, dlat=0.1,  dlon=0.1),
 }
 
 # Era table: grid + canonical pressure-level SUPERSET. Dates carrying fewer
 # levels simply leave those slots empty -> NaN on read, matching the template
-# decision documented in CLAUDE.md ("ECMWF spans FOUR template eras").
+# decision documented in CLAUDE.md ("ECMWF spans several template eras").
 ERAS = {
     "0p4":  dict(grid="0p4",
                  levels=[50, 200, 250, 300, 500, 700, 850, 925, 1000]),
@@ -67,6 +70,11 @@ ERAS = {
                  levels=[50, 100, 150, 200, 250, 300, 400, 500, 600, 700,
                          850, 925, 1000]),
     "50r1": dict(grid="0p25",
+                 levels=[10, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700,
+                         850, 925, 1000]),
+    # Same 14 levels as 50r1. Named after its grid, like 0p4, because it is a
+    # parallel stream rather than a successor: see RESOLUTION_BOUNDS.
+    "0p1":  dict(grid="0p1",
                  levels=[10, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700,
                          850, 925, 1000]),
 }
@@ -97,23 +105,41 @@ del _era
 # The 9L -> 13L change inside 49r1 is NOT a boundary here: both live in one 49r1
 # group built on the 13-level superset, so 9-level dates simply leave the four
 # extra levels empty.
+#
+# Nor is 20261020 06z, where the 0p25 stream gained 7 surface params (cp hcc
+# lcc mcc tciw tclw tcrw) and lost packing precision: grid and levels are
+# unchanged, so it stays 50r1 here. Templates still have to be rebuilt for it.
 ERA_BOUNDS = {
     "0p4":  (("20230118", 0), ("20240228", 0)),
     "49r1": (("20240228", 6), ("20260512", 0)),
     "50r1": (("20260512", 6), None),
 }
 
+# Streams that run in parallel with the 0p25 eras above, chosen by resolution
+# rather than by date. Same (lo, hi) convention as ERA_BOUNDS.
+RESOLUTION_BOUNDS = {
+    "0p1": (("20261020", 6), None),
+}
+
 # 00z/12z run to 360h, 06z/18z stop at 144h. Mirrors STEPS_BY_RUN in the builder.
 LONG_RUNS = (0, 12)
 
 
-def era_for(date: str, run: int | str) -> str:
-    """Which era a (YYYYMMDD, run) initialisation belongs to."""
+def era_for(date: str, run: int | str, resolution: str | None = None) -> str:
+    """Which era a (YYYYMMDD, run) initialisation belongs to.
+
+    `resolution=None` (or "0p25"/"0p4") follows the date-ordered ERA_BOUNDS;
+    "0p1" asks for the parallel 0.1 deg stream instead.
+    """
     k = (date, int(str(run).rstrip("zZ")))
-    for name, (lo, hi) in ERA_BOUNDS.items():
+    bounds = ERA_BOUNDS
+    if resolution in RESOLUTION_BOUNDS:
+        bounds = {resolution: RESOLUTION_BOUNDS[resolution]}
+    for name, (lo, hi) in bounds.items():
         if (lo is None or k >= lo) and (hi is None or k <= hi):
             return name
-    raise KeyError(f"{date} {run}z is outside every known era window")
+    raise KeyError(f"{date} {run}z is outside every known era window"
+                   + (f" for {resolution}" if resolution else ""))
 
 
 def grid_of(era: str) -> dict:
@@ -185,9 +211,12 @@ def verify(era: str = "49r1", date: str = "20250515", run: str = "00") -> dict:
     import eccodes
     import s3fs
 
-    seg = "0p4-beta" if era == "0p4" else "ifs/0p25"
+    seg = {"0p4": "0p4-beta", "0p1": "ifs/0p1"}.get(era, "ifs/0p25")
+    # 0p1 splits each step into -pl and -sfc files; either carries the grid.
+    suffix = "-sfc" if era == "0p1" else ""
     stem = f"{date}{run}0000"
-    path = f"ecmwf-forecasts/{date}/{run}z/{seg}/enfo/{stem}-0h-enfo-ef.grib2"
+    path = (f"ecmwf-forecasts/{date}/{run}z/{seg}/enfo/"
+            f"{stem}-0h-enfo-ef{suffix}.grib2")
 
     fs = s3fs.S3FileSystem(anon=True)
     rec = json.loads(fs.cat(path.replace(".grib2", ".index")).decode()

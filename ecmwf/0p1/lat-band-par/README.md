@@ -176,6 +176,47 @@ as it is, and the sidecar can be dropped or rebuilt independently.
 par reader path (`bandref.py`, as `read_par_band.py` does), not through the
 current virtual store. Otherwise the chunk manifest would need extending.
 
+## Which byte range, and where it can be stored
+
+Measured on the real par (20261019 00z ens_01, 424 messages, 5 fields):
+
+| Byte range per message | Needs | 40°N → 40°S | 24°N → 12°S |
+|---|---|---|---|
+| exact band | RSI offsets (sidecar or par rows) | 49.6% (44–56) | 22.8% (19–29) |
+| **message start → band end** | only an approximate end (template + margin): RSI 0 starts at bit 0, so **no search and no bit offsets** | **75.4%** (70–79) | **58.5%** (55–62) |
+| band start → message end (count-to-end) | the bit search | 74.2% (72–77) | 64.2% (61–68) |
+
+The *message start → band end* range is the only one that fits a **standard**
+Icechunk virtual chunk `[url, offset, length]`. That would look like this:
+
+- an array that holds only rows 0…j1 (north edge to the band's south edge),
+  chunked one message per chunk;
+- `length` = the template-predicted band end plus a margin;
+- a codec option to decode only the first j1 rows from a truncated message
+  (gribberish would need this);
+- the latitude cut to 40°N stays an ordinary lazy `.sel` in xarray.
+
+This is not tested yet. The margin has to cover the prediction error (≤ 1.7%
+at the band start in v4).
+- For a band near the top of the grid it is almost as good as the exact band.
+- For the 40°N → 40°S box it is ~75%, like count-to-end, with no search at all.
+
+Where the other options can be stored:
+
+- **In the par (custom, easiest).** Add a row next to each chunk key that
+  zarr/fsspec ignore, e.g. `step_024/2t/sfc/ens01/0.0.0.rsi`, holding the
+  JSON of the sidecar row:
+  - for one fixed band, about 100 B per message (start byte, bit shift, k0,
+    k1, Section 5 constants), roughly +17 MB per run;
+  - for every RSI, about 1 KB per message.
+- **In Icechunk.** A virtual chunk has no room for a bit shift or per-message
+  constants. The options are:
+  - the prefix range above (standard);
+  - the offsets as a small native array in the same repo, with a band-aware
+    reader;
+  - an upstream extension (per-chunk codec parameters, or refs made of
+    several ranges).
+
 ## Limits
 
 - **Latitude only.** Longitude is cut after decoding, because an RSI (4,096

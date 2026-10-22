@@ -1,0 +1,98 @@
+option C prefix read, band 40.0..-40.0, template 2026051300z-ens_01.parquet, margin 1.5%+2KiB, extend 2%+4KiB, 95 messages
+  2026101300z-ens_01     2t    s  0  OK     78.2% of   665 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     2t    s  6  OK     78.3% of   660 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     2t    s 24  OK     78.5% of   660 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     2t    s 48  OK     78.4% of   664 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     2t    s 72  OK     78.3% of   662 KB  GETs 1   0.4s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     2t    s120  OK     77.9% of   658 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     2t    s144  OK     77.8% of   659 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     2t    s168  OK     77.8% of   663 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     2t    s240  OK     77.7% of   656 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     2t    s300  OK     77.9% of   662 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     2t    s360  OK     77.9% of   662 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     tp    s  0  skip    constant field (no packed data: the header alone gives it)
+  2026101300z-ens_01     tp    s  6  OK     81.0% of   738 KB  GETs 2   0.9s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     tp    s 24  OK     79.6% of   838 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     tp    s 48  OK     79.8% of   838 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     tp    s 72  OK     79.7% of   907 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     tp    s120  OK     79.7% of   986 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     tp    s144  OK     79.7% of  1014 KB  GETs 1   0.4s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     tp    s168  OK     80.1% of  1037 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     tp    s240  OK     80.2% of  1096 KB  GETs 1   0.8s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     tp    s300  OK     80.1% of  1127 KB  GETs 1   0.8s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     tp    s360  OK     80.0% of  1155 KB  GETs 1   0.8s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s  0  OK     72.5% of   525 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s  6  OK     72.3% of   526 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s 24  OK     71.9% of   529 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s 48  OK     72.3% of   535 KB  GETs 1   0.4s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s 72  OK     72.2% of   534 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s120  OK     73.0% of   525 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s144  OK     72.2% of   532 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s168  OK     71.7% of   542 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s240  OK     72.3% of   534 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s300  OK     72.4% of   526 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     msl   s360  OK     75.3% of   514 KB  GETs 2   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s  0  OK     76.0% of   606 KB  GETs 1   0.9s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s  6  OK     76.0% of   604 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s 24  OK     75.7% of   600 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s 48  OK     75.6% of   603 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s 72  OK     75.8% of   606 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s120  OK     75.9% of   590 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s144  OK     75.8% of   593 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s168  OK     75.7% of   601 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s240  OK     75.8% of   598 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s300  OK     75.7% of   593 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     t/850 s360  OK     75.7% of   598 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s  0  OK     76.0% of   724 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s  6  OK     75.9% of   725 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s 24  OK     76.0% of   717 KB  GETs 1   0.4s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s 48  OK     76.1% of   717 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s 72  OK     76.0% of   717 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s120  OK     76.2% of   708 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s144  OK     76.0% of   710 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s168  OK     75.8% of   712 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s240  OK     75.7% of   713 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s300  OK     76.1% of   702 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_01     u/700 s360  OK     76.0% of   706 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_05     2t    s 24  OK     78.5% of   662 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_05     tp    s 24  OK     79.6% of   726 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_05     msl   s 24  OK     71.9% of   530 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_05     t/850 s 24  OK     75.7% of   603 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_05     u/700 s 24  OK     76.0% of   716 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_12     2t    s 24  OK     78.5% of   661 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_12     tp    s 24  OK     79.6% of   842 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_12     msl   s 24  OK     71.9% of   531 KB  GETs 1   0.4s  values exact  offsets 0..183 exact
+  2026101300z-ens_12     t/850 s 24  OK     75.7% of   603 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_12     u/700 s 24  OK     76.0% of   714 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_19     2t    s 24  OK     78.5% of   661 KB  GETs 1   0.4s  values exact  offsets 0..183 exact
+  2026101300z-ens_19     tp    s 24  OK     79.6% of   730 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_19     msl   s 24  OK     71.9% of   530 KB  GETs 1   0.5s  values exact  offsets 0..183 exact
+  2026101300z-ens_19     t/850 s 24  OK     75.7% of   601 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_19     u/700 s 24  OK     76.0% of   716 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_26     2t    s 24  OK     78.5% of   660 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_26     tp    s 24  OK     79.6% of   838 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_26     msl   s 24  OK     71.9% of   530 KB  GETs 1   0.5s  values exact  offsets 0..183 exact
+  2026101300z-ens_26     t/850 s 24  OK     75.7% of   600 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_26     u/700 s 24  OK     76.0% of   716 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_33     2t    s 24  OK     78.5% of   659 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_33     tp    s 24  OK     79.6% of   841 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_33     msl   s 24  OK     71.9% of   531 KB  GETs 1   0.4s  values exact  offsets 0..183 exact
+  2026101300z-ens_33     t/850 s 24  OK     75.7% of   601 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_33     u/700 s 24  OK     76.0% of   716 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_40     2t    s 24  OK     78.5% of   659 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_40     tp    s 24  OK     79.6% of   841 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_40     msl   s 24  OK     71.9% of   529 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_40     t/850 s 24  OK     75.7% of   599 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_40     u/700 s 24  OK     76.0% of   715 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_47     2t    s 24  OK     78.5% of   660 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_47     tp    s 24  OK     79.6% of   844 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_47     msl   s 24  OK     71.9% of   531 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-ens_47     t/850 s 24  OK     75.7% of   600 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-ens_47     u/700 s 24  OK     76.0% of   716 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-control    2t    s 24  OK     78.5% of   658 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-control    tp    s 24  OK     79.6% of   830 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+  2026101300z-control    msl   s 24  OK     71.9% of   527 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-control    t/850 s 24  OK     75.7% of   594 KB  GETs 1   0.6s  values exact  offsets 0..183 exact
+  2026101300z-control    u/700 s 24  OK     76.0% of   702 KB  GETs 1   0.7s  values exact  offsets 0..183 exact
+94/94 exact; fetched mean 76.4% (min 71.7, max 81.0); extra GETs in 2 messages
+  by field: 2t 78.3%  msl 72.3%  t/850 75.7%  tp 79.8%  u/700 76.0%

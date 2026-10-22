@@ -22,6 +22,7 @@ reference message per variable, read once when the template is built.
 | [`v3/`](v3/README.md) | one reference per forecast step, from the same date (v3a) or the next date (v3b); resumable |
 | [`v4/`](v4/README.md) | weighting the choice by distance from the predicted RSI; offline rule sweep; margin and count-to-end costs |
 | [`v5/`](v5/README.md) | **on the real GIK pars**: confidence gate, count-to-end fallback, head GET; every band checked against eccodes |
+| [`c_prefix/`](c_prefix/README.md) | **option C**: read from the message start to the band end, decode from bit 0, no search: **376/376 exact**, ~77% (40°N–40°S) and ~61% (24°N–12°S); identical to Herbie's full-message read |
 | [`rust/`](rust/README.md) | Rust port of the search and a benchmark on the same bytes: v5 search **0.50 s/msg** (15×, same answers as Python 54/54); chain search **30–53 ms** on smooth fields |
 | `breakdown.py` | tally one or more sync outputs by what differs from the reference |
 

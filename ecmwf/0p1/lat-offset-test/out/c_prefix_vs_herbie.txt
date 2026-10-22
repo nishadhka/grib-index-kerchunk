@@ -1,0 +1,3 @@
+2t +24h m1: box (321, 261), identical=True, max|diff|=0, same message bytes=True, C fetched 518687 B vs Herbie 660094 B (78.6%) -> out/c_prefix_vs_herbie_2t_24h.png
+tp +24h m1: box (321, 261), identical=True, max|diff|=0, same message bytes=True, C fetched 684438 B vs Herbie 837813 B (81.7%) -> out/c_prefix_vs_herbie_tp_24h.png
+2t +24h m1: box (145, 261), identical=True, max|diff|=0, same message bytes=True, C fetched 413197 B vs Herbie 660094 B (62.6%) -> out/c_prefix_vs_herbie_2t_24h_24N12S.png

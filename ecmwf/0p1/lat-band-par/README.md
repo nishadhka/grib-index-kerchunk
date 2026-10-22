@@ -196,8 +196,12 @@ Icechunk virtual chunk `[url, offset, length]`. That would look like this:
   (gribberish would need this);
 - the latitude cut to 40°N stays an ordinary lazy `.sel` in xarray.
 
-This is not tested yet. The margin has to cover the prediction error (≤ 1.7%
-at the band start in v4).
+**Tested since** (`../lat-offset-test/c_prefix/`): reading from the message
+start and decoding from bit 0 was exact on **376 / 376** real-par messages,
+at 77% (40°N–40°S) and 61% (24°N–12°S). That includes a 5-month-old template,
+where 2 messages needed a second GET. The values are identical to Herbie's
+full-message read. The Icechunk part (a codec that decodes N rows of a
+cut-off message) is still to build.
 - For a band near the top of the grid it is almost as good as the exact band.
 - For the 40°N → 40°S box it is ~75%, like count-to-end, with no search at all.
 

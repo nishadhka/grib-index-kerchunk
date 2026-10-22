@@ -108,6 +108,14 @@ Pick by how many different bands will be read.
 
 ## Cutting the realization's own read
 
+> **Superseded by option C** (`../lat-offset-test/c_prefix/README.md`):
+> read from the message start to the band end and decode from bit 0. It
+> costs the same as route B below (~76% for 40°S, ~59% for 12°S) with no
+> search, no stored offsets and no reliance on template age. It also fits
+> the Icechunk virtual store as a second group of shorter chunks, once
+> gribberish can decode the first N rows of a truncated message. Route B is
+> kept below for the record.
+
 The point of the latitude subset is to make the **realization** (stage ③,
 `../../ewc-realization/frisky_daily_dag.py`, `read_message`) fetch less GRIB
 from the bucket. Today it fetches every global message in full and cuts the

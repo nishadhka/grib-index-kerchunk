@@ -376,6 +376,26 @@ The realization already reads every message in full, so it can write the
 sidecar as a by-product. libaec decode with offset capture takes 9.4 ms per
 message, against 19 ms for the gribberish decode used now.
 
+### Option C, and the way forward for the realization ([`lat-offset-test/c_prefix/`](lat-offset-test/c_prefix/README.md))
+
+The first RSI starts at bit 0 of the packed data, so a read from the
+**message start to the band end** needs no search and no stored offsets.
+It was exact on **376/376** real-par messages and identical to Herbie's
+full-message read.
+
+- **Cost is set by the band's south edge only** (scan is north → south):
+  ~27% to 40°N, ~52% to the equator, **~59% to 12°S**, **~76% to 40°S**,
+  ~87% to 60°S. Any extent works from the same template; a southern box
+  gains little.
+- **It fits the Icechunk virtual store unchanged:** a second group per south
+  edge, with chunks `[url, offset, prefix_len]` covering rows 90°N → south
+  edge. Stage ② computes `prefix_len` from the `.index` length and a
+  template profile, still without reading GRIB. A margin of 3% + 4 KiB was
+  never short in 658 cases with templates up to 4 months old.
+- **Missing piece:** a gribberish codec option to decode the first N rows
+  of a truncated message (drafted as an issue, not posted). Until then the
+  realization can do the prefix read itself in `read_message`.
+
 Herbie (and wgrib2 `-small_grib`) have the same limit as GIK today. They
 download the full message by `.idx` byte range and subset after decoding.
 Server-side area cropping exists only in ECMWF's own services (MARS /

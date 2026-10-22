@@ -89,4 +89,10 @@ uv run breakdown.py out/v3b_sync_0p25.txt
    brings the fetch to ~56% (v4). The bit search takes ~8 s per message in
    Python + ctypes. In Rust (`rust/`) it takes 0.50 s with the same answers,
    or 30–53 ms with the chain search on smooth fields.
-6. **Longitude is still the whole 360°**, at every stage (`../README.md` §8).
+6. **Option C needs no search at all** (`c_prefix/`): read from the
+   message start to the band end and decode from bit 0. 376/376 exact,
+   ~76% for 40°S and ~59% for 12°S. Its cost depends only on the south
+   edge, and a manifest length of template prediction + 3% + 4 KiB was
+   never short with templates up to 4 months old, so it can be written
+   into an Icechunk virtual store without reading GRIB.
+7. **Longitude is still the whole 360°**, at every stage (`../README.md` §8).

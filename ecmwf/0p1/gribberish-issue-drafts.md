@@ -4,8 +4,9 @@ Not posted. Two separate issues, since they touch different layers:
 
 1. the VirtualiZarr parser: cross-file template reuse (what the VirtualiZarr
    maintainers asked to have raised here);
-2. the core decoder: latitude-band reads of CCSDS messages, which answers
-   the open question in #51.
+2. the core decoder and codec: decode the first N rows of a CCSDS message
+   whose bytes stop early, which answers the open question in #51 for the
+   northern part of a grid with a plain virtual chunk.
 
 ---
 
@@ -74,74 +75,95 @@ store = parser(url, registry)                                 # index + template
 
 ---
 
-## Issue 2: CCSDS (template 5.42): read a latitude band without decoding (or fetching) the whole message
+## Issue 2: CCSDS (template 5.42): decode the first N rows of a truncated message
 
-This follows up #51. That issue asks whether a message buffer could be "chopped
-into equal sections along the slowest-varying dimension" so each section can
-be read on its own. For **CCSDS-packed** messages (template 5.42, used by ECMWF
-open data, Météo-France and others) it can, and we have measured it.
+This follows up #51, which asks whether a message could be "chopped into
+equal sections along the slowest-varying dimension". For **CCSDS-packed**
+messages (template 5.42, used by ECMWF open data, Météo-France and others) a
+simpler version of that already works, and needs only a small change here.
 
-**Why it works**
+**The idea**
 
-- AEC data is a sequence of **RSIs** (reference sample intervals:
-  `block_size × rsi` = 32 × 128 = 4,096 samples for ECMWF). Each RSI starts
-  with a reference sample and **decodes independently**.
-- libaec ≥ 1.1 exposes this (`aec_decode_enable_offsets`,
-  `aec_decode_get_offsets`, `aec_decode_range`).
-- Samples are in scan order (north → south, a full row at a time), so a
-  **latitude band is one contiguous byte range**. Which RSIs cover a given
-  latitude is fixed by the grid. *Where* they start differs per message.
-- **Longitude cannot be cut this way:** an RSI (4,096 samples) is longer
-  than a row (1,440 at 0.25°, 3,600 at 0.1°).
+- Samples are in scan order (north → south, a full row at a time), so rows
+  0..N of the grid are the **first** samples of the data section.
+- AEC data is a sequence of RSIs (reference sample intervals: `block_size ×
+  rsi` = 32 × 128 = 4,096 samples for ECMWF). The first RSI starts at bit 0
+  of Section 7, so decoding from the top needs no offsets and no search.
+- So a byte range **from the message start** to the end of row N's RSI holds
+  everything needed: Sections 0–6 (grid and packing parameters) and the
+  packed data for rows 0..N. Nothing else has to be stored.
+- That range is an ordinary `[url, offset, length]` virtual chunk, with the
+  same offset as the whole message and a shorter length.
 
-**What we measured** (ECMWF ENS 0.25°, 40°N → 40°S, every band checked
-against eccodes on the full message):
+**What we measured** (ECMWF ENS 0.25°, 20261013 and 20261017 00z; 5 fields
+`2t tp msl t/850 u/700`; 11 steps 0–360 h plus 8 members at +24 h; every
+band checked value for value against eccodes on the full message):
 
-| How the RSI offsets are known | Bytes fetched per message | Correct |
-|---|---|---|
-| stored once from a full decode (a small sidecar, ~1 KB/message) | **45–54%** | 425 / 425 bit-exact |
-| found from a byte window, using a template profile from an earlier cycle | 62–77% | 376 / 376 (two policies) |
+| Rows kept | Messages | Bytes fetched per message | Correct |
+|---|---|---|---|
+| 90°N → 40°S | 282 | **~77%** (72–82) | 282 / 282 bit-exact |
+| 90°N → 12°S | 94 | **~61%** (58–64) | 94 / 94 bit-exact |
 
-**Finding the offsets without a full read** is a bit-level search:
+Against Herbie (whole message, cfgrib) on the same message, `2t` and `tp` in
+the box 15–80°E, 40°N–40°S came out **identical** from 79% and 82% of the
+bytes; `2t` at 24°N–12°S, identical from 63%.
 
-1. Fetch a window around the predicted band start.
-2. Find a bit where a smooth, self-consistent RSI chain begins.
-3. Name the RSI, either by counting RSIs to the end of the message or by
-   matching values against a template.
+How we read it (Python + libaec ≥ 1.1 through ctypes):
 
-**A Rust implementation** of the search is about 250 lines:
+1. GET from the message offset to a predicted end. The prediction comes from
+   the RSI offsets of the same field on an earlier cycle, plus a 1.5% + 2 KiB
+   margin.
+2. `aec_decode` with `AEC_NO_FLUSH` on the truncated Section 7, asking for
+   `N × Ni` samples. libaec returns the samples it could decode.
+3. If fewer than `N × Ni` came back, GET the next piece and decode again. A
+   short guess costs bytes, never a wrong value.
+4. With `aec_decode_enable_offsets`, the same decode returns the exact RSI
+   offsets, so the next read of this message can store the exact length.
 
-- an allocation-free CCSDS decoder that starts from any bit, with early exit;
-- it gives the same answers as the Python reference on 54/54 messages.
+**The ask**
 
-| Search | Time per message (0.25°) |
-|---|---|
-| the Python reference | 7.6 s |
-| Rust, full search | **0.50 s** |
-| Rust, chain search (smooth fields) | **30–53 ms** |
+1. **Decode with a row (or sample) limit, tolerating a short Section 7.**
+   Something like `decode(message_bytes, max_rows=N)` → an `N × Ni` array,
+   which succeeds when the bytes end after row N's RSI even though
+   Section 7's declared length is larger. Today the decoder expects the full
+   message.
+2. **The same option on the zarr codec**, so a virtual chunk can point at
+   the prefix:
 
-**What could live in gribberish** (suggestions):
+   ```python
+   # array lat 90N..40S, chunk shape (N, Ni); one chunk per message
+   codecs = [GribberishCodec(var="2t", rows=N)]
+   manifest[...] = {"path": url, "offset": msg_offset, "length": prefix_len}
+   ```
 
-1. **Offsets on decode.** The libaec feature (#79) could enable offset
-   capture and return the RSI bit offsets with the values. That's nearly free
-   (we measured libaec decode plus offsets at ~9 ms per 0.25° message,
-   against ~19 ms for the current decode).
-2. **Range decode.**
-   `decode_rsi_range(data_section, template_5_42_params, rsi_offsets, k0, k1)`
-   → values for RSIs k0..k1, given the bytes of that range only.
-3. **(Optional) the search**, for callers without stored offsets: a function
-   that, given a byte window and the Section 5 parameters, returns verified
-   RSI start bits. We'd be happy to contribute ours.
+   The codec reads the grid and packing parameters from the prefix's own
+   Sections 3 and 5, so no per-chunk codec parameters are needed. That is
+   what makes this fit VirtualiZarr / Icechunk as they are.
+3. **(Optional) return the RSI offsets on decode** when the libaec feature
+   (#79) is on (`aec_decode_enable_offsets`). We measured libaec decode plus
+   offsets at ~9 ms per 0.25° message, against ~19 ms for the current
+   decode. A pipeline can then write the exact `prefix_len` per message
+   into the manifest.
 
-**Zarr / Icechunk note.** A band chunk needs a bit shift and the message's
-Section 5 constants, neither of which fits in a virtual chunk's
-`[url, offset, length]`. Today it needs a reader that also has the offsets
-(we use a sidecar parquet next to the reference set).
+`prefix_len` must cover row N's RSI completely. If it is too short, the
+codec should raise rather than return a partial chunk.
 
-Two upstream things would make it a plain virtual chunk:
+**Limits**
 
-- **ECMWF** could publish RSI offsets in `.index`, which libaec can capture
-  at encode time, or pad each RSI to a byte (`AEC_PAD_RSI`);
-- **Icechunk** could allow per-chunk codec parameters or multi-range refs.
+- Only the northern part of a grid can be kept this way: rows 0..N, not a
+  band in the middle. For 40°N → 40°S the rows north of 40°N (~28% of the
+  samples, fewer of the bytes) are still fetched and decoded.
+- Longitude cannot be cut: an RSI (4,096 samples) is longer than a row
+  (1,440 at 0.25°, 3,600 at 0.1°).
+- Only template 5.42; simple and complex packing would need other work.
 
-**Question:** would you accept (1) and (2)? We'd open a PR.
+**A middle band, for reference.** Fetching only the band itself is possible
+too: ~50% of the bytes for 40°N → 40°S and ~23% for 24°N → 12°S, 425/425
+bit-exact. It needs the bit offset of the band's first RSI and the Section 5
+constants, which do not fit a virtual chunk, so we keep them in a sidecar.
+We also have a Rust search (~250 lines, 30 ms – 2 s per message) that finds
+those offsets in a byte window without a stored copy. Those are a larger
+change; we'd rather start with the prefix decode above, and can share them
+if useful.
+
+**Question:** would you accept (1) and (2), and (3) if it fits? We'd open a PR.

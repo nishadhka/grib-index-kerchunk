@@ -22,6 +22,7 @@ reference message per variable, read once when the template is built.
 | [`v3/`](v3/README.md) | one reference per forecast step, from the same date (v3a) or the next date (v3b); resumable |
 | [`v4/`](v4/README.md) | weighting the choice by distance from the predicted RSI; offline rule sweep; margin and count-to-end costs |
 | [`v5/`](v5/README.md) | **on the real GIK pars**: confidence gate, count-to-end fallback, head GET; every band checked against eccodes |
+| [`rust/`](rust/README.md) | Rust port of the search and a benchmark on the same bytes: v5 search **0.50 s/msg** (15×, same answers as Python 54/54); chain search **30–53 ms** on smooth fields |
 | `breakdown.py` | tally one or more sync outputs by what differs from the reference |
 
 Run from this folder:
@@ -85,6 +86,6 @@ uv run breakdown.py out/v3b_sync_0p25.txt
    45–62%; the rest is margin). The margin can drop from 5% to **1.5%**
    with the band start still inside the window in 100% of messages, which
    brings the fetch to ~56% (v4). The bit search takes ~8 s per message in
-   Python + ctypes. That is a PoC cost, not a floor: a C or Rust scan would
-   be far faster.
+   Python + ctypes. In Rust (`rust/`) it takes 0.50 s with the same answers,
+   or 30–53 ms with the chain search on smooth fields.
 6. **Longitude is still the whole 360°**, at every stage (`../README.md` §8).

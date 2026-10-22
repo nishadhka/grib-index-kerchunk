@@ -1,0 +1,57 @@
+mode chain, best of 3, single thread
+  0 2t       0 | py   8.79s | rs sync   76.60ms count  6.7ms score  1.2ms |    104x | count exact | matched exact
+  1 2t       6 | py   7.35s | rs sync   51.91ms count  6.7ms score  1.2ms |    123x | count exact | matched exact
+  2 2t      24 | py   8.08s | rs sync   45.15ms count  6.8ms score  1.2ms |    152x | count exact | matched exact
+  3 2t      48 | py   7.37s | rs sync   26.31ms count  6.7ms score  1.2ms |    215x | count exact | matched exact
+  4 2t      72 | py   6.48s | rs sync   16.31ms count  6.7ms score  1.2ms |    268x | count exact | matched exact
+  5 2t     120 | py   8.34s | rs sync   50.72ms count  6.7ms score  1.2ms |    142x | count exact | matched exact
+  6 2t     144 | py   7.59s | rs sync   38.82ms count  6.7ms score  1.2ms |    163x | count exact | matched exact
+  7 2t     168 | py   6.95s | rs sync   19.60ms count  6.7ms score  1.2ms |    253x | count exact | matched exact
+  8 2t     240 | py   8.39s | rs sync   64.59ms count  6.7ms score  1.2ms |    116x | count exact | matched exact
+  9 2t     300 | py   8.89s | rs sync   70.44ms count  6.7ms score  1.2ms |    114x | count exact | matched exact
+ 10 2t     360 | py   6.37s | rs sync    8.98ms count  6.7ms score  1.2ms |    378x | count exact | matched exact
+ 11 tp       6 | py   4.55s | rs sync    8.35ms count  6.9ms score  1.2ms |    297x | count WRONG | counted WRONG
+ 12 tp      24 | py   3.57s | rs sync    8.28ms count  6.9ms score  1.3ms |    235x | count exact | counted exact
+ 13 tp      48 | py   3.99s | rs sync  294.62ms count  6.9ms score  1.1ms |     13x | count exact | counted exact
+ 14 tp      72 | py   9.91s | rs sync   19.59ms count  6.9ms score  1.2ms |    374x | count exact | counted exact
+ 15 tp     120 | py   9.53s | rs sync  100.37ms count  7.0ms score  1.2ms |     89x | count exact | counted exact
+ 16 tp     144 | py   9.36s | rs sync    5.05ms count  7.0ms score  1.2ms |    776x | count exact | counted exact
+ 17 tp     168 | py  15.19s | rs sync   45.56ms count  7.0ms score  1.1ms |    289x | count exact | counted exact
+ 18 tp     240 | py  13.28s | rs sync   73.85ms count  7.3ms score  1.2ms |    164x | count WRONG | counted WRONG
+ 19 tp     300 | py  19.18s | rs sync   95.47ms count  7.2ms score  1.2ms |    187x | count exact | counted exact
+ 20 tp     360 | py  19.37s | rs sync  472.73ms count  7.1ms score  1.2ms |     40x | count exact | counted exact
+ 21 msl      0 | py   4.78s | rs sync   17.85ms count  6.7ms score  1.2ms |    186x | count exact | matched exact
+ 22 msl      6 | py   4.99s | rs sync   21.32ms count  6.6ms score  1.2ms |    172x | count exact | matched exact
+ 23 msl     24 | py   5.57s | rs sync   32.60ms count  6.6ms score  1.2ms |    138x | count exact | matched exact
+ 24 msl     48 | py   6.11s | rs sync   65.55ms count  6.6ms score  1.2ms |     83x | count exact | matched exact
+ 25 msl     72 | py   4.65s | rs sync    8.79ms count  6.6ms score  1.2ms |    281x | count exact | matched exact
+ 26 msl    120 | py   5.31s | rs sync   31.86ms count  6.7ms score  1.1ms |    134x | count exact | matched exact
+ 27 msl    144 | py   4.96s | rs sync   21.08ms count  6.6ms score  1.2ms |    172x | count exact | matched exact  (chain starts after the band: head GET)
+ 28 msl    168 | py   5.95s | rs sync   45.24ms count  6.6ms score  1.2ms |    112x | count exact | matched exact
+ 29 msl    240 | py   5.42s | rs sync   38.44ms count  6.7ms score  1.2ms |    117x | count exact | matched exact
+ 30 msl    300 | py   6.20s | rs sync   55.39ms count  6.8ms score  1.2ms |    100x | count exact | counted exact  (chain starts after the band: head GET)
+ 31 msl    360 | py   5.10s | rs sync   26.61ms count  6.6ms score  1.1ms |    154x | count exact | counted exact
+ 32 t/850    0 | py   5.51s | rs sync   13.24ms count  6.7ms score  1.2ms |    261x | count exact | matched exact
+ 33 t/850    6 | py   5.15s | rs sync    4.77ms count  6.7ms score  1.2ms |    406x | count exact | matched exact
+ 34 t/850   24 | py   7.81s | rs sync   73.29ms count  6.7ms score  1.2ms |     96x | count exact | matched exact
+ 35 t/850   48 | py   7.01s | rs sync   65.66ms count  6.7ms score  1.2ms |     95x | count exact | matched exact
+ 36 t/850   72 | py   5.62s | rs sync   15.73ms count  6.8ms score  1.2ms |    238x | count exact | matched exact
+ 37 t/850  120 | py   6.42s | rs sync   34.84ms count  6.7ms score  1.2ms |    150x | count exact | matched exact
+ 38 t/850  144 | py   6.24s | rs sync   22.10ms count  6.8ms score  1.2ms |    208x | count exact | matched exact
+ 39 t/850  168 | py   6.85s | rs sync   55.72ms count  6.7ms score  1.2ms |    108x | count exact | matched exact
+ 40 t/850  240 | py   5.51s | rs sync   13.74ms count  6.7ms score  1.2ms |    255x | count exact | matched exact
+ 41 t/850  300 | py   7.35s | rs sync   57.77ms count  6.7ms score  1.2ms |    112x | count exact | matched exact
+ 42 t/850  360 | py   5.71s | rs sync    9.88ms count  6.7ms score  1.2ms |    323x | count exact | matched exact
+ 43 u/700    0 | py   6.42s | rs sync    4.89ms count  6.7ms score  1.2ms |    551x | count exact | counted exact
+ 44 u/700    6 | py   7.77s | rs sync   32.70ms count  6.8ms score  1.2ms |    197x | count exact | counted exact
+ 45 u/700   24 | py   7.72s | rs sync   23.94ms count  6.7ms score  1.2ms |    252x | count exact | counted exact
+ 46 u/700   48 | py   9.16s | rs sync   73.79ms count  6.7ms score  1.2ms |    114x | count exact | counted exact
+ 47 u/700   72 | py   9.26s | rs sync   68.84ms count  6.7ms score  1.2ms |    122x | count exact | counted exact
+ 48 u/700  120 | py   8.18s | rs sync   35.36ms count  6.7ms score  1.2ms |    194x | count exact | counted exact
+ 49 u/700  144 | py   8.65s | rs sync   55.75ms count  6.7ms score  1.2ms |    138x | count exact | counted exact
+ 50 u/700  168 | py   9.78s | rs sync   83.86ms count  6.7ms score  1.2ms |    108x | count exact | counted exact  (chain starts after the band: head GET)
+ 51 u/700  240 | py   8.79s | rs sync   67.91ms count  6.7ms score  1.2ms |    118x | count exact | counted exact
+ 52 u/700  300 | py   7.85s | rs sync   24.87ms count  6.7ms score  1.2ms |    249x | count exact | counted exact
+ 53 u/700  360 | py   6.95s | rs sync   19.63ms count  6.7ms score  1.2ms |    263x | count exact | counted exact
+
+54 messages: Python v5 7.62 s/msg, Rust chain 59.6 ms/msg, speed-up 128x; count policy exact 52/54; tp policy exact 52/54 (31 value-matched); chain starts after the band in 3

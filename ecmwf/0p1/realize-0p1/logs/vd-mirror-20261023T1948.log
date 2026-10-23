@@ -1,0 +1,7 @@
+847 objects local, 540 at dest, uploading 306 (42.2 MB) + repo
+  retry 1 manifests/J768QK6Z2H4AKZWBGCQ0: An error occurred (520) when calling the PutObject operation: 
+uploaded 307 objects, 42.2 MB in 66.3s; `repo` pointer last -- MIRROR COMPLETE
+
+real	1m8.654s
+user	0m1.138s
+sys	0m0.127s

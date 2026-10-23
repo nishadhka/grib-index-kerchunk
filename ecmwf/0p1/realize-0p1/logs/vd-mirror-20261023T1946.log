@@ -1,0 +1,36 @@
+847 objects local, 0 at dest, uploading 846 (169.6 MB) + repo
+Traceback (most recent call last):
+  File "/home/ubuntu/nishadhka-work/grib-index-kerchunk/ecmwf/0p1/realize-0p1/mirror_local_to_source_coop.py", line 70, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/ubuntu/nishadhka-work/grib-index-kerchunk/ecmwf/0p1/realize-0p1/mirror_local_to_source_coop.py", line 61, in main
+    list(ex.map(one, todo))
+  File "/opt/mamba/envs/dask/lib/python3.12/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dask/lib/python3.12/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dask/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/envs/dask/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/opt/mamba/envs/dask/lib/python3.12/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/nishadhka-work/grib-index-kerchunk/ecmwf/0p1/realize-0p1/mirror_local_to_source_coop.py", line 57, in one
+    sc.put_object(Bucket=args.bucket, Key=f"{args.dest}/{r}", Body=p.read_bytes())
+  File "/home/ubuntu/nishadhka-work/refill-crma-routine/medium-range-forecast/3-realize-frisky/.venv/lib/python3.12/site-packages/botocore/client.py", line 606, in _api_call
+    return self._make_api_call(operation_name, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/nishadhka-work/refill-crma-routine/medium-range-forecast/3-realize-frisky/.venv/lib/python3.12/site-packages/botocore/context.py", line 123, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/nishadhka-work/refill-crma-routine/medium-range-forecast/3-realize-frisky/.venv/lib/python3.12/site-packages/botocore/client.py", line 1094, in _make_api_call
+    raise error_class(parsed_response, operation_name)
+botocore.exceptions.ClientError: An error occurred (520) when calling the PutObject operation: 
+
+real	1m24.815s
+user	0m1.770s
+sys	0m0.323s

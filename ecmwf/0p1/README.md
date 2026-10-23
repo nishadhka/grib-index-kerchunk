@@ -403,6 +403,19 @@ Polytope), not for the S3 open data.
 
 ---
 
+### First end-to-end run ([`realize-0p1/`](realize-0p1/README.md))
+
+On 2026-10-23 the 0.1° stream went through the whole CRMA chain:
+- **Virtual store** (`.index` only), 13 cycles from 20261020 06z, published at
+  `source.coop/e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-vd`.
+- **Realization of 20261021 00z** for the 39 CRMA channels, 801 × 651 over
+  40°N–40°S, 15–80°E, on the EWC frisky cluster. It took **113 min** (the 0.25°
+  daily run took 51 min that date) and stores **65 GB** (0.25°: ~17 GB). It is
+  bit-exact against an independent decode, and published at
+  `…/ecmwf-ifs-0p1-icechunk-realized`.
+
+---
+
 ## 9. Reproduce
 
 ```bash

@@ -1,0 +1,25 @@
+START 2026-10-23T19:53:00Z
+corpus   2026-10-21 .. 2026-10-21  (1 dates)
+shape    39 channels x 51 members x 65 steps
+work     2535 blocks/date, 2535 total, 129,285 messages, ~0.10 TB of AWS egress
+
+sink     must-icechunk/ea-swio/v0p1-20261021-00z (created)
+source   https://data.source.coop/e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-vd
+         group 0p1/00z  snapshot BRMSB3BX5MT7TV5SQF30
+         virtual chunks -> s3://ecmwf-forecasts/ (anonymous), decoded by gribberish
+schema   39 arrays x 1 dates, metadata only, C70PET3JRSG0 in 2.3s
+
+          retry 8 block(s) of 2535 (round 2/6) after 120s pause
+                8x IcechunkError: IcechunkError:   x error fetching virtual reference
+  | 
+  | context:
+  |    0: icechunk::store::get
+  |            with key="0p1/00z/tp/c/0/15/0/0/0"
+            client rss 0.21 GB, 2527 forks held
+[ 1/1] 2026-10-21  6792.7s    19.0 msg/s  submit  2.6s  merge  2.5s  retried    8  -> NX879XCFJ3WK   eta 0m
+
+1/1 available dates in 113.3 min (1 slots reserved)
+
+verify: check_complete.py --prefix ea-swio/v0p1-20261021-00z
+EXIT=0
+END 2026-10-23T21:46:40Z

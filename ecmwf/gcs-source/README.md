@@ -256,9 +256,11 @@ change.
   lines per cycle collapse onto one key, the same as stage 1, because keys
   carry no soil level. This is reported in the build log, not fixed; it needs
   a soil-level axis in the builder.
-- **0.1° not covered.** `ifs/0p1/` files are split `-pl`/`-sfc`, each with its
-  own `.index`. The builder needs a file choice by `levtype` and a 1801 × 3600
-  era.
+- **0.1°: `--resolution 0p1`.** `ifs/0p1/` files are split `-pl`/`-sfc`, each
+  with its own `.index`, so a 0.1° run reads both (340 indexes per 00z/12z, 196
+  per 06z/18z). The groups are `0p1/{run}z` on the 1801 × 3600 grid of
+  `grids.ERAS["0p1"]`. First built and published 2026-10-23, then realized for
+  CRMA's 39 channels: [`../0p1/realize-0p1/README.md`](../0p1/realize-0p1/README.md).
 - **Local filesystem storage** is not safe for concurrent commits. Build one
   cycle at a time per store, or use `gs://` storage.
 - **Longitude** is the full 360° in every route, including the prefix read.

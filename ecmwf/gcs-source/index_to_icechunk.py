@@ -65,7 +65,12 @@ S3_PREFIX = "s3://ecmwf-forecasts/"
 GCS_PREFIX = "gs://ecmwf-open-data/"
 GCS_HTTP = "https://storage.googleapis.com/ecmwf-open-data/"
 GCS_FIRST_DATE = "20230712"
-STREAM_PATH = {"0p4": "0p4-beta", "49r1": "ifs/0p25", "50r1": "ifs/0p25"}
+STREAM_PATH = {"0p4": "0p4-beta", "49r1": "ifs/0p25", "50r1": "ifs/0p25",
+               "0p1": "ifs/0p1"}
+# ifs/0p1 splits every step into two files by level type, each with its own
+# .index: -pl (levtype pl) and -sfc (levtype sfc and sol). 0p1/README.md §1.
+SPLIT_ERAS = {"0p1": ("pl", "sfc")}
+OPER_CONTROL_ERAS = ("50r1", "0p1")   # control in oper/fc, not enfo number=0
 
 
 def get(url, rng=None, tries=6):
@@ -80,8 +85,10 @@ def get(url, rng=None, tries=6):
     raise err
 
 
-def grib_key(era, date, run, hour, stream):
+def grib_key(era, date, run, hour, stream, part=None):
     suffix = "oper-fc" if stream == "oper" else "enfo-ef"
+    if part:
+        suffix += f"-{part}"
     return (f"{date}/{run}z/{STREAM_PATH[era]}/{stream}/"
             f"{date}{run}0000-{hour}h-{suffix}")
 
@@ -93,13 +100,13 @@ def index_refs(era, date, run, control_stream, threads=8):
     produces plus `number`.
     """
     hours = B.STEPS_BY_RUN[run]
-    jobs = [(h, "enfo") for h in hours]
-    if control_stream == "oper":
-        jobs += [(h, "oper") for h in hours]
+    streams = ["enfo"] + (["oper"] if control_stream == "oper" else [])
+    jobs = [(h, s, part) for h in hours for s in streams
+            for part in SPLIT_ERAS.get(era, (None,))]
 
     def fetch(job):
-        h, stream = job
-        key = grib_key(era, date, run, h, stream)
+        h, stream, part = job
+        key = grib_key(era, date, run, h, stream, part)
         return h, stream, key, get(GCS_HTTP + key + ".index").decode()
 
     rows = []
@@ -125,7 +132,7 @@ def index_refs(era, date, run, control_stream, threads=8):
     key = ["step_h", "number", "var", "levtype", "level"]
     n_dupes = int(refs.duplicated(key, keep="last").sum())
     refs = refs.drop_duplicates(key, keep="last").reset_index(drop=True)
-    return refs, n_dupes
+    return refs, n_dupes, len(jobs)
 
 
 def open_or_create(storage):
@@ -292,6 +299,8 @@ def main():
     ap.add_argument("--date", required=True, help="YYYYMMDD")
     ap.add_argument("--run", default="00", choices=["00", "06", "12", "18"])
     ap.add_argument("--era", default=None, help="default: grids.era_for(date, run)")
+    ap.add_argument("--resolution", default=None, choices=["0p25", "0p1"],
+                    help="0p1: the parallel 0.1 deg stream (ifs/0p1, from 20261020 06z)")
     ap.add_argument("--store", required=True, help="local path | gs://bucket/prefix")
     ap.add_argument("--sa-key", default=None)
     ap.add_argument("--parity-pars", default=None,
@@ -306,15 +315,15 @@ def main():
         raise SystemExit(f"{args.date} predates gs://ecmwf-open-data ({GCS_FIRST_DATE})"
                          f" -- this date exists only on AWS")
     from grids import era_for
-    era_name = args.era or era_for(args.date, args.run)
-    control = "oper" if era_name == "50r1" else "enfo"
+    era_name = args.era or era_for(args.date, args.run, args.resolution)
+    control = "oper" if era_name in OPER_CONTROL_ERAS else "enfo"
 
     t0 = _time.time()
-    refs, n_dupes = index_refs(era_name, args.date, args.run, control)
+    refs, n_dupes, n_files = index_refs(era_name, args.date, args.run, control)
     t_idx = _time.time() - t0
     sfc, pl = B.split_levtypes(refs)
     print(f"{era_name}/{args.run}z {args.date}: {len(refs)} refs from "
-          f"{len(B.STEPS_BY_RUN[args.run]) * (2 if control == 'oper' else 1)} .index "
+          f"{n_files} .index "
           f"files on GCS in {t_idx:.1f}s -- {len(sfc)} sfc + {len(pl)} pl vars, "
           f"{refs.number.nunique()} members, control from {control}")
     if n_dupes:

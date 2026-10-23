@@ -1,0 +1,92 @@
+=== 2026102006 start 2026-10-23T19:35:33Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+    [2;3mat[0m icechunk-storage/src/readback.rs:31
+0p1/06z 20261020: 423020 refs from 196 .index files on GCS in 10.6s -- 47 sfc + 10 pl vars, 51 members, control from oper
+  committed 423020 refs at 0p1/06z[time=0] -> PY68KQP485RVFJ6MZQH0 (3.3s) -- new group
+  read-back: 12/12 chunks equal their direct decode (22.8s)
+=== 2026102006 exit=0 wall=37s size=9MB
+=== 2026102012 start 2026-10-23T19:36:10Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/12z 20261020: 742478 refs from 340 .index files on GCS in 24.0s -- 51 sfc + 10 pl vars, 51 members, control from oper
+  26010 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 742478 refs at 0p1/12z[time=0] -> V3FBGG2AN5T9CZQD2PHG (5.5s) -- new group
+  read-back: 12/12 chunks equal their direct decode (24.9s)
+=== 2026102012 exit=0 wall=55s size=26MB
+=== 2026102018 start 2026-10-23T19:37:05Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/18z 20261020: 428018 refs from 196 .index files on GCS in 14.2s -- 49 sfc + 10 pl vars, 51 members, control from oper
+  14994 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 428018 refs at 0p1/18z[time=0] -> 0PQ0YHMM6J4GRAZ6ZA2G (3.3s) -- new group
+  read-back: 12/12 chunks equal their direct decode (24.6s)
+=== 2026102018 exit=0 wall=43s size=35MB
+=== 2026102100 start 2026-10-23T19:37:48Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/00z 20261021: 742478 refs from 340 .index files on GCS in 23.8s -- 51 sfc + 10 pl vars, 51 members, control from oper
+  26010 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 742478 refs at 0p1/00z[time=0] -> Q3YQ23XYT2H3HKCG50AG (5.6s) -- new group
+  read-back: 12/12 chunks equal their direct decode (21.5s)
+=== 2026102100 exit=0 wall=51s size=52MB
+=== 2026102106 start 2026-10-23T19:38:39Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/06z 20261021: 428018 refs from 196 .index files on GCS in 14.0s -- 49 sfc + 10 pl vars, 51 members, control from oper
+  14994 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 428018 refs at 0p1/06z[time=1] -> BEDYN11096ZKTAQAHGKG (3.5s)
+  arrays first seen on this date: ['sot', 'vsw']
+  read-back: 12/12 chunks equal their direct decode (23.5s)
+=== 2026102106 exit=0 wall=42s size=61MB
+=== 2026102112 start 2026-10-23T19:39:21Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/12z 20261021: 742478 refs from 340 .index files on GCS in 24.4s -- 51 sfc + 10 pl vars, 51 members, control from oper
+  26010 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 742478 refs at 0p1/12z[time=1] -> 8WTAFN14CMQX2JMEKF9G (6.1s)
+  read-back: 12/12 chunks equal their direct decode (22.8s)
+=== 2026102112 exit=0 wall=54s size=78MB
+=== 2026102118 start 2026-10-23T19:40:15Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/18z 20261021: 428018 refs from 196 .index files on GCS in 14.1s -- 49 sfc + 10 pl vars, 51 members, control from oper
+  14994 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 428018 refs at 0p1/18z[time=1] -> 2Z5Z9186HK2AC35S2NWG (3.6s)
+  read-back: 12/12 chunks equal their direct decode (23.7s)
+=== 2026102118 exit=0 wall=42s size=87MB
+=== 2026102200 start 2026-10-23T19:40:57Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/00z 20261022: 742478 refs from 340 .index files on GCS in 23.9s -- 51 sfc + 10 pl vars, 51 members, control from oper
+  26010 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 742478 refs at 0p1/00z[time=1] -> S1PVWYDJ0AWKCN2XY6QG (5.9s)
+  read-back: 12/12 chunks equal their direct decode (25.2s)
+=== 2026102200 exit=0 wall=55s size=104MB
+=== 2026102206 start 2026-10-23T19:41:52Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/06z 20261022: 428018 refs from 196 .index files on GCS in 14.0s -- 49 sfc + 10 pl vars, 51 members, control from oper
+  14994 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 428018 refs at 0p1/06z[time=2] -> QQW6FDSX96JCJBMVYSY0 (3.5s)
+  read-back: 12/12 chunks equal their direct decode (23.2s)
+=== 2026102206 exit=0 wall=42s size=113MB
+=== 2026102212 start 2026-10-23T19:42:34Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/12z 20261022: 742478 refs from 340 .index files on GCS in 23.8s -- 51 sfc + 10 pl vars, 51 members, control from oper
+  26010 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 742478 refs at 0p1/12z[time=2] -> E0Z7SDKERHV1WS7QWQMG (5.9s)
+  read-back: 12/12 chunks equal their direct decode (23.5s)
+=== 2026102212 exit=0 wall=54s size=129MB
+=== 2026102218 start 2026-10-23T19:43:28Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/18z 20261022: 428018 refs from 196 .index files on GCS in 14.0s -- 49 sfc + 10 pl vars, 51 members, control from oper
+  14994 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 428018 refs at 0p1/18z[time=2] -> VH03V9WF5FSR08XKPDPG (3.6s)
+  read-back: 12/12 chunks equal their direct decode (26.5s)
+=== 2026102218 exit=0 wall=44s size=138MB
+=== 2026102300 start 2026-10-23T19:44:12Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/00z 20261023: 742478 refs from 340 .index files on GCS in 23.4s -- 51 sfc + 10 pl vars, 51 members, control from oper
+  26010 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 742478 refs at 0p1/00z[time=2] -> 5BAKZ84S5ZD7DTBC87TG (5.9s)
+  read-back: 12/12 chunks equal their direct decode (21.5s)
+=== 2026102300 exit=0 wall=52s size=155MB
+=== 2026102306 start 2026-10-23T19:45:04Z
+    [2;3mat[0m icechunk-arrow-object-store/src/lib.rs:343
+0p1/06z 20261023: 428018 refs from 196 .index files on GCS in 13.6s -- 49 sfc + 10 pl vars, 51 members, control from oper
+  14994 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 428018 refs at 0p1/06z[time=3] -> BRMSB3BX5MT7TV5SQF30 (3.6s)
+  read-back: 12/12 chunks equal their direct decode (23.9s)
+=== 2026102306 exit=0 wall=41s size=164MB

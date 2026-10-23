@@ -63,7 +63,8 @@ Rules carried over from stage 1 on purpose:
   `number=0`. The control has 15,133 refs per 00z cycle; each perturbed member
   has 13,940.
 - **Duplicate keys** `(step, member, param, levtype[, level])`: the last
-  index line wins, as stage 1's dict does.
+  index line wins, as stage 1's dict does. That is wrong for the soil
+  variables. Pass `--soil-layers` to keep all four layers (§7).
 - **Containers:** both `s3://ecmwf-forecasts/` and `gs://ecmwf-open-data/` are
   registered. On an existing store, `gs://` is merged into the stored config.
   A fresh config that names only `gs://` would *replace* `s3://` on save.
@@ -84,6 +85,7 @@ uv run index_to_icechunk.py --date 20261021 --run 00 \
 | `--verify-only` | check an existing store only |
 | `--parity-pars DIR` | compare the refs with a date's stage-1 pars |
 | `--overwrite-date` | rewrite a date already in a preallocated group |
+| `--soil-layers` | key `sot`/`vsw` by layer and write them on a `soilLayer` axis (1–4); see §7. Not combinable with `--parity-pars` |
 
 One commit per `(era, run, date)`. Several cycles can go into one store: each
 run hour is its own group, and dates append on `time`.
@@ -91,7 +93,10 @@ run hour is its own group, and dates append on `time`.
 ## 3. The three local stores (built 2026-10-23)
 
 One folder per cycle under `/home/ubuntu/icechunk-local/`. Each was run one
-after another on this machine (gateway VM, ECMWF cloud).
+after another on this machine (gateway VM, ECMWF cloud). The table is the
+first build. The same day, all three were **rebuilt with `--soil-layers`**:
+443,012 / 768,488 / 768,488 refs, 32/32 read-back each, same timings within
+a second, 9 / 17 / 17 MB.
 
 | Store | Group | `.index` files | Refs | Read indexes | Commit | **Build** | Read-back | Size |
 |---|---|---|---|---|---|---|---|---|
@@ -103,9 +108,9 @@ after another on this machine (gateway VM, ECMWF cloud).
   12–19 s per cycle. With the 24-chunk read-back the whole command takes
   about 48 s.
 - **Contents:** 51 members, 0.25° global (721 × 1440, lon −180…179.75,
-  lat 90…−90), 14 pl levels.
-  - 00z: 85 steps (0–360 h), 51 sfc + 10 pl variables.
-  - 06z: 49 steps (0–144 h), 49 sfc + 10 pl. The two missing are
+  lat 90…−90), 14 pl levels, 4 soil layers.
+  - 00z: 85 steps (0–360 h), 49 sfc + 2 soil (`sot`, `vsw`) + 10 pl variables.
+  - 06z: 49 steps (0–144 h), 47 sfc + 2 soil + 10 pl. The two missing are
     `mx2t6`/`mn2t6`, which exist only in the long runs past 144 h.
 - **The 7 new 43-sfc parameters** `cp hcc lcc mcc tciw tclw tcrw` are in all
   three stores. That regime starts exactly at 20261020 06z: 00z that day has
@@ -161,6 +166,8 @@ The script exits 1 on any failure.
 | 20261020 06z | `t` 850 hPa | 0, 48, 96 | 51/51 (control from `oper`) | **0** | 1.000000 |
 | 20261020 06z | `lcc` (new 43-sfc param) | 24, 72, 144 | 50/50 | **0** | 1.000000 |
 | 20261022 00z | `tp` | 24, 120, **240** (6-hourly part) | 51/51 | **0** | 1.000000 |
+| 20261021 00z, `--soil-layers` | `sot` layer 1, layer 4 | 24, 240 | 51/51 each | **0** | 1.000000 |
+| 20261021 00z, `--soil-layers` | `vsw` layer 1, layer 4 | 24, 240 | 51/51 each | **0** | 1.000000 |
 
 All results are bit-exact. Maps: `plots/store_vs_herbie_{var}_{date}{run}z.png`
 (store ensemble mean | Herbie ensemble mean | difference, East Africa). Reports
@@ -250,12 +257,84 @@ a top-up GET if short. That is `prefix_read.py`'s logic. It costs one
 dependency (libaec ≥ 1.1, already in the imagecodecs wheel) and no store
 change.
 
-## 7. Known limits
+## 7. Soil variables: the stored field mixes soil depths
 
-- **Soil layers.** `sot`/`vsw` keep one of their four layers: 15–26 k index
-  lines per cycle collapse onto one key, the same as stage 1, because keys
-  carry no soil level. This is reported in the build log, not fixed; it needs
-  a soil-level axis in the builder.
+**The defect.** Since the 13-level era (2025-01-14 06z), every cycle has two
+soil variables on levtype `sol`, `sot` (soil temperature) and `vsw`
+(volumetric soil moisture), each at four layers (`levelist` 1–4, 1 = top).
+Stage 1 keys a ref as `{var}/{levtype}/{member}`. Pressure levels got the
+level in the key in `4ca1c21` ("per-pressure-level keys … fix collapse
+bug"), but `sol` was left out on purpose. The comment at
+`../ecmwf_index_processor.py:160` reads *"sfc/sol keep their old shape"*, and
+production stage 1 has the same line
+(`crma/medium-range-forecast/1-pars-lithops/run_lithops_ecmwf.py:365`). The
+four layers share one key, and the last `.index` line wins.
+
+**Why it is worse than "one layer kept".** The `.index` lists the four
+layers in **no fixed order**. Member 1 at T+24 has `vsw` as 2, 3, 4, 1 and
+`sot` as 3, 2, 4, 1. So the layer that survives changes from member to member
+and from step to step. Over 51 members × 85 steps of 20261021 00z:
+
+| Variable | Layer kept: 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| `sot` | 1,986 | 741 | 859 | 664 |
+| `vsw` | 850 | 0 | 850 | 2,550 |
+
+Comparing the old store with the layer-aware one (members 0–50, T+24 h),
+each member's field is **bit-identical** to one real layer:
+
+```
+sot  314312434213124431311121131214124131244321131211314
+vsw  314344434443441434413441434414441434414341434414341
+```
+
+The data is valid GRIB with the wrong label, so nothing fails. Over East
+Africa at T+24 the old `sot` ensemble mean is 300.48 K. The true layer means
+are 298.98 / 301.72 / 301.55 / 301.32 K, so the old mean matches no layer.
+
+**History.**
+- `3eaca85` fixed the *drop* of soil fields: `sol` had been an unknown
+  levtype, and it is now treated as surface.
+- `415aa5e` noticed the collapse ("ens01 sot points at level 2, vsw at
+  level 4 … a par-building issue to fix upstream").
+- Nothing has fixed it since, in either repo. No consumer reads `sot`/`vsw`
+  today: the cGAN, the realization and frisky do not use them. So the harm is
+  latent, in the published `ecmwf-ens-v4` store and its pars.
+
+**The fix in this builder (`--soil-layers`).** Soil is treated like pressure
+levels. The `.index` `levelist` goes into the key, and `sot`/`vsw` are
+written as `(time, number, step, soilLayer, latitude, longitude)`, with
+chunk `(1, 1, 1, 1, 721, 1440)` and a `soilLayer` coordinate `[1, 2, 3, 4]`.
+On 20261021 00z:
+
+- the collapse is gone: 768,488 refs, which is the 742,478 before plus
+  exactly the 26,010 lines that were collapsed;
+- 34,680 soil refs, which is 2 variables × 4 layers × 85 steps × 51 members;
+- read-back is 32/32 equal, every layer for the control and member 50;
+- Herbie matches bit-exactly, 51/51, for `sot` and `vsw` at layers 1 and 4,
+  T+24 and T+240 (`test_store_vs_herbie.py --var sot --level 1`; the script
+  now searches `:sot:1:sol:` when the array has a `soilLayer` axis).
+
+It is a flag because the default proves itself against stage-1 pars
+(`--parity-pars`), and those pars carry the collapse. An existing store with
+5-D `sot`/`vsw` refuses a `--soil-layers` date on the shape check, so the two
+layouts never mix in one group.
+
+**What production needs (not done):**
+
+1. **Stage 1** (`run_lithops_ecmwf.py`, `ecmwf_index_processor.py`): key `sol`
+   like `pl`, as `{var}/sol/{levelist}/{member}/0.0.0`.
+2. **`build_ecmwf_icechunk.py`**: parse the layer segment, add the `soilLayer`
+   axis, and route `sol` through a `soil_specs` like this builder's.
+3. **`ecmwf-ens-v4`**: the existing `sot`/`vsw` arrays cannot be repaired in
+   place, because the pars no longer say which layer each ref was. Either
+   rebuild those two arrays from the `.index` (this builder's route: 170 GETs
+   per cycle, the GRIB is untouched), or mark them as mixed-layer and drop
+   them.
+4. Repeat the check on a 49r1 13-level date, where `sol` first appears.
+
+## 8. Known limits
+
 - **0.1°: `--resolution 0p1`.** `ifs/0p1/` files are split `-pl`/`-sfc`, each
   with its own `.index`, so a 0.1° run reads both (340 indexes per 00z/12z, 196
   per 06z/18z). The groups are `0p1/{run}z` on the 1801 × 3600 grid of

@@ -26,6 +26,7 @@ wrong index, or a codec error all show up as a difference here.
       --date 20261020 --run 06 --var tp --steps 24,72,144
   uv run test_store_vs_herbie.py ... --var t --level 850 --steps 0,48,96
   uv run test_store_vs_herbie.py ... --var lcc     # one of the 7 new 43-sfc params
+  uv run test_store_vs_herbie.py ... --var sot --level 3   # soil layer (--soil-layers store)
 
 Exit 1 if any step fails.
 """
@@ -78,10 +79,11 @@ def store_field(ds, var, date, run, step, level):
         raise SystemExit(f"{date} {run}z is not on this group's time axis "
                          f"{ds.time.values}")
     da = ds[var].sel(time=t, step=step)
-    if "isobaricInhPa" in da.dims:
-        if level is None:
-            raise SystemExit(f"{var} is on pressure levels; pass --level")
-        da = da.sel(isobaricInhPa=float(level))
+    for dim, sel in (("isobaricInhPa", float), ("soilLayer", int)):
+        if dim in da.dims:
+            if level is None:
+                raise SystemExit(f"{var} is on {dim}; pass --level")
+            da = da.sel({dim: sel(level)})
     da = da.sel(latitude=slice(C.LAT_MAX, C.LAT_MIN),
                 longitude=slice(C.LON_MIN, C.LON_MAX))
     return (da.values.astype(np.float32), da.latitude.values, da.longitude.values,
@@ -108,10 +110,11 @@ def herbie_open(date, run, step, product, search, priority):
     raise RuntimeError("every Herbie source failed -- " + "; ".join(errs))
 
 
-def herbie_field(date, run, step, var, level, lats, lons, product, priority):
+def herbie_field(date, run, step, var, level, lats, lons, product, priority,
+                 levtype="pl"):
     """-> (values[number, lat, lon], numbers, source) on the store's own labels."""
     param = C.TO_GRIB.get(var, var)
-    search = f":{param}:{level}:pl:" if level is not None else f":{param}:sfc:"
+    search = f":{param}:{level}:{levtype}:" if level is not None else f":{param}:sfc:"
     H, ds, src = herbie_open(date, run, step, product, search, priority)
     if isinstance(ds, list):
         cand = [d for d in ds if "number" in d.dims] or ds
@@ -158,6 +161,7 @@ def main() -> int:
     if missing:
         raise SystemExit(f"steps {missing} not on the axis {ds.step.values.tolist()}")
 
+    levtype = "sol" if "soilLayer" in ds[args.var].dims else "pl"
     rows, report, failed = [], [], False
     for step in steps:
         ts = time.time()
@@ -166,11 +170,12 @@ def main() -> int:
         t_store = time.time() - ts
         th = time.time()
         hv, hnum, src = herbie_field(args.date, args.run, step, args.var, args.level,
-                                     lats, lons, "enfo", prio)
+                                     lats, lons, "enfo", prio, levtype)
         if args.control:
             try:
                 cv, cnum, _ = herbie_field(args.date, args.run, step, args.var,
-                                           args.level, lats, lons, "oper", prio)
+                                           args.level, lats, lons, "oper", prio,
+                                           levtype)
                 hv, hnum = np.concatenate([cv, hv]), np.concatenate([[0], hnum])
             except Exception as e:
                 print(f"  control via Herbie 'oper' unavailable: {str(e)[:80]}")
@@ -195,7 +200,8 @@ def main() -> int:
 
     # plot: one row per step -- store mean | Herbie mean | difference
     units = C.VAR_UNITS.get(args.var, "")
-    lev = f" {args.level} hPa" if args.level is not None else ""
+    lev = ("" if args.level is None else f" layer {args.level}" if levtype == "sol"
+           else f" {args.level} hPa")
     fig, axes = plt.subplots(len(rows), 3, figsize=(17, 5.2 * len(rows)),
                              subplot_kw={"projection": ccrs.PlateCarree()},
                              squeeze=False)
@@ -216,7 +222,7 @@ def main() -> int:
                  fontsize=14, fontweight="bold")
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    tag = f"{args.var}{args.level or ''}"
+    tag = f"{args.var}{'L' if levtype == 'sol' and args.level else ''}{args.level or ''}"
     png = out / f"store_vs_herbie_{tag}_{args.date}{args.run}z.png"
     fig.savefig(png, dpi=110, bbox_inches="tight", facecolor="white")
     (out / f"store_vs_herbie_{tag}_{args.date}{args.run}z.json").write_text(

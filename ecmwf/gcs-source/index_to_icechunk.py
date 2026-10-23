@@ -34,13 +34,17 @@ the same refs (`--parity-pars` proves it against a date's stage-1 pars):
   * key (step, member, param, levtype[, level]); pl level from `levelist`
   * the control comes from oper/fc in 50r1, from enfo number=0 before it
   * a duplicate key keeps the LAST index line -- stage 1 builds a dict. This
-    collapses the levelists of levtype `sol` (soil layers) onto one; the count
-    is reported, not fixed, because the builder has no soil-level axis either.
+    collapses the 4 levelists of levtype `sol` (sot, vsw) onto one, and the
+    .index lists those layers in no fixed order, so the layer kept differs by
+    member and step: the stored field mixes soil depths. `--soil-layers` keys
+    `sol` by layer and writes sot/vsw on a `soilLayer` axis instead, at the cost
+    of no longer matching stage-1 pars for those two variables.
 
   uv run index_to_icechunk.py --date 20261020 --run 06 --store /path/to/store
   uv run index_to_icechunk.py --date 20261019 --run 00 --store /tmp/x \\
       --parity-pars .../pars/20261019          # refs == stage-1 pars?
   uv run index_to_icechunk.py --date 20261020 --run 06 --store /path --verify-only
+  uv run index_to_icechunk.py --date 20261021 --run 00 --store /path --soil-layers
 """
 import argparse
 import json
@@ -71,6 +75,9 @@ STREAM_PATH = {"0p4": "0p4-beta", "49r1": "ifs/0p25", "50r1": "ifs/0p25",
 # .index: -pl (levtype pl) and -sfc (levtype sfc and sol). 0p1/README.md §1.
 SPLIT_ERAS = {"0p1": ("pl", "sfc")}
 OPER_CONTROL_ERAS = ("50r1", "0p1")   # control in oper/fc, not enfo number=0
+SOIL_DIM = "soilLayer"
+SOIL_LAYERS = [1, 2, 3, 4]      # .index `levelist` of levtype sol, top to bottom
+COORDS = B.COORD_NAMES | {SOIL_DIM}
 
 
 def get(url, rng=None, tries=6):
@@ -93,12 +100,14 @@ def grib_key(era, date, run, hour, stream, part=None):
             f"{date}{run}0000-{hour}h-{suffix}")
 
 
-def index_refs(era, date, run, control_stream, threads=8):
+def index_refs(era, date, run, control_stream, threads=8, soil_layers=False):
     """Every ref of one (date, run), straight from the .index files on GCS.
 
     Returns (refs, n_dupes) with the columns build_ecmwf_icechunk.parse_par
-    produces plus `number`.
+    produces plus `number`. `level` is the hPa of a pl ref, and with
+    soil_layers the layer (1..4) of a sol ref; NaN otherwise.
     """
+    leveled = ("pl", "sol") if soil_layers else ("pl",)
     hours = B.STEPS_BY_RUN[run]
     streams = ["enfo"] + (["oper"] if control_stream == "oper" else [])
     jobs = [(h, s, part) for h in hours for s in streams
@@ -125,7 +134,7 @@ def index_refs(era, date, run, control_stream, threads=8):
                     continue
                 levtype = d.get("levtype", "")
                 rows.append((h, d.get("param", "").lower().replace(" ", "_"), levtype,
-                             float(d["levelist"]) if levtype == "pl" else np.nan,
+                             float(d["levelist"]) if levtype in leveled else np.nan,
                              url, int(d["_offset"]), int(d["_length"]), number))
     refs = pd.DataFrame(rows, columns=["step_h", "var", "levtype", "level", "url",
                                        "offset", "length", "number"])
@@ -183,12 +192,24 @@ def write_date(repo, era_name, run, date, refs, overwrite=False):
     if bad:
         raise SystemExit(f"levels {bad} outside the {era_name} superset")
     sfc_vars, pl_vars = B.split_levtypes(refs)
+    soil = (refs.levtype == "sol") & refs.level.notna()
+    sol_vars = sorted(refs.loc[soil, "var"].unique())
+    sfc_vars = [v for v in sfc_vars if v not in sol_vars]
+    bad = set(refs.loc[soil, "level"]) - set(SOIL_LAYERS)
+    if bad:
+        raise SystemExit(f"soil layers {bad} outside {SOIL_LAYERS}")
     time_val = B.time_value(date, run)
 
     session = repo.writable_session("main")
     store = session.store
     created = B.ensure_group(store, grp, era, steps, era_name)
     g = zarr.open_group(store=store, path=grp, mode="r+", zarr_format=3)
+    if sol_vars and SOIL_DIM not in g:
+        zarr.create_array(store, name=f"{grp}/{SOIL_DIM}", shape=(len(SOIL_LAYERS),),
+                          dtype="int16", chunks=(len(SOIL_LAYERS),),
+                          dimension_names=[SOIL_DIM],
+                          attributes={"long_name": "soil layer, 1 = top "
+                                      "(.index levelist of levtype sol)"})[:] = SOIL_LAYERS
     mode = B.group_mode(g)
     tarr = g["time"]
     existing = tarr[:] if tarr.shape[0] else np.array([], dtype="int64")
@@ -210,15 +231,22 @@ def write_date(repo, era_name, run, date, refs, overwrite=False):
         tarr.resize((n_time,))
         tarr[ti] = time_val
         for name in list(g.array_keys()):
-            if name not in B.COORD_NAMES and g[name].shape[0] != n_time:
+            if name not in COORDS and g[name].shape[0] != n_time:
                 g[name].resize((n_time,) + g[name].shape[1:])
 
     n_set, new_arrays = 0, []
-    for var, is_pl in [(v, False) for v in sfc_vars] + [(v, True) for v in pl_vars]:
+    for var, kind in ([(v, "sfc") for v in sfc_vars] + [(v, "pl") for v in pl_vars]
+                      + [(v, "sol") for v in sol_vars]):
+        is_pl = kind == "pl"
         zname = B.channel_name(var, is_pl, pl_vars)
         path = f"{grp}/{zname}"
-        full, chunks, dims = B.array_geometry(is_pl, n_time, len(steps),
-                                              len(era["levels"]), era["ny"], era["nx"])
+        if kind == "sol":       # pl geometry, soilLayer in place of isobaricInhPa
+            full, chunks, dims = B.array_geometry(True, n_time, len(steps),
+                                                  len(SOIL_LAYERS), era["ny"], era["nx"])
+            dims = [SOIL_DIM if d == "isobaricInhPa" else d for d in dims]
+        else:
+            full, chunks, dims = B.array_geometry(is_pl, n_time, len(steps),
+                                                  len(era["levels"]), era["ny"], era["nx"])
         if zname in g:
             assert g[zname].shape == full, f"{path}: shape {g[zname].shape} != {full}"
         else:
@@ -228,7 +256,8 @@ def write_date(repo, era_name, run, date, refs, overwrite=False):
                               serializer=GribberishCodec(var=zname),
                               compressors=None, filters=None, dimension_names=dims,
                               attributes={"grib_shortName": var}, overwrite=True)
-        specs = B.ref_specs(refs, var, is_pl, ti, step_idx, lev_idx)
+        specs = (soil_specs(refs[soil & (refs["var"] == var)], ti, step_idx)
+                 if kind == "sol" else B.ref_specs(refs, var, is_pl, ti, step_idx, lev_idx))
         rejected = store.set_virtual_refs(path, specs)
         assert not rejected, f"{path}: rejected refs {rejected}"
         n_set += len(specs)
@@ -236,6 +265,14 @@ def write_date(repo, era_name, run, date, refs, overwrite=False):
                           f"on GCS (time index {ti})")
     return dict(grp=grp, ti=ti, n_set=n_set, snap=snap, new_arrays=new_arrays,
                 sfc=sfc_vars, pl=pl_vars, created=created)
+
+
+def soil_specs(sub, ti, step_idx):
+    """B.ref_specs for a sol var on the soilLayer axis."""
+    return [icechunk.VirtualChunkSpec(
+        index=[ti, int(r.number), step_idx[r.step_h], SOIL_LAYERS.index(int(r.level)), 0, 0],
+        location=r.url, offset=int(r.offset), length=int(r.length))
+        for r in sub.itertuples()]
 
 
 def parity(refs, pars_dir):
@@ -269,15 +306,21 @@ def verify(storage, era_name, run, date, refs, n, seed):
     rng = random.Random(seed)
     picks = [refs[(refs.levtype == lt) & (refs.number == m) & (refs.step_h == s)]
              for lt in ("sfc", "pl") for m in (0, 50) for s in (steps[0], steps[-1])]
+    soil = (refs.levtype == "sol") & refs.level.notna()
+    picks += [refs[soil & (refs.level == k) & (refs.number == m)]
+              for k in SOIL_LAYERS for m in (0, 50)]
     sample = pd.concat([c.iloc[[rng.randrange(len(c))]] for c in picks if len(c)]
                        + [refs.sample(max(0, n - len(picks)), random_state=seed)])
     ok, bad = 0, []
     for _, r in sample.iterrows():
         is_pl = r.levtype == "pl"
+        is_sol = r.levtype == "sol" and not np.isnan(r.level)
         a = g[B.channel_name(r["var"], is_pl, pl_vars)]
         si = steps.index(r.step_h)
-        idx = (ti, int(r.number), si) + ((levels.index(r.level),) if is_pl else ())
-        tag = f"{r['var']}{int(r.level) if is_pl else ''} m{int(r.number)} s{r.step_h}"
+        idx = (ti, int(r.number), si) + ((levels.index(r.level),) if is_pl else
+                                         (SOIL_LAYERS.index(int(r.level)),) if is_sol else ())
+        lev = int(r.level) if is_pl else f"/L{int(r.level)}" if is_sol else ""
+        tag = f"{r['var']}{lev} m{int(r.number)} s{r.step_h}"
         try:
             got = np.asarray(a[idx])
             raw = get(GCS_HTTP + r.url[len(GCS_PREFIX):], (int(r.offset), int(r.length)))
@@ -310,7 +353,12 @@ def main():
     ap.add_argument("--verify-only", action="store_true")
     ap.add_argument("--seed", type=int, default=1020)
     ap.add_argument("--overwrite-date", action="store_true")
+    ap.add_argument("--soil-layers", action="store_true",
+                    help="keep all 4 soil layers of sot/vsw on a soilLayer axis "
+                         "(default: stage-1 keys, one layer survives per member/step)")
     args = ap.parse_args()
+    if args.soil_layers and args.parity_pars:
+        raise SystemExit("--soil-layers refs differ from stage-1 pars by design")
     if args.date < GCS_FIRST_DATE:
         raise SystemExit(f"{args.date} predates gs://ecmwf-open-data ({GCS_FIRST_DATE})"
                          f" -- this date exists only on AWS")
@@ -319,17 +367,23 @@ def main():
     control = "oper" if era_name in OPER_CONTROL_ERAS else "enfo"
 
     t0 = _time.time()
-    refs, n_dupes, n_files = index_refs(era_name, args.date, args.run, control)
+    refs, n_dupes, n_files = index_refs(era_name, args.date, args.run, control,
+                                        soil_layers=args.soil_layers)
     t_idx = _time.time() - t0
     sfc, pl = B.split_levtypes(refs)
+    soil = (refs.levtype == "sol") & refs.level.notna()
+    n_sol, sol_vars = int(soil.sum()), sorted(refs.loc[soil, "var"].unique())
+    sfc = [v for v in sfc if v not in sol_vars]
     print(f"{era_name}/{args.run}z {args.date}: {len(refs)} refs from "
           f"{n_files} .index "
           f"files on GCS in {t_idx:.1f}s -- {len(sfc)} sfc + {len(pl)} pl vars, "
-          f"{refs.number.nunique()} members, control from {control}")
+          f"{refs.number.nunique()} members, control from {control}"
+          + (f"; {len(sol_vars)} soil vars, {n_sol} refs on {SOIL_DIM}" if n_sol else ""))
     if n_dupes:
         dup_vars = sorted(set(refs.loc[refs.levtype == "sol", "var"]))
         print(f"  {n_dupes} index lines share a key and were collapsed, last wins "
-              f"(stage-1 behaviour; soil levels of {dup_vars})")
+              f"(stage-1 behaviour; soil levels of {dup_vars} -- the kept layer "
+              f"varies by member and step; --soil-layers keeps all 4)")
     # perturbed members must match each other; the control may carry more
     # (50r1 oper/fc has fields enfo does not, e.g. 15,133 vs 13,940 refs)
     per = refs.groupby("number").size()

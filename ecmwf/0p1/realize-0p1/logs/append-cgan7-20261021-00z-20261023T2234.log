@@ -1,0 +1,15 @@
+START 2026-10-23T22:34:28Z
+sink     must-icechunk/ea-swio/v0p1-20261021-00z
+existing 39 channels, 1 dates 2026-10-21 .. 2026-10-21
+  2026-10-21: cape <- mucape
+  2026-10-21: cape <- mucape
+append   ['cp', 'mcc', 'ssr', 'tciw', 'tclw', 'tcrw', 'tcw']  ->  1 dates x 7 ch x 51 mem x 65 steps = 23,205 messages
+         ~0.0 h at 200 msg/s, ~3 GB stored
+
+schema   7 arrays appended (metadata only), DPF73Y2B7DBG
+[ 1/1] 2026-10-21  1099.7s    21.1 msg/s  ok
+
+1/1 dates in 18.3 min
+re-mirror with mirror_ceph_to_source_coop.py -- it transfers only the new objects, so ~0 GB, not the whole store
+EXIT=0
+END 2026-10-23T22:53:04Z

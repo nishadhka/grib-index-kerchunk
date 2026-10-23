@@ -1,0 +1,15 @@
+START 2026-10-23T22:54:18Z
+source  ceph://must-icechunk/ea-swio/v0p1-20261021-00z
+dest    s3://e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-realized
+workers 4 processes x 48 threads
+
+listing source ...
+  3062 objects, 73.42 GB in 0s
+  destination already holds 2589 objects
+  to upload: 474 objects, 8.39 GB (2588 already in sync)
+  at 90 MB/s (4 procs, one host): 1.6 min -> 0.03 h
+
+uploaded 474/474 objects, 8.39 GB in 103s = 81.7 MB/s (294 GB/h), 0 errors
+uploaded `repo` pointer (last)
+EXIT=0
+END 2026-10-23T22:56:07Z

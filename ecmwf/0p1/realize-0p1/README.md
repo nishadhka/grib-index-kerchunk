@@ -120,6 +120,59 @@ env -u AWS_ENDPOINT_URL -u AWS_ACCESS_KEY_ID -u AWS_SECRET_ACCESS_KEY -u AWS_SES
 `inspect_store.py` imports `dotenv`, which the refill venv lacks. The index-cut
 comparison above covers the same question.
 
+### 2b. The cGAN's 14 fields: 7 channels appended
+
+**Which fields were missing.** The cGAN takes 14 forecast fields
+(`cGAN_tutorial/RFE2_cGAN_RUNBOOK.md` §1, `all_fcst_fields`):
+`cape cp mcc sp ssr t2m tciw tclw tcrw tcw tcwv tp u700 v700`. Seven are
+already among CRMA's 39 (`cape sp t2m tcwv tp u700 v700`). The other seven are:
+
+| field | meaning |
+|---|---|
+| `cp` | convective precipitation, accumulated |
+| `mcc` | medium cloud cover |
+| `ssr` | surface net solar radiation, accumulated |
+| `tciw` | total column cloud ice water |
+| `tclw` | total column cloud liquid water |
+| `tcrw` | total column rain water |
+| `tcw` | total column water |
+
+All seven are in the 0.1° `-sfc` files. Five of them (`cp mcc tciw tclw tcrw`)
+appear in the 0.25° stream only from 20261020 06z.
+
+**How they were added.** [`append_channels.py`](append_channels.py) is a copy
+of the production script. It does **not** rebuild the store:
+- it adds the new arrays, metadata only, with `mode="a"` (never `"w"`);
+- it then realizes only those channels, then re-mirrors.
+
+`NEW_CHANNELS` is set to the seven fields, and era `0p1` is allowed.
+
+```bash
+env -u AWS_ENDPOINT_URL -u AWS_ACCESS_KEY_ID -u AWS_SECRET_ACCESS_KEY -u AWS_SESSION_TOKEN \
+    AWS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
+  $REFILL/3-realize-frisky/.venv/bin/python -u append_channels.py --sink ea-swio/v0p1-20261021-00z \
+    --era 0p1 --start 2026-10-21 --days 1 --env $REFILL/.env --rounds 6 --pause 120
+```
+
+| | measured |
+|---|---|
+| work | 7 ch × 51 members × 65 steps = 23,205 messages (18% of the 39-channel run) |
+| append | **18.3 min** (1,099.7 s), 21.1 msg/s on 20 readers, 0 retries |
+| added on Ceph | **8.4 GB** (65.0 → 73.4 GB). These fields compress better than the 39 average: ~1.2 GB/channel against ~1.7 |
+| re-mirror | 474 new objects, 8.39 GB in 103 s (81.7 MB/s), 0 errors |
+| manifest | 46 channels × 65/65 chunks, total missing 0 |
+| independent decode | `cp` m4 72 h, `mcc` control 24 h, `ssr` m50 240 h, `tciw` m12 120 h, `tclw` m27 6 h, `tcrw` m33 48 h, `tcw` m45 0 h: **max \|diff\| 0, no NaN**. `t2m` re-checked: unchanged |
+| published | snapshot `DC0D89EDAFQ83ARYA110`, 46 variables; all 14 cGAN fields present, read anonymously |
+
+**What it costs.** A date with all 46 channels (39 + 7) takes about 113 + 18 =
+**~131 min** of realization and **73.4 GB** stored at 0.1°. Building the 46 in
+one pass would save the second schema commit and pass, but the read cost is the
+same.
+
+**What the cGAN still needs.** These are raw fields over the realized box.
+- The cGAN takes ensemble **mean and sd** per field, over **24 h windows** (`accumulated_fields = ['cp','ssr','tp']`). That is the cGAN's own preprocessing, done downstream of this store.
+- `cape` is `mucape` from 2025 on (`frisky_daily_dag._resolve_var`). The cGAN's training archive should be checked for which of the two it used.
+
 ## 3. Issues met
 
 1. **source.coop 520 on upload.** One `PutObject` returned HTTP 520 (Cloudflare, transient), and the uploader stopped. It now retries each object 8 times with backoff. The second pass skipped what was already there.
@@ -136,6 +189,7 @@ comparison above covers the same question.
 |---|---|
 | `frisky_daily_dag.py` | task module, 0.1° era and source (§2) |
 | `build_corpus.py`, `deploy_workers.py`, `bandwidth_probe.py`, `sink_icechunk.py`, `check_chunks.py`, `check_members.py`, `mirror_ceph_to_source_coop.py` | unchanged copies from `refill-crma-routine` `bc62385`, kept beside the changed module because `deploy_workers.py` ships the `frisky_daily_dag.py` next to it |
+| `append_channels.py` | adds channels to a finished store (§2b); `NEW_CHANNELS` = the 7 cGAN fields |
 | `append_when_published.sh` | waits for a cycle on GCS, appends it, re-uploads (§1) |
 | `mirror_local_to_source_coop.py` | local virtual store → source.coop, `repo` last |
 | `count_sink.py` | chunks written so far under a Ceph prefix (progress of a running build) |

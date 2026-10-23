@@ -1,0 +1,89 @@
+[
+ {
+  "step": 24,
+  "pass": true,
+  "herbie_source": "ecmwf",
+  "store_s": 3.23,
+  "herbie_s": 6.93,
+  "ensemble_mean": {
+   "corr": 0.9999999999999999,
+   "rmse": 0.0,
+   "mae": 0.0,
+   "max_abs_diff": 0.0,
+   "n_valid": 22765,
+   "store_range": [
+    0.0,
+    0.9971874952316284
+   ],
+   "herbie_range": [
+    0.0,
+    0.9971874952316284
+   ]
+  },
+  "n_compared": 50,
+  "n_store_all_nan": 0,
+  "n_herbie_only": 0,
+  "min_corr": 0.9999999999999998,
+  "max_abs_diff": 0.0,
+  "max_rel_diff": 0.0,
+  "worst_member": 1
+ },
+ {
+  "step": 72,
+  "pass": true,
+  "herbie_source": "azure",
+  "store_s": 3.2,
+  "herbie_s": 22.45,
+  "ensemble_mean": {
+   "corr": 1.0,
+   "rmse": 0.0,
+   "mae": 0.0,
+   "max_abs_diff": 0.0,
+   "n_valid": 22765,
+   "store_range": [
+    0.0,
+    0.9503124952316284
+   ],
+   "herbie_range": [
+    0.0,
+    0.9503124952316284
+   ]
+  },
+  "n_compared": 50,
+  "n_store_all_nan": 0,
+  "n_herbie_only": 0,
+  "min_corr": 0.9999999999999998,
+  "max_abs_diff": 0.0,
+  "max_rel_diff": 0.0,
+  "worst_member": 1
+ },
+ {
+  "step": 144,
+  "pass": true,
+  "herbie_source": "azure",
+  "store_s": 3.32,
+  "herbie_s": 22.39,
+  "ensemble_mean": {
+   "corr": 1.0,
+   "rmse": 0.0,
+   "mae": 0.0,
+   "max_abs_diff": 0.0,
+   "n_valid": 22765,
+   "store_range": [
+    0.0,
+    0.9543750286102295
+   ],
+   "herbie_range": [
+    0.0,
+    0.9543750286102295
+   ]
+  },
+  "n_compared": 50,
+  "n_store_all_nan": 0,
+  "n_herbie_only": 0,
+  "min_corr": 0.9999999999999998,
+  "max_abs_diff": 0.0,
+  "max_rel_diff": 0.0,
+  "worst_member": 1
+ }
+]

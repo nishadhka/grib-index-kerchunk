@@ -1,1 +1,73 @@
 === 2026102312 waiting 2026-10-23T22:00:57Z
+=== 2026102312 published 2026-10-24T01:06:31Z
+0p1/12z 20261023: 742478 refs from 340 .index files on GCS in 21.6s -- 51 sfc + 10 pl vars, 51 members, control from oper
+  26010 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 742478 refs at 0p1/12z[time=3] -> FX1RD4GEDJM9KJDPM7AG (6.0s)
+  read-back: 12/12 chunks equal their direct decode (23.8s)
+=== 2026102312 build exit=0 wall=55s
+911 objects local, 847 at dest, uploading 64 (17.4 MB) + repo
+uploaded 65 objects, 17.4 MB in 7.8s; `repo` pointer last -- MIRROR COMPLETE
+=== 2026102312 done 2026-10-24T01:07:38Z
+=== 2026102318 waiting 2026-10-24T01:07:38Z
+=== 2026102318 published 2026-10-24T04:43:21Z
+Traceback (most recent call last):
+  File "/home/ubuntu/nishadhka-work/grib-index-kerchunk/ecmwf/gcs-source/index_to_icechunk.py", line 365, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/ubuntu/nishadhka-work/grib-index-kerchunk/ecmwf/gcs-source/index_to_icechunk.py", line 322, in main
+    refs, n_dupes, n_files = index_refs(era_name, args.date, args.run, control)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/nishadhka-work/grib-index-kerchunk/ecmwf/gcs-source/index_to_icechunk.py", line 114, in index_refs
+    for h, stream, key, text in ex.map(fetch, jobs):
+                                ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/nishadhka-work/grib-index-kerchunk/ecmwf/gcs-source/index_to_icechunk.py", line 110, in fetch
+    return h, stream, key, get(GCS_HTTP + key + ".index").decode()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/nishadhka-work/grib-index-kerchunk/ecmwf/gcs-source/index_to_icechunk.py", line 85, in get
+    raise err
+  File "/home/ubuntu/nishadhka-work/grib-index-kerchunk/ecmwf/gcs-source/index_to_icechunk.py", line 80, in get
+    return urllib.request.urlopen(urllib.request.Request(url, headers=h),
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 521, in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 630, in http_response
+    response = self.parent.error(
+               ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 559, in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/home/ubuntu/.local/share/uv/python/cpython-3.12.14-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 639, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 404: Not Found
+=== 2026102318 build exit=1 wall=76s
+=== 2026102318 waiting 2026-10-25T11:59:29Z
+=== 2026102318 published 2026-10-25T11:59:30Z
+0p1/18z 20261023: 428018 refs from 196 .index files on GCS in 14.2s -- 49 sfc + 10 pl vars, 51 members, control from oper
+  14994 index lines share a key and were collapsed, last wins (stage-1 behaviour; soil levels of ['sot', 'vsw'])
+  committed 428018 refs at 0p1/18z[time=3] -> 6AK8YKP0TDZJ085CV960 (3.7s)
+  read-back: 12/12 chunks equal their direct decode (26.1s)
+=== 2026102318 build exit=0 wall=44s
+973 objects local, 911 at dest, uploading 62 (9.3 MB) + repo
+uploaded 63 objects, 9.3 MB in 17.5s; `repo` pointer last -- MIRROR COMPLETE
+=== 2026102318 done 2026-10-25T12:00:35Z

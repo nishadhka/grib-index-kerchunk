@@ -46,7 +46,10 @@ uv run index_to_icechunk.py --date 20261021 --run 00 --resolution 0p1 \
 - **Upload:** done by [`mirror_local_to_source_coop.py`](mirror_local_to_source_coop.py), using boto3 copies with the `repo` pointer last.
   - The 170 MB took 1.4 min plus 1.1 min, because a source.coop **520** stopped the first pass (see issue 1).
   - Read back anonymously from source.coop: 4 groups, 13 dates, 14 snapshots.
-- **Still to add:** 20261023 12z and 18z were not published by the time of the run; 0.1° appears about 2 h after 0.25°. [`append_when_published.sh`](append_when_published.sh) `2026102312 2026102318` was started at 22:01 UTC. For each cycle it waits for publication (checking every 5 min, up to 10 h), appends it with the 12-chunk read-back and re-uploads. Log: `logs/append-2026102312-18.log`.
+- **20261023 12z and 18z** were not published by the time of the run; 0.1° appears about 2 h after 0.25°. [`append_when_published.sh`](append_when_published.sh) `2026102312 2026102318` was started at 22:01 UTC. For each cycle it waits for publication (checking every 5 min, up to 10 h), appends it with the 12-chunk read-back and re-uploads. Log: `logs/append-2026102312-18.log`.
+  - 12z was published at 01:06 UTC on 10-24 and appended and uploaded a minute later.
+  - 18z's last step appeared at 04:43 UTC, but one of its other `.index` files still returned 404 then. The build exited before committing anything. A rerun on 2026-10-25 at 12:00 UTC appended it (read-back 12/12) and uploaded 63 objects.
+  - The store now holds all **15** requested cycles.
 
 ## 2. Realization of 20261021 00z, 39 channels
 

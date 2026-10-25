@@ -1,0 +1,24 @@
+source  ceph://must-icechunk/wide-30w130e-50n40s/v0p1-20261021-00z
+dest    s3://e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-realized-30w130e-50n40s
+workers 4 processes x 48 threads
+
+listing source ...
+  3050 objects, 200.14 GB in 1s
+  destination already holds 2988 objects
+  to upload: 62 objects, 6.70 GB (2988 already in sync)
+  at 90 MB/s (4 procs, one host): 1.2 min -> 0.02 h
+
+uploaded 0/62 objects, 0.00 GB in 254s = 0.0 MB/s (0 GB/h), 62 errors
+errors remain -- re-run to retry them before uploading `repo`
+source  ceph://must-icechunk/wide-30w130e-50n40s/v0p1-20261021-00z
+dest    s3://e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-realized-30w130e-50n40s
+workers 4 processes x 48 threads
+
+listing source ...
+  3050 objects, 200.14 GB in 0s
+  destination already holds 2989 objects
+  to upload: 62 objects, 6.70 GB (2988 already in sync)
+  at 90 MB/s (4 procs, one host): 1.2 min -> 0.02 h
+
+uploaded 62/62 objects, 6.70 GB in 79s = 84.3 MB/s (303 GB/h), 0 errors
+uploaded `repo` pointer (last)

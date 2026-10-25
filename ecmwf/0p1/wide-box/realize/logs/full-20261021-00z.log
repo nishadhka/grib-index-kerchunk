@@ -1,0 +1,68 @@
+  dask-worker-01   {'alive': '1/1', 'running': 1, 'orphans': 0, 'sched': 1, 'venv': True, 'log': 'Memory limit: 12.00 GiB | Press Ctrl+C to stop'}
+  dask-worker-02   {'alive': '1/1', 'running': 1, 'orphans': 0, 'sched': 0, 'venv': True, 'log': 'Memory limit: 12.00 GiB | Press Ctrl+C to stop'}
+  dask-worker-04   {'alive': '1/1', 'running': 1, 'orphans': 0, 'sched': 0, 'venv': True, 'log': 'Memory limit: 12.00 GiB | Press Ctrl+C to stop'}
+  dask-worker-05   {'alive': '1/1', 'running': 1, 'orphans': 0, 'sched': 0, 'venv': True, 'log': 'Memory limit: 12.00 GiB | Press Ctrl+C to stop'}
+  dask-worker-06   {'alive': '1/1', 'running': 1, 'orphans': 0, 'sched': 0, 'venv': True, 'log': 'Memory limit: 12.00 GiB | Press Ctrl+C to stop'}
+=== realize start 2026-10-25T15:31:03Z
+corpus   2026-10-21 .. 2026-10-21  (1 dates)
+shape    46 channels x 51 members x 65 steps
+work     2990 blocks/date, 2990 total, 152,490 messages, ~0.12 TB of AWS egress
+
+sink     must-icechunk/wide-30w130e-50n40s/v0p1-20261021-00z (created)
+source   https://data.source.coop/e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-vd
+         group 0p1/00z  snapshot 6AK8YKP0TDZJ085CV960
+         virtual chunks -> s3://ecmwf-forecasts/ (anonymous), decoded by gribberish
+schema   46 arrays x 1 dates, metadata only, SYDYFBC25JWN in 2.1s
+
+[ 1/1] 2026-10-21  10706.3s    14.2 msg/s  submit  0.0s  merge  4.4s  retried    0  -> 1BQQ62DXWJ95   eta 0m
+
+1/1 available dates in 178.5 min (1 slots reserved)
+
+verify: check_complete.py --prefix wide-30w130e-50n40s/v0p1-20261021-00z
+=== realize exit=0 wall=10723s 2026-10-25T18:29:46Z
+prefix reads 151,800 msgs: fetched 289.23 of 358.51 GB (80.7%, saved 19.3%), 6 top-up GETs, mean GET 3.71s, decode 39 ms, GETs served by AWS 107,894 / GCS 43,914
+(counters are flushed every 200 messages per process, so the last <200 per process are missing)
+=== memory (MB): peak VM used / peak frisky worker RSS per VM
+  01_used 4770
+  01_rss 3239
+  02_used 3660
+  02_rss 2534
+  04_used 3999
+  04_rss 2833
+  05_used 4291
+  05_rss 3078
+  06_used 4138
+  06_rss 2885
+=== check_chunks 2026-10-25T18:30:06Z
+  v850        65 chunks
+  v925        65 chunks
+  vo500       65 chunks
+  vo700       65 chunks
+  vo850       65 chunks
+  w700        65 chunks
+  total missing: 0
+  VERDICT: complete
+=== check_members gh500 2026-10-25T18:30:10Z
+     +240h   sd = 26.0622
+     -> spread GROWS with lead time  (1.5390 -> 26.0622)
+  3. control (number=0) vs the 50 perturbed members at the longest step:
+     control mean      5818.7783
+     perturbed mean    5819.7583
+     |ctrl - pertmean| 0.9800
+  finite fraction   1.0000
+  VERDICT: members are REAL
+chunks 2992/2535 (118%)  200.1 GB
+=== mirror -> s3://e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-realized-30w130e-50n40s 2026-10-25T18:30:33Z
+source  ceph://must-icechunk/wide-30w130e-50n40s/v0p1-20261021-00z
+dest    s3://e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-realized-30w130e-50n40s
+workers 4 processes x 48 threads
+
+listing source ...
+  3050 objects, 200.14 GB in 0s
+  destination already holds 0 objects
+  to upload: 3050 objects, 200.14 GB (0 already in sync)
+  at 90 MB/s (4 procs, one host): 37.1 min -> 0.62 h
+
+uploaded 2988/3050 objects, 193.44 GB in 1774s = 109.0 MB/s (393 GB/h), 62 errors
+errors remain -- re-run to retry them before uploading `repo`
+=== mirror exit=1 wall=1778s 2026-10-25T19:00:11Z

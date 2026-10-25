@@ -94,7 +94,7 @@ How the wall-time estimate was reached:
 - **Writes.** They grow 2.77× (~71 MB per block compressed instead of 26 MB), which pushes it back up. The 294 MB block also needs checking against worker memory before the run.
 - **Measure, don't scale.** A short run (2 channels × 51 members × 65 steps) on the cluster would replace these scalings with measured numbers.
 
-## 3. Where it would be stored (proposed, nothing written yet)
+## 3. Where it is stored
 
 | | Path |
 |---|---|
@@ -102,3 +102,70 @@ How the wall-time estimate was reached:
 | source.coop | `s3://e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-realized-30w130e-50n40s` → https://source.coop/e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-realized-30w130e-50n40s |
 
 The new paths are kept separate from `forecasts/ecmwf-ifs-0p1-icechunk-realized` (`ea-sw-io40`, 46 channels), which stays as it is. The extent is in the name, so another box never shares the path.
+
+## 4. Realized: 20261021 00z, 46 channels (2026-10-25, `realize/`)
+
+`realize/` is a copy of `realize-0p1/` changed for this box. The prefix read
+from §1 runs as an extra step beside gribberish (`frisky_daily_dag.read_prefix`).
+gribberish 1.6.0 rejects a truncated message, so each worker decodes the
+prefix with libaec (from imagecodecs) and cuts out the box. Once gribberish can
+decode the first N rows, this step is the part to replace. It ran on its own
+frisky scheduler (:8797, workers in `/tmp/frisky-wide`) only after the CRMA
+daily run had finished.
+
+| | measured |
+|---|---|
+| messages | 152,490 (46 ch × 51 members × 65 steps), 2,990 blocks, 0 retried |
+| stage ③ wall | **178.4 min** (10,706 s), **14.2 msg/s** |
+| GRIB bytes fetched | **289.2 of 358.5 GB (80.7%, saved 19.3%)**, 6 top-up GETs, mean GET 3.71 s, decode 39 ms |
+| GETs by source | AWS 107,894 / GCS fallback 43,914 (AWS answered `503 Slow Down` on ~29%) |
+| peak frisky worker RSS / VM used | **2.5–3.2 GB / 3.7–4.8 GB** per VM (limit 12 GB, VM 16 GB) |
+| stored on Ceph | **200.1 GB**, 3,054 objects, snapshot `1BQQ62DXWJ95NE71FCP0` |
+| checks | `check_chunks`: 0 missing; `check_members gh500`: members real, spread 1.5 → 26.1 |
+| mirror to source.coop | 30 min (109 MB/s) + 79 s for 62 objects over 100 MB (multipart) |
+| anonymous read | same snapshot; t2m/tp/gh500/tcw blocks equal to Ceph bit for bit |
+
+Saving over the whole date is 19.3% (the §1 sample: 21.8%). The per-channel
+first-GET share (`PREFIX_FRAC`) leaves 1.5% of headroom, so that small margin
+is fetched on top of the minimum.
+
+### What it took to get from 2.6 to 14 msg/s
+
+The 2-channel trial (t2m, d850; 6,630 messages) ran at **2.6 msg/s**. At that
+rate one date would take ~16 h. Three short runs found the causes:
+
+| change | msg/s |
+|---|---|
+| trial: data GETs from the GCS copy, separate read tasks + `write_block` | 2.6 |
+| GETs to AWS first, GCS on 503/error | 5.7 |
+| same, 12 threads per VM instead of 4 | 5.7 |
+| **one task per block reads 51 members (4 threads) and writes it** (`read_write_block`, `--fused-pool 4`, 6 per VM) | **16.0** |
+
+More threads did not help, and the VMs together can GET ~70 MB/s
+(`netprobe`, 12 threads × 5 VMs). The limit was data movement: every read
+left its 5.8 MB box on whichever worker ran it, so `write_block` pulled
+~235 MB across the LAN for each block. In the 26 MB-block `ea-sw-io40` box
+this did not matter. Fusing the read and the write keeps the block on one
+worker, and the run became network-bound (~53 MB/s).
+
+### Worker memory
+
+- A running block task holds one preallocated (51, 901, 1601) float32 block
+  (294 MB) plus the messages in flight.
+- 6 tasks per VM cap that at ~1.8 GB. `--max-inflight 40` keeps the queue on
+  the client, so held results never grow with the 2,990 blocks.
+- Peaks were sampled every 15 s with `mem_monitor.py` (`logs/mem-full.tsv`).
+  Worker RSS never passed 3.3 GB.
+
+### source.coop single-PUT limit
+
+Some wide-box chunks exceed 100 MB (up to 114 MB), and the source.coop proxy
+refuses a single PUT that size. All 62 such objects failed, twice. The copied
+`mirror_ceph_to_source_coop.py` now uses multipart upload (32 MiB parts) above
+64 MiB.
+
+### Cost per date, revised
+
+Stage ③ took 3.0 h, and checks plus the mirror ~35 min, so a date is ~3.5 h on
+5 VMs. That rules out fitting a daily run alongside the CRMA routine as-is.
+Storage is 200 GB per date, ~73 TB per year of 00z runs.

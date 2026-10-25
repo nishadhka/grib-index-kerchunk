@@ -1,0 +1,56 @@
+=== waiting for the CRMA daily run to finish 2026-10-25T12:32:53Z
+=== cluster free 2026-10-25T14:31:54Z
+starting frisky scheduler on 192.168.1.164
+  dask-worker-01   {'pid': 197134, 'bind': '192.168.1.164:8797'}
+scheduler  192.168.1.164:8797   dashboard http://192.168.1.164:8792
+  dask-worker-01   {'wrote': 'frisky_daily_dag.py', 'bytes': 54565}
+  dask-worker-02   {'wrote': 'frisky_daily_dag.py', 'bytes': 54565}
+  dask-worker-04   {'wrote': 'frisky_daily_dag.py', 'bytes': 54565}
+  dask-worker-05   {'wrote': 'frisky_daily_dag.py', 'bytes': 54565}
+  dask-worker-06   {'wrote': 'frisky_daily_dag.py', 'bytes': 54565}
+  dask-worker-01   {'pkill_rc': 1, 'still_running': '0'}
+  dask-worker-02   {'pkill_rc': 1, 'still_running': '0'}
+  dask-worker-04   {'pkill_rc': 1, 'still_running': '0'}
+  dask-worker-05   {'pkill_rc': 1, 'still_running': '0'}
+  dask-worker-06   {'pkill_rc': 1, 'still_running': '0'}
+  dask-worker-01   {'pids': [197143]}
+  dask-worker-02   {'pids': [198262]}
+  dask-worker-04   {'pids': [197586]}
+  dask-worker-05   {'pids': [196830]}
+  dask-worker-06   {'pids': [193425]}
+  dask-worker-01   {'alive': '1/1', 'running': 1, 'orphans': 0, 'sched': 1, 'venv': True, 'log': 'Memory limit: 12.00 GiB | Press Ctrl+C to stop'}
+  dask-worker-02   {'alive': '1/1', 'running': 1, 'orphans': 0, 'sched': 0, 'venv': True, 'log': 'Memory limit: 12.00 GiB | Press Ctrl+C to stop'}
+  dask-worker-04   {'alive': '1/1', 'running': 1, 'orphans': 0, 'sched': 0, 'venv': True, 'log': 'Memory limit: 12.00 GiB | Press Ctrl+C to stop'}
+  dask-worker-05   {'alive': '1/1', 'running': 1, 'orphans': 0, 'sched': 0, 'venv': True, 'log': 'Memory limit: 12.00 GiB | Press Ctrl+C to stop'}
+  dask-worker-06   {'alive': '1/1', 'running': 1, 'orphans': 0, 'sched': 0, 'venv': True, 'log': 'Memory limit: 12.00 GiB | Press Ctrl+C to stop'}
+6 frisky workers (1/VM) dialling 192.168.1.164:8797 at 4 threads each (24 concurrent readers)
+corpus   2026-10-21 .. 2026-10-21  (1 dates)
+shape    2 channels x 51 members x 65 steps
+work     130 blocks/date, 130 total, 6,630 messages, ~0.01 TB of AWS egress
+
+sink     must-icechunk/wide-30w130e-50n40s/trial-2ch-20261021-00z (created)
+source   https://data.source.coop/e4drr-project/forecasts/ecmwf-ifs-0p1-icechunk-vd
+         group 0p1/00z  snapshot 6AK8YKP0TDZJ085CV960
+         virtual chunks -> s3://ecmwf-forecasts/ (anonymous), decoded by gribberish
+schema   2 arrays x 1 dates, metadata only, Y7W6NG5AQJ8V in 1.1s
+
+[ 1/1] 2026-10-21  2549.4s     2.6 msg/s  submit  0.0s  merge  0.7s  retried    0  -> R1FNDZW02JZC   eta 0m
+
+1/1 available dates in 42.5 min (1 slots reserved)
+
+verify: check_complete.py --prefix wide-30w130e-50n40s/trial-2ch-20261021-00z
+=== build exit=0 wall=2561s 2026-10-25T15:14:44Z
+prefix reads 6,200 msgs: fetched 14.37 of 18.06 GB (79.6%, saved 20.4%), 0 top-up GETs, mean GET 4.20s, decode 38 ms
+(counters are flushed every 200 messages per process, so the last <200 per process are missing)
+=== memory (MB): peak VM used / peak frisky worker RSS per VM
+  01_used 3570
+  01_rss 2093
+  02_used 3129
+  02_rss 2008
+  04_used 3152
+  04_rss 2008
+  05_used 3273
+  05_rss 2047
+  06_used 3973
+  06_rss 2717
+chunks 132/2535 (5%)  10.1 GB

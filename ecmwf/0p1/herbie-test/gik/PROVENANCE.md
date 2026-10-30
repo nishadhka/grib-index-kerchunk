@@ -10,7 +10,7 @@ edit them here; change them upstream and copy them again.
 | Path | `ifs-0p1-gik/` |
 | Commit | `bc940871e4327968c0a67a470d6c542c10ab3560` (2026-10-29, "ifs-0p1-gik: SEWAA jurre-6h and mvua-7d products, self-contained, from the public virtual store") |
 | Copied | 2026-10-30, with `git show bc94087:ifs-0p1-gik/<file>` |
-| Note | On 2026-10-30 this commit existed only in a local checkout; it is to be pushed to icpac-igad/cGAN_tutorial, its permanent home. |
+| Note | Pushed to the fork nishadhka/cGAN_tutorial on 2026-10-30 (re-authored from `1ff14c2`, same content); to be merged into icpac-igad/cGAN_tutorial, its permanent home, with a merge so the hash stays. |
 
 | File | sha256 | Used here for |
 |---|---|---|

@@ -10,8 +10,36 @@ Run on 2026-10-30 against cycle **20261026 00z**, at two cases:
 - **+174 h, member 50**: the last step of the 7-day product, in the 6-hourly
   part of the step axis.
 
-The box is 25°N–15°S, 19–55°E (`config.BOX` in
-`cGAN_tutorial/ifs-0p1-gik`, commit `bc94087`).
+The box is 25°N–15°S, 19–55°E (`config.BOX`).
+
+## Self-contained, and where the code comes from
+
+The folder runs on its own. The GIK reader it tests is in [`gik/`](gik/PROVENANCE.md):
+`cgan_dag.py`, `config.py` and `stores.py`, copied verbatim from
+[icpac-igad/cGAN_tutorial](https://github.com/icpac-igad/cGAN_tutorial)
+`ifs-0p1-gik/` at commit **`bc940871e4327968c0a67a470d6c542c10ab3560`**.
+`gik/PROVENANCE.md` lists their sha256 hashes and the command that checks the
+copies against upstream.
+
+**The full pipeline is still built and tested in `cGAN_tutorial/ifs-0p1-gik`.**
+That covers:
+- the virtual store;
+- realization, which uses the same `read_prefix`;
+- the bit-exact check of every run (`step5_check.py`);
+- the SEWAA NetCDF and cGAN inference.
+
+This folder only checks the latitude-box subset against Herbie. To test a
+newer upstream checkout instead of the copies, set
+`IFS0P1_GIK=~/cGAN_tutorial/ifs-0p1-gik`.
+
+```
+herbie-test/
+  README.md            this page
+  herbie_vs_gik.py     the comparison and figure
+  requirements.txt     the exact environment it was run with
+  gik/                 the reader under test, verbatim @ bc94087, + PROVENANCE.md
+  out/                 logs of both cases; one showcase PNG (others gitignored)
+```
 
 ## What is compared
 
@@ -75,19 +103,21 @@ README). A short guess costs one more GET, never a wrong value.
 ## Reproduce
 
 ```bash
+cd herbie-test
 uv venv -p 3.12 venv-herbie
-VIRTUAL_ENV=venv-herbie uv pip install -r ~/cGAN_tutorial/ifs-0p1-gik/requirements.txt \
-    herbie-data cfgrib eccodes matplotlib cartopy
+VIRTUAL_ENV=venv-herbie uv pip install -r requirements.txt
 # R needs a realized store for the cycle (cGAN_tutorial/ifs-0p1-gik run_local.sh); omit --realized to skip it
-IFS0P1_GIK=~/cGAN_tutorial/ifs-0p1-gik venv-herbie/bin/python herbie_vs_gik.py \
+venv-herbie/bin/python herbie_vs_gik.py \
     --date 20261026 --run 00 --step 54 --member 1 \
     --realized /srv/state/ifs0p1/icechunk/ecmwf-ifs-0p1-cgan14-19e55e-25n15s/20261026T00z-jurre-6h+mvua-7d \
     --out out/herbie_vs_gik_20261026T00z_54h_m1.png | tee out/herbie_vs_gik_20261026T00z_54h_m1.txt
 ```
 
-Versions used: herbie-data 2026.10.0, cfgrib 0.9.15.1, eccodes 2.50.0,
-gribberish 1.6.0, icechunk 2.1.1, xarray 2026.7.0, imagecodecs 2026.10.10,
-cartopy 0.26.0.
+`requirements.txt` pins the environment it was run with: herbie-data
+2026.10.0, cfgrib 0.9.15.1, eccodes 2.50.0, gribberish 1.6.0, icechunk 2.1.1,
+xarray 2026.7.0, imagecodecs 2026.10.10, cartopy 0.26.0. The read needs no
+credentials: ECMWF open data, the source.coop virtual store and GCS are all
+read anonymously.
 
 A member is 1–50 (`enfo`); member 0, the control, is in `oper` and is not
 covered by this script's Herbie search.

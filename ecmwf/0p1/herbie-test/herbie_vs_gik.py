@@ -11,13 +11,13 @@ and cut to the box 25N..15S, 19..55E (config.BOX, 401 x 361):
      its virtual reference, decoded by gribberish (cgan_dag.read_virtual)
   R  the realized store step4 wrote (if given)
 
-    IFS0P1_GIK=~/cGAN_tutorial/ifs-0p1-gik python herbie_vs_gik.py \
+    python herbie_vs_gik.py \
         --date 20261026 --run 00 --step 54 --member 1 \
         --realized /srv/state/ifs0p1/icechunk/.../20261026T00z-jurre-6h+mvua-7d \
         --out out/herbie_vs_gik_20261026T00z_54h_m1.png | tee out/herbie_vs_gik_20261026T00z_54h_m1.txt
 
-Needs the ifs-0p1-gik requirements.txt plus herbie-data cfgrib eccodes
-matplotlib cartopy (README.md).
+Needs requirements.txt in this folder. The GIK code is in gik/ (copied from
+cGAN_tutorial ifs-0p1-gik @ bc94087); set IFS0P1_GIK to test a checkout instead.
 """
 import argparse
 import os
@@ -26,9 +26,12 @@ import time
 
 import numpy as np
 
-# the GIK reader under test: cGAN_tutorial/ifs-0p1-gik (cgan_dag.py, config.py)
-REPO = os.environ.get("IFS0P1_GIK", os.path.expanduser("~/cGAN_tutorial/ifs-0p1-gik"))
-sys.path.insert(0, REPO)
+# The GIK reader under test: cgan_dag.py, config.py, stores.py copied verbatim
+# into gik/ from cGAN_tutorial ifs-0p1-gik @ bc94087 (gik/PROVENANCE.md).
+# IFS0P1_GIK=<a cGAN_tutorial/ifs-0p1-gik checkout> tests that checkout instead.
+HERE = os.path.dirname(os.path.abspath(__file__))
+GIK = os.environ.get("IFS0P1_GIK") or os.path.join(HERE, "gik")
+sys.path.insert(0, GIK)
 import cgan_dag  # noqa: E402  (strips AWS_*)
 import config as C  # noqa: E402
 
@@ -162,6 +165,7 @@ def main():
     fig.tight_layout()
     fig.savefig(a.out, dpi=90)
     print("wrote", a.out)
+    print("gik code:", GIK)
 
 
 if __name__ == "__main__":

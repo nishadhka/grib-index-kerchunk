@@ -1,0 +1,14 @@
+# The environment herbie_vs_gik.py was run with (2026-10-30). The first six
+# match cGAN_tutorial ifs-0p1-gik requirements.txt @ bc94087; the rest are Herbie
+# and plotting.
+icechunk==2.1.1
+zarr==3.2.1
+xarray==2026.7.0
+gribberish==1.6.0
+numpy==2.5.1
+imagecodecs==2026.10.10
+herbie-data==2026.10.0
+cfgrib==0.9.15.1
+eccodes==2.50.0
+matplotlib==3.11.2
+cartopy==0.26.0

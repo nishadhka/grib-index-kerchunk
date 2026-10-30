@@ -1,8 +1,9 @@
-tp    (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 1.98 of 2.42 MB (82%)  16s
+tp    (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 1.98 of 2.42 MB (82%)  17s
 t2m   (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 1.13 of 1.37 MB (82%)  4s
 tcwv  (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 1.33 of 1.62 MB (82%)  4s
-sp    (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 2.10 of 2.56 MB (82%)  4s
+sp    (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 2.10 of 2.56 MB (82%)  3s
 cape  (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 1.26 of 1.54 MB (82%)  4s
 u700  (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 2.32 of 2.83 MB (82%)  6s
 v700  (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 2.38 of 2.91 MB (82%)  5s
 wrote out/herbie_vs_gik_20261026T00z_54h_m1.png
+gik code: /home/ubuntu/grib-index-kerchunk/ecmwf/0p1/herbie-test/gik

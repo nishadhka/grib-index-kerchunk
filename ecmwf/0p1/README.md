@@ -416,6 +416,21 @@ On 2026-10-23 the 0.1° stream went through the whole CRMA chain:
 
 ---
 
+### Visual check against Herbie ([`herbie-test/`](herbie-test/README.md))
+
+On 2026-10-30 the prefix read was compared with Herbie for 7 cGAN fields
+(tp, 2t, tcwv, sp, mucape, u700, v700). The box was 25°N–15°S, 19–55°E,
+cycle 20261026 00z, at +54 h (member 1) and +174 h (member 50).
+- Herbie read the whole message and decoded it with cfgrib.
+- The GIK prefix read decoded with libaec.
+- The virtual store decoded with gribberish.
+- The realized store was also compared.
+
+All four are **identical, with a maximum |difference| of 0** on every field.
+The README has the figures.
+
+---
+
 ## 9. Reproduce
 
 ```bash

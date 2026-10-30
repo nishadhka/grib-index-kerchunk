@@ -1,0 +1,9 @@
+tp    (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 2.29 of 2.80 MB (82%)  15s
+t2m   (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 1.14 of 1.39 MB (82%)  4s
+tcwv  (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 1.32 of 1.61 MB (82%)  4s
+sp    (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 2.09 of 2.55 MB (82%)  3s
+cape  (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 1.28 of 1.56 MB (82%)  4s
+u700  (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 2.26 of 2.76 MB (82%)  5s
+    herbie retry 1 (aws failed): Processing failed: 503 Server Error: Service Unavailable for
+v700  (401, 361)  max|P-H|=0  max|V-H|=0  max|R-H|=0  prefix 1.75 of 2.14 MB (82%)  8s
+wrote out/herbie_vs_gik_20261026T00z_174h_m50.png
